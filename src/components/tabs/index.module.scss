@@ -1,0 +1,15 @@
+.tabContainer {
+  display: flex;
+  gap: 5px;
+  .tab {
+    gap: 5px;
+    display: flex;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: #8a8a8a4d;
+    cursor: pointer;
+  }
+  .tabActive {
+    background-color: #818181 !important;
+  }
+}

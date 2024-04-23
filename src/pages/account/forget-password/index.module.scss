@@ -1,0 +1,66 @@
+.activeTab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+  margin: 0px auto;
+  max-width: 500px;
+  width: 100%;
+
+  width: 100%;
+  button {
+    margin: auto;
+  }
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.inputClass {
+  width: 97% !important;
+  border-radius: 23px !important;
+}
+p {
+  color: rgb(73, 73, 73);
+  font-size: 12px;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  gap: 20px;
+}
+
+.btn {
+  border-radius: 23px !important;
+  background-color: #438afe !important;
+  height: 45px;
+  p {
+    color: white !important;
+    font-size: 18px !important;
+  }
+}
+.btn2 {
+  border-radius: 23px !important;
+  background: #fff !important;
+  border: 1px solid #438efa;
+  height: 45px;
+  z-index: 2;
+
+  @media (max-height: 800px) {
+    border: 1px solid #0166f8;
+  }
+  p {
+    color: #0166f8 !important;
+    font-size: 18px !important;
+    @media (max-height: 800px) {
+      color: #0166f8 !important;
+    }
+  }
+}

@@ -1,0 +1,132 @@
+@use "@/style/colors";
+
+.activeTab {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+  margin: 0px auto;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.inputClass {
+  width: 97% !important;
+
+  border-radius: 23px !important;
+}
+
+input {
+  padding: 14px 0px 15px 13px !important;
+}
+h2 {
+  margin: 5px;
+  text-align: center;
+}
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  gap: 20px;
+}
+// .forgetPassword {
+//   cursor: pointer;
+//   font-size: 15px;
+// }
+// .forgetPassword:hover {
+//   text-decoration: underline;
+//   color: #438afe;
+// }
+
+.signUpContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  border-radius: 23px !important;
+  background-color: #438afe !important;
+  height: 45px;
+  z-index: 2;
+  p {
+    color: white !important;
+    font-size: 18px !important;
+  }
+}
+
+.GotoBack {
+  cursor: pointer;
+  font-weight: 700;
+  &:hover {
+    font-weight: 700;
+    color: colors.$btn;
+  }
+}
+
+.loaderClass {
+  border-top: 2px solid #ffffff !important;
+  border-left: 2px solid #ffffff !important;
+  border-bottom: 2px solid #ffffff !important;
+}
+
+.signUPImageBtn {
+  position: absolute;
+  z-index: 9999;
+  right: 8vw;
+  align-items: center;
+  top: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  .textAccount {
+    color: #ffff;
+    font-size: 25px;
+    font-weight: 700;
+    @media (max-width: 1209px) and (min-width: 800px) {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 1500px) and (min-width: 1210px) {
+    right: 4vw;
+  }
+  @media (max-width: 1209px) and (min-width: 800px) {
+    right: 4vw;
+  }
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
+
+.btn2 {
+  border-radius: 23px !important;
+  background: #ffff !important;
+  // border: 1px solid #438efa;
+  height: 45px;
+  // width: 180px;
+
+  // @media (max-height: 800px) {
+  //   border: 1px solid #3d3d3d;
+  // }
+  p {
+    color: #0166f8 !important;
+    font-size: 18px !important;
+    // @media (max-height: 800px) {
+    //   color: #3d3d3d !important;
+    // }
+  }
+}
