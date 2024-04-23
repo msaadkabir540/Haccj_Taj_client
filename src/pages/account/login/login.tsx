@@ -14,13 +14,10 @@ import { signIn } from "@/api-services/auth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState<string>("");
+  const [errorPassword, setErrorPassword] = useState<string>("");
 
-  const {
-    watch,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFromInterface>({
+  const { register, handleSubmit } = useForm<LoginFromInterface>({
     defaultValues: {
       password: "",
     },
@@ -29,23 +26,27 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
-    console.log({ data });
-
-    const res = await signIn({ data });
-    console.log({ res });
-
-    if (res.status === true) {
-      localStorage.setItem("token", res.access_token);
-      createNotification({ type: "success", message: "Successfully Login" });
-      setIsLoading(false);
-      navigate("/dashboard");
+    if (data?.employeecode.trim().length === 0 && data?.password.trim().length === 0) {
+      setError("Employee code is required");
+      setErrorPassword("password is required");
     } else {
-      setIsLoading(false);
-      createNotification({
-        type: "error",
-        message: res?.response?.data?.message || "Failed To Login.",
-      });
+      setError("");
+      setErrorPassword("");
+      setIsLoading(true);
+      const res = await signIn({ data });
+
+      if (res.status === true) {
+        localStorage.setItem("token", res.access_token);
+        createNotification({ type: "success", message: "Successfully Login" });
+        setIsLoading(false);
+        navigate("/dashboard");
+      } else {
+        setIsLoading(false);
+        createNotification({
+          type: "error",
+          message: res?.response?.data?.message || "Failed To Login.",
+        });
+      }
     }
   };
 
@@ -61,7 +62,7 @@ const Login: React.FC = () => {
                 name="employeecode"
                 register={register}
                 placeholder="Enter User Employee Code"
-                errorMessage={errors?.employeecode?.message}
+                errorMessage={error}
               />
               <Input
                 inputClass={styles.inputClass}
@@ -69,7 +70,7 @@ const Login: React.FC = () => {
                 type={"password"}
                 register={register}
                 placeholder="Enter Password"
-                errorMessage={errors?.password?.message}
+                errorMessage={errorPassword}
               />
               <div className={styles.btnContainer}>
                 <Button
@@ -85,7 +86,7 @@ const Login: React.FC = () => {
                   loaderClass={styles.loaderClass}
                   className={styles.btn}
                   isLoading={isLoading}
-                  disabled={!watch("employeecode") || !watch("password")}
+                  // disabled={!watch("employeecode") || !watch("password")}
                 />
 
                 <div
