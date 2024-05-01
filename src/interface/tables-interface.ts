@@ -1,5 +1,3 @@
-import { FileType } from "@/pages/media-library/media-library-interface";
-
 interface UserTableRows {
   _id: string;
   id?: string;
@@ -31,35 +29,23 @@ interface WidgetTableRows {
 }
 
 interface RowsInterface {
-  _id: string;
-  website?: string;
-  id?: string;
-  status?: boolean;
-  username?: string;
-  email?: string;
-  roles?: string[] | string;
-  updatedAt?: string;
-  actions?: string;
+  id: number;
+  employeecode?: number;
   name?: string;
-  active?: boolean;
-  count?: number;
-  yourName?: string;
-  projectName?: string;
-  thumbnailUrl?: string;
-  fileType?: string;
-  categories?: FileType[] | string[];
-  fileSize?: string;
-  duration?: string | number;
-  url?: string;
-  s3Key?: string;
-  themeName?: string;
-  templateName?: string;
-  description?: string;
-  mediaFilesCount?: number;
-  templateVideoUrl?: string;
-  themesDescription?: string;
-  templateVideoThumbnailUrl?: string;
-  themeVideoThumbnailUrl?: string;
+  email?: string;
+  dob?: string;
+  contact_no?: string;
+  address?: string;
+  department?: string;
+  isadmin?: number;
+  quit?: string;
+  quit_date?: string;
+  CREATED_AT?: string;
+  updated_at?: string;
+  actions?: any;
+  equipment_name?: string;
+  created_by?: number;
+  temperature_value: string;
 }
 
 export { UserTableRows, WidgetTableRows, RowsInterface, WedgetRowInterface };

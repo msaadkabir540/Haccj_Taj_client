@@ -28,11 +28,11 @@ const Pagination: React.FC<PaginationInterface> = ({
     <div className={styles.position}>
       <div className={styles.pagination}>
         <div className={styles.leftFlex}>
-          <p style={{ marginLeft: "0px", marginRight: "10px" }}>View</p>
+          {/* <p style={{ marginLeft: "0px", marginRight: "10px" }}>View</p>
           <div style={{ maxWidth: "100px" }}>
             <SelectBox badge name="pageSize" options={selectOptions} control={control} />
           </div>
-          <p>{perPageText ? perPageText : "user per page"}</p>
+          <p>{perPageText ? perPageText : "user per page"}</p> */}
         </div>
         <div className={styles.rightFlex}>
           <p className={styles.p}>

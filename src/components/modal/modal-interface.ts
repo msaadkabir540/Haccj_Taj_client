@@ -8,6 +8,7 @@ interface ModalInterface {
   modalWrapper?: string;
   iconClassName?: string;
   handleClose?: () => void;
+  handleCross?: () => void;
   style?: React.CSSProperties;
 }
 

@@ -1,23 +1,25 @@
 import { useForm } from "react-hook-form";
 import "jsoneditor-react/es/editor.min.css";
 import { memo, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Input from "@/components/input";
 import Button from "@/components/button";
 
 import createNotification from "@/common/create-notification";
 
+import AuthComponent from "../auth-component";
+import { resetPassword } from "@/api-services/auth";
+
+import EyeIcon from "@/assets/eyeIcon.svg";
+import EyeClose from "@/assets/eyeclose.svg";
+
 import { ResetPasswordFromInterface } from "@/interface/index";
 
 import styles from "./index.module.scss";
 
 const ResetPassword: React.FC = () => {
-  const { id = "", token = "" } = useParams<{
-    id: string;
-    token: string;
-  }>();
-
+  const [isShow, setIsShow] = useState<boolean>(false);
   const {
     watch,
     register,
@@ -34,18 +36,24 @@ const ResetPassword: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const [notSamePassword, setNotSamePassword] = useState<string>("");
+
   const onSubmit = async (data: ResetPasswordFromInterface) => {
-    // setLoader(true);
-    // const res = await resetPassword({
-    //   id,
-    //   data: {
-    //     password: data.password,
-    //   },
-    //   token,
-    // });
-    // setLoader(false);
-    // if (res.status === 200) navigate("/sign-in");
-    // else createNotification("error", res?.data?.message || "Failed To Login.", 5000);
+    if (passwordsMatch) {
+      setNotSamePassword("");
+      const code = localStorage.getItem("employeecode");
+      const resetData = {
+        employeecode: Number(code),
+        password: data?.password,
+      };
+      setLoader(true);
+      const res = await resetPassword({ data: resetData });
+      setLoader(false);
+      if (res.status === true) navigate("/login");
+      else createNotification({ type: "error", message: res?.message || "Failed To Login." });
+    } else {
+      setNotSamePassword("Please Enter Same Passoword");
+    }
   };
 
   const passwordsMatch = useMemo(() => {
@@ -56,36 +64,42 @@ const ResetPassword: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} id="clientForm">
-        <div className={styles.activeTab} style={{ marginBottom: "15px" }}>
-          <h2>Reset Password</h2>
-          <div className={styles.inputContainer}>
-            <Input
-              name="password"
-              type={"password"}
-              register={register}
-              placeholder="Enter Password"
-              errorMessage={errors?.password?.message}
-            />
-            <Input
-              name="password2"
-              type={"password"}
-              register={register}
-              placeholder="Confirm Password"
-              errorMessage={errors?.password?.message}
-            />
-            <div className={styles.btnContainer}>
-              <Button
-                title={"Submit"}
-                type="submit"
-                isLoading={loader}
-                className={styles.btn}
-                disabled={!passwordsMatch}
+      <AuthComponent screenName={"Reset Password"} title="">
+        <form onSubmit={handleSubmit(onSubmit)} id="clientForm">
+          <div className={styles.activeTab}>
+            <div className={styles.inputContainer}>
+              <Input
+                name="password"
+                type={"password"}
+                register={register}
+                placeholder="Enter Password"
+                inputClass={styles.inputClass}
+                errorMessage={errors?.password?.message}
               />
+              <Input
+                name="password2"
+                register={register}
+                inputClass={styles.inputClass}
+                placeholder="Confirm Password"
+                type={isShow ? "text" : "password"}
+                iconClass={styles.iconsClass}
+                icon={isShow ? EyeClose : EyeIcon}
+                onClick={() => setIsShow(!isShow)}
+                errorMessage={errors?.password?.message}
+              />
+              <p className={styles.errormessage}>{notSamePassword}</p>
+              <div className={styles.btnContainer}>
+                <Button
+                  title={"Go Back"}
+                  className={styles.btn2}
+                  handleClick={() => navigate("/login")}
+                />
+                <Button title={"Submit"} type="submit" isLoading={loader} className={styles.btn} />
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </AuthComponent>
     </>
   );
 };

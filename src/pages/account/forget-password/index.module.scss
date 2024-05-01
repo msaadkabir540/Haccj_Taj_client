@@ -64,3 +64,75 @@ p {
     }
   }
 }
+.mainHeading {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 500;
+  margin: 15px;
+  padding: 15px;
+  @media (max-width: 400px) {
+    font-size: 18px !important;
+  }
+}
+
+.optInputField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin: 11px;
+  gap: 10px;
+  div {
+    justify-content: center;
+    gap: 15px;
+    @media (max-width: 400px) {
+      gap: 5px !important;
+      flex-wrap: wrap !important;
+      max-width: 201px !important;
+      min-width: 207px !important;
+    }
+    input {
+      padding: 10px !important;
+      @media (max-width: 400px) {
+        width: 16px !important;
+        height: 16px !important;
+      }
+    }
+  }
+}
+
+.modalWrapper {
+  max-width: 35vw !important;
+  min-height: 22vh !important;
+  background-color: #f6f6f6 !important;
+  @media (max-width: 1000px) {
+    max-width: 100vw !important;
+  }
+}
+
+.otpBtn {
+  border-radius: 23px !important;
+  background-color: #438afe !important;
+  height: 45px;
+  width: 175px;
+  p {
+    color: white !important;
+    font-size: 18px !important;
+    @media (max-width: 400px) {
+      font-size: 12px !important;
+    }
+  }
+  @media (max-width: 400px) {
+    border-radius: 13px !important;
+    background-color: #438afe !important;
+    height: 36px;
+    width: 130px;
+  }
+}
+
+.btnClass {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+}

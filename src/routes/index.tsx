@@ -8,6 +8,12 @@ import ResetPassword from "@/pages/account/reset-password";
 import ForgotPassword from "@/pages/account/forget-password";
 import { isAuthenticated } from "../utils/auth";
 import SignUp from "@/pages/account/sign-up/sign-up";
+import User from "@/pages/user";
+import Temperature from "@/pages/temperature";
+import Treacbility from "@/pages/treacbility";
+import Products from "@/pages/products";
+import CheckList from "@/pages/check-list";
+import Equipment from "@/pages/equipment";
 
 interface PrivateRouteInterface {
   element: React.FC<any>;
@@ -28,17 +34,24 @@ const Routing = ({ setLoading }: { setLoading: any }) => {
       navigator("/login");
     }
     setLoading(false);
-  }, [navigator, setLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Routes>
-      <Route path="/dashboard" element={<PrivateRoute element={Home} />} />
+      <Route path="/" element={<PrivateRoute element={Home} />} />
+      <Route path="/user" element={<PrivateRoute element={User} />} />
+      <Route path="/temperature" element={<PrivateRoute element={Temperature} />} />
+      <Route path="/treacbility" element={<PrivateRoute element={Treacbility} />} />
+      <Route path="/products" element={<PrivateRoute element={Products} />} />
+      <Route path="/checkList" element={<PrivateRoute element={CheckList} />} />
+      <Route path="/equipment" element={<PrivateRoute element={Equipment} />} />
       {/*  not private route */}
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/authentication" element={<Authentication />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/password-reset/:id/:token" element={<ResetPassword />} />
+      <Route path="/password-reset" element={<ResetPassword />} />
     </Routes>
   );
 };

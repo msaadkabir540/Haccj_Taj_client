@@ -1,8 +1,7 @@
 import { UserTableRows, WidgetTableRows, RowsInterface } from "@/interface/tables-interface";
-import { FileType } from "@/pages/media-library/media-library-interface";
 
 interface TableColumnRenderProps {
-  value: string | number | boolean | string[] | FileType[];
+  value: string | number | boolean | string[];
   index: number;
   row: RowsInterface;
   editing: any;
@@ -20,6 +19,7 @@ interface TableColumns {
 interface TableInterface {
   rows: Array<RowsInterface>;
   columns: Array<TableColumns>;
+  tableCustomClass?: string;
   editing?: any;
   actions: (actionValues: { row: RowsInterface; index: number }) => JSX.Element | JSX.Element[];
   isLoading: boolean;

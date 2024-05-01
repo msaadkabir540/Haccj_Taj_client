@@ -1,5 +1,5 @@
 interface ForgotPassWordFormInterface {
-  email: string;
+  employeecode: string;
 }
 
 interface LoginFromInterface {

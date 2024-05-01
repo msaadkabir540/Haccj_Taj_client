@@ -13,6 +13,7 @@ const Modal: React.FC<ModalInterface> = ({
   bodyClass,
   showCross,
   handleClose,
+  handleCross,
   bodyPadding,
   modalWrapper,
   iconClassName,
@@ -37,7 +38,7 @@ const Modal: React.FC<ModalInterface> = ({
                   height={12}
                   style={{ cursor: "pointer" }}
                   src={cross}
-                  onClick={() => handleClose?.()}
+                  onClick={() => handleClose?.() || handleCross?.()}
                   alt="cross"
                 />
               </div>

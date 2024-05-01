@@ -15,18 +15,19 @@ const Table: React.FC<TableInterface> = ({
   columns,
   editing,
   actions,
+  rowStyles,
   isLoading,
   sortColumn,
   handleSort,
   handleRowClick,
-  rowStyles,
+  tableCustomClass,
 }) => {
   return (
     <>
       {!isLoading ? (
         <>
           <div className={style.TBodyCustom}>
-            <table className={style.tableClass}>
+            <table className={`${style.tableClass} ${tableCustomClass}`}>
               <thead>
                 <tr>
                   {columns?.map((column, index) => (
@@ -67,7 +68,7 @@ const Table: React.FC<TableInterface> = ({
                   {rows?.map((row, index) => (
                     <Fragment key={index}>
                       <tr
-                        key={row?._id}
+                        key={row?.id}
                         style={rowStyles ? rowStyles(row) : {}}
                         onClick={(e) => {
                           e.stopPropagation();

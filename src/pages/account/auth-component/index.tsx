@@ -1,11 +1,9 @@
 import React from "react";
 
-import AuthImage from "@/assets/assets/taj mahal logo.png";
-import sideImage from "@/assets/assets/header-image3.jpg";
+import WaysShapes from "./ways-shap";
+import AuthImage from "@/assets/assets/taj-mahal-logo.png";
 
 import styles from "./index.module.scss";
-import WaysShap from "./ways-shap";
-import WaysShapes from "./ways-shap";
 
 const AuthComponent = ({
   children,
@@ -31,13 +29,12 @@ const AuthComponent = ({
               </div>
             </div>
             <div>{children}</div>
-            {/* <div className={styles.triangle_bottom_right}></div> */}
           </div>
         </div>
         <div className={styles.rightContainer}>
           <div className={styles.wave}></div>
           <WaysShapes />
-          {/* <div className={styles.triangle_bottom_left}></div> */}
+
           <div className={styles.logoImage}></div>
         </div>
       </div>

@@ -12,7 +12,12 @@ const Container: React.FC<ContainerInterface> = ({ children, className }) => {
   return (
     <div
       className={`${style.container} ${className} ${
-        pathname === "/play" || pathname.includes("/project") || pathname.includes("/embed")
+        pathname === "/password-reset" ||
+        pathname === "/sign-up" ||
+        pathname === "/forgot-password" ||
+        pathname === "/login" ||
+        pathname.includes("/login") ||
+        pathname.includes("/embed")
           ? style.containerNone
           : ""
       }  `}
