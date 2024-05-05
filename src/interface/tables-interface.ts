@@ -32,6 +32,7 @@ interface RowsInterface {
   id: number;
   employeecode?: number;
   name?: string;
+  employeeName?: string;
   email?: string;
   dob?: string;
   contact_no?: string;
@@ -44,8 +45,16 @@ interface RowsInterface {
   updated_at?: string;
   actions?: any;
   equipment_name?: string;
+  product_type?: string;
   created_by?: number;
+  index?: number;
   temperature_value: string;
+
+  trasability_name?: string;
+  trasability_type?: string;
+  image: string;
+  image_name?: string;
+  created_at?: string;
 }
 
 export { UserTableRows, WidgetTableRows, RowsInterface, WedgetRowInterface };

@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Input from "@/components/input";
 import Table from "@/components/table";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
+import Pagination from "@/components/pagination";
+import createNotification from "@/common/create-notification";
 
 import { addEmployees, getAllEmployees } from "@/api-services/user";
 
@@ -16,8 +18,7 @@ import { Columns } from "./columns";
 import { EmployeeDataInterface, TryNowFormInterface, defaultFormValues } from "./user-interface";
 
 import styles from "./index.module.scss";
-import createNotification from "@/common/create-notification";
-import Pagination from "@/components/pagination";
+import HeadingText from "@/components/heading-text";
 
 const User: React.FC = () => {
   const { register, handleSubmit, reset, control, setValue } = useForm<TryNowFormInterface>({
@@ -62,155 +63,175 @@ const User: React.FC = () => {
     }
   };
 
+  const employeesData = useMemo(() => {
+    return allEmployees?.sort((a, b) => {
+      const dateA = new Date(b.updated_at);
+      const dateB = new Date(a.updated_at);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }, [allEmployees]);
+
   useEffect(() => {
     handleAllEmployee();
   }, [isAdding]);
 
   return (
-    <div className={styles.userContainer}>
-      <div>
-        <div className={styles.btnContainer}>
-          <Button title="Create User" handleClick={() => setIsUser(true)} className={styles.btn} />
-        </div>
-      </div>
-
-      <div className={styles.mainContainer}>
-        <Table
-          rows={allEmployees as EmployeeDataInterface[]}
-          columns={Columns}
-          isLoading={isLoading}
-          tableCustomClass={styles.tableCustomClass}
-          actions={({ row }) => {
-            return (
-              <td className={styles.iconRow} key={row?.id}>
-                <Button
-                  type="button"
-                  icon={editIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-
-                  // handleClick={() => {
-                  //   navigate(`/template/${row?._id}`);
-                  // }}
-                />
-                <Button
-                  type="button"
-                  icon={delIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-                  // isLoading={isDeleting === row?._id}
-                  // handleClick={() => handleDelete(row?._id)}
-                />
-              </td>
-            );
-          }}
-        />
-      </div>
-      <Pagination
-        page={1}
-        pageSize={10}
-        totalCount={20}
-        // control={control}
-        // setValue={setValue}
-        perPageText="Records per page"
-      />
-
-      {isUser && (
-        <Modal
-          open={isUser}
-          showCross={true}
-          handleCross={() => {
-            setIsUser(false);
-          }}
-          className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
-        >
-          <div>
-            <div className={styles.heading}>Add User</div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <div className={styles.inputFieldsContainer}>
-                  <Input
-                    label={"Enter Employee Code *"}
-                    required
-                    name="employeecode"
-                    type="number"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                  <Input
-                    label={"Enter Employee Name *"}
-                    required
-                    name="name"
-                    type="text"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                </div>
-                <div className={styles.inputFieldsContainer}>
-                  <Input
-                    label={"Enter Employee Email *"}
-                    required
-                    name="email"
-                    type="email"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                  <Input
-                    label={"Enter Contact Number *"}
-                    required
-                    name="contact_no"
-                    type="text"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                </div>
-                <div className={styles.inputFieldsContainer}>
-                  <Input
-                    label={"Enter Address *"}
-                    required
-                    name="address"
-                    type="text"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                  <Input
-                    label={"Enter Department *"}
-                    required
-                    name="department"
-                    type="text"
-                    register={register}
-                    className={styles.labelClass}
-                    inputClass={styles.inputClass}
-                  />
-                </div>
-
-                <div className={styles.modalBtnContainer}>
-                  <Button
-                    title="Close "
-                    handleClick={() => {
-                      reset();
-                      setIsUser(false);
-                    }}
-                    className={styles.btn2}
-                  />
-                  <Button
-                    title="Add User"
-                    type="submit"
-                    className={styles.btn}
-                    isLoading={isAddingUser}
-                  />
-                </div>
-              </div>
-            </form>
+    <>
+      <div className={styles.userContainer}>
+        <div>
+          <div className={styles.btnContainer}>
+            <div className={styles.header}>
+              <HeadingText
+                heading={"Employee"}
+                text="There is all employee data of the Taj Mahal Restaurant"
+              />
+            </div>
+            <Button
+              title="Create User"
+              handleClick={() => setIsUser(true)}
+              className={styles.btn}
+            />
           </div>
-        </Modal>
-      )}
-    </div>
+        </div>
+
+        <div className={styles.mainContainer}>
+          <div className={styles.pagination}>
+            <Pagination
+              page={1}
+              pageSize={10}
+              totalCount={20}
+              // control={control}
+              // setValue={setValue}
+              perPageText="Records per page"
+            />
+          </div>
+          <Table
+            rows={employeesData as EmployeeDataInterface[]}
+            columns={Columns}
+            isLoading={isLoading}
+            tableCustomClass={styles.tableCustomClass}
+            actions={({ row }) => {
+              return (
+                <td className={styles.iconRow} key={row?.id}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+
+                    // handleClick={() => {
+                    //   navigate(`/template/${row?._id}`);
+                    // }}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    // isLoading={isDeleting === row?._id}
+                    // handleClick={() => handleDelete(row?._id)}
+                  />
+                </td>
+              );
+            }}
+          />
+        </div>
+
+        {isUser && (
+          <Modal
+            open={isUser}
+            showCross={true}
+            handleCross={() => {
+              setIsUser(false);
+            }}
+            className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
+          >
+            <div>
+              <div className={styles.heading}>Add User</div>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                  <div className={styles.inputFieldsContainer}>
+                    <Input
+                      required
+                      type="number"
+                      name="employeecode"
+                      register={register}
+                      label={"Enter Employee Code *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                    <Input
+                      required
+                      name="name"
+                      type="text"
+                      register={register}
+                      label={"Enter Employee Name *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                  </div>
+                  <div className={styles.inputFieldsContainer}>
+                    <Input
+                      required
+                      name="email"
+                      type="email"
+                      register={register}
+                      label={"Enter Employee Email *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                    <Input
+                      required
+                      type="text"
+                      name="contact_no"
+                      register={register}
+                      label={"Enter Contact Number *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                  </div>
+                  <div className={styles.inputFieldsContainer}>
+                    <Input
+                      type="text"
+                      name="address"
+                      register={register}
+                      label={"Enter Address *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                    <Input
+                      type="text"
+                      name="department"
+                      register={register}
+                      label={"Enter Department *"}
+                      className={styles.labelClass}
+                      inputClass={styles.inputClass}
+                    />
+                  </div>
+
+                  <div className={styles.modalBtnContainer}>
+                    <Button
+                      title="Close "
+                      handleClick={() => {
+                        reset();
+                        setIsUser(false);
+                      }}
+                      className={styles.btn2}
+                    />
+                    <Button
+                      title="Add User"
+                      type="submit"
+                      className={styles.btn}
+                      isLoading={isAddingUser}
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </Modal>
+        )}
+      </div>
+    </>
   );
 };
 export default User;

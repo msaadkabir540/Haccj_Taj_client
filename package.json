@@ -16,6 +16,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-beautiful-dnd": "^13.1.7",
+    "@types/react-datepicker": "^6.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^9.0.7",
     "@uppy/core": "^3.7.1",
@@ -37,6 +38,7 @@
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+    "react-datepicker": "^6.9.0",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-dropdown": "^1.11.0",

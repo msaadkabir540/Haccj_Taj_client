@@ -37,6 +37,19 @@ export const resetPassword = async ({ data }: { data: LoginFromInterface }) => {
     console.error(e);
   }
 };
+//laravel.haccptaj.com/api/validate-employee/123
+export const employeeValidate = async ({ employeecode }: { employeecode: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "get",
+      url: `/validate-employee/${Number(employeecode)}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 export const signUp = async ({ data }: { data: LoginFromInterface }) => {
   try {

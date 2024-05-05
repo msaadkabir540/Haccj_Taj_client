@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Button from "@/components/button";
 
@@ -16,11 +16,19 @@ import Modal from "@/components/modal";
 import Input from "@/components/input";
 import createNotification from "@/common/create-notification";
 import Pagination from "@/components/pagination";
+import HeadingText from "@/components/heading-text";
+import { useForm } from "react-hook-form";
+import MultiSelectBox from "@/components/multi-select-box";
+import Selection from "@/components/selection";
+import ReactDatePicker from "react-datepicker";
+import DatePicker from "@/components/date-picker";
 
 const Equipment = () => {
+  const { control } = useForm();
   const [isAdd, setIsAdd] = useState<number>(0);
   const [error, setError] = useState<string>("");
   const [value, setValue] = useState<string>("");
+  const [startDate, setStartDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -67,6 +75,18 @@ const Equipment = () => {
     }
   };
 
+  const equipmentData = useMemo(() => {
+    return getEquipment?.sort((a, b) => {
+      const dateA = new Date(b.updated_at);
+      const dateB = new Date(a.updated_at);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }, [getEquipment]);
+
+  const handleChange = ({ date }: { date: any }) => {
+    setStartDate(date);
+  };
+
   useEffect(() => {
     handleGetEquipment();
   }, [isAdd]);
@@ -75,17 +95,67 @@ const Equipment = () => {
     <div className={styles.userContainer}>
       <div>
         <div className={styles.btnContainer}>
-          <Button
-            title="Add Equipment"
-            handleClick={() => setIsOpen(true)}
-            className={styles.btn}
-          />
+          <div className={styles.header}>
+            <HeadingText heading="Equipment" text="Equipment demo passage of here" />
+          </div>
+          <div>
+            <Button
+              title="Add Equipment"
+              handleClick={() => setIsOpen(true)}
+              className={styles.btn}
+            />
+          </div>
         </div>
       </div>
 
       <div className={styles.mainContainer}>
+        <div className={styles.selectionList}>
+          <div className={styles.selectionsContainer}>
+            <Selection
+              label="Equipment Name"
+              isMulti={false}
+              name="name"
+              options={SelectOption}
+              control={control}
+              singleValueMaxWidth={"120px"}
+              singleValueMinWidth="200px"
+              customWidth="200px"
+            />
+            <Selection
+              label="Employee "
+              isMulti={false}
+              name="name"
+              options={SelectOption}
+              control={control}
+              singleValueMaxWidth={"120px"}
+              singleValueMinWidth="200px"
+              customWidth="200px"
+            />
+            <div>
+              {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
+              {/* <label htmlFor="">From Date</label>
+            <ReactDatePicker
+              showIcon
+              timeInputLabel="Time:"
+              name="From date"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+            /> */}
+            </div>
+          </div>
+          <div className={styles.pagination}>
+            <Pagination
+              page={1}
+              pageSize={10}
+              totalCount={20}
+              // control={control}
+              // setValue={setValue}
+              perPageText="Records per page"
+            />
+          </div>
+        </div>
         <Table
-          rows={getEquipment as EquipmentsInterface[]}
+          rows={equipmentData as EquipmentsInterface[]}
           columns={Columns}
           isLoading={isLoading}
           actions={({ row }) => {
@@ -112,14 +182,6 @@ const Equipment = () => {
               </td>
             );
           }}
-        />
-        <Pagination
-          page={1}
-          pageSize={10}
-          totalCount={20}
-          // control={control}
-          // setValue={setValue}
-          perPageText="Records per page"
         />
       </div>
 
@@ -174,3 +236,5 @@ const Equipment = () => {
   );
 };
 export default Equipment;
+
+const SelectOption = [{ value: "name", label: "name" }];

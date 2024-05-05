@@ -1,3 +1,6 @@
+.loading {
+  margin: 25px 0px;
+}
 .userContainer {
   margin: 25px 10px;
   .btnContainer {
@@ -90,8 +93,8 @@
 
 .iconRow {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  // justify-content: center;
+  // align-items: center;
 
   .iconsBtn {
     background: transparent !important;
@@ -106,5 +109,29 @@
       align-items: center !important;
       justify-content: center !important;
     }
+  }
+}
+
+.pagination {
+  margin: 10px;
+}
+
+.selectionList {
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .selectionsContainer {
+    display: flex;
+    .selectionContainer {
+      display: flex;
+      align-items: flex-end;
+      .selections {
+        position: relative;
+      }
+    }
+  }
+  .pagination {
+    margin: 10px;
   }
 }

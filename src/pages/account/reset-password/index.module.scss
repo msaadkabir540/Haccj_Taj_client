@@ -15,15 +15,13 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
+  input {
+    padding: 14px 0px 15px 13px !important;
+  }
 }
-
 .inputClass {
   width: 97% !important;
   border-radius: 23px !important;
-}
-
-input {
-  padding: 14px 0px 15px 13px !important;
 }
 h2 {
   margin: 5px;

@@ -216,3 +216,7 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0; /* Optional - if you want to remove the margin */
 }
+
+.react-datepicker-popper {
+  z-index: 99 !important;
+}

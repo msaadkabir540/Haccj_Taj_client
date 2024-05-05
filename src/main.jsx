@@ -9,6 +9,7 @@ import { store } from "./store";
 import "./index.scss";
 
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

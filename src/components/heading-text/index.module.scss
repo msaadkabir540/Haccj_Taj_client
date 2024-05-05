@@ -1,0 +1,36 @@
+.header {
+  margin: 15px 0px;
+  .heading {
+    font-size: 30px;
+    font-weight: 800;
+  }
+  .text {
+    position: relative;
+    overflow: hidden;
+    display: inline-block; /* Ensure the div only takes the width of its content */
+
+    color: rgb(31, 31, 31);
+    padding: 15px 0px;
+    padding-bottom: 10px; /* Adjust the padding as needed */
+    margin-bottom: 10px;
+  }
+
+  .line {
+    position: absolute;
+    bottom: 0;
+    right: 100%;
+    width: 100%; /* Set the width of the line to be the same as the text */
+    height: 2px;
+    background-color: #438afe; /* Adjust the color as needed */
+    animation: loadLine 1s forwards;
+  }
+
+  @keyframes loadLine {
+    from {
+      right: 100%;
+    }
+    to {
+      right: 0;
+    }
+  }
+}

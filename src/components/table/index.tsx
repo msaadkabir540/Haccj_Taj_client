@@ -97,7 +97,7 @@ const Table: React.FC<TableInterface> = ({
               )}
             </table>
           </div>
-          {rows?.length === 0 && (
+          {(rows?.length === 0 || rows === undefined || null) && (
             <div className={style.flex}>
               <h5 style={{ textAlign: "center", width: "100%" }}>No Data</h5>
             </div>

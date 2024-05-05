@@ -11,44 +11,71 @@ import { LoginFromInterface } from "@/interface/index";
 
 import styles from "./index.module.scss";
 import AuthComponent from "../auth-component";
-import { signUp } from "@/api-services/auth";
+import { employeeValidate, signUp } from "@/api-services/auth";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isValidate, setIsVaildate] = useState<boolean>(false);
 
   const {
     watch,
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFromInterface>({
     defaultValues: {
+      name: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: any) => {
-    // setIsLoading(true);
-    createNotification({ type: "info", message: "Coming Soon" });
-    // const res = await signUp({ data });
-    // if (res.status === true) {
-    //   setIsLoading(false);
-    //   navigate("/dashboard");
-    // } else {
-    //   setIsLoading(false);
-    //   createNotification({
-    //     type: "error",
-    //     message: res?.message || "Failed To Login.",
-    //   });
-    // }
+  const handleValidation = async () => {
+    setIsLoading(true);
+    const employeeCode = watch("employeecode");
+    const res = await employeeValidate({ employeecode: employeeCode });
+    if (res.status === true) {
+      setIsLoading(false);
+      setIsVaildate(true);
+
+      setValue?.("employeecode", res?.employee?.[0]?.employeecode);
+      setValue?.("name", res?.employee?.[0]?.name);
+      // navigate("/login");
+    } else {
+      setIsVaildate(false);
+      setIsLoading(false);
+      createNotification({
+        type: "error",
+        message: res?.message || "Failed To Login.",
+      });
+    }
+  };
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+    const data = {
+      employeecode: watch("employeecode"),
+      password: watch("password"),
+    };
+    const res = await signUp({ data });
+    if (res.status === true) {
+      setIsLoading(false);
+      navigate("/login");
+    } else {
+      setIsLoading(false);
+      createNotification({
+        type: "error",
+        message: res?.message || "Failed To Login.",
+      });
+    }
   };
 
   return (
     <>
       <AuthComponent screenName={"Create Your Account"} title="Sign up to get your account">
-        <form onSubmit={handleSubmit(onSubmit)} id="clientForm">
+        <form id="clientForm">
           <div className={styles.activeTab}>
             <div className={styles.inputContainer}>
               <Input
@@ -59,21 +86,36 @@ const SignUp: React.FC = () => {
                 placeholder="Enter Your Employee Code"
                 errorMessage={errors?.employeecode?.message}
               />
-              <Input
-                inputClass={styles.inputClass}
-                name="password"
-                type={"password"}
-                register={register}
-                placeholder="Enter Password"
-                errorMessage={errors?.password?.message}
-              />
+              {isValidate && (
+                <>
+                  <Input
+                    isDisable={true}
+                    inputClass={styles.inputClass}
+                    type="text"
+                    name="name"
+                    register={register}
+                    placeholder="Enter Your Employee Code"
+                    errorMessage={errors?.employeecode?.message}
+                  />
+                  <Input
+                    inputClass={styles.inputClass}
+                    name="password"
+                    type={"password"}
+                    register={register}
+                    placeholder="Enter Password"
+                    errorMessage={errors?.password?.message}
+                  />
+                </>
+              )}
               <div className={styles.btnContainer}>
                 <Button
                   title={"Sign Up"}
-                  type="submit"
                   loaderClass={styles.loaderClass}
                   className={styles.btn}
                   isLoading={isLoading}
+                  handleClick={() => {
+                    !isValidate ? handleValidation() : onSubmit();
+                  }}
                   // disabled={!watch("employeecode") || !watch("password")}
                 />
 

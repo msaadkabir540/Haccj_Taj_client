@@ -3,6 +3,7 @@ interface ForgotPassWordFormInterface {
 }
 
 interface LoginFromInterface {
+  name?: string;
   employeecode: number;
   password: string;
 }

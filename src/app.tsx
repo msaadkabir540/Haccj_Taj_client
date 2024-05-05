@@ -15,6 +15,8 @@ import logo from "@/assets/assets/taj mahal logo.png";
 
 import style from "./app.module.scss";
 import "./app.module.scss";
+import Navbars from "./components/navbars";
+import { ContextCollection } from "./context/context-collection";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,10 +51,13 @@ const Dashboard = () => {
       ) : (
         <div className="App">
           <BrowserRouter>
-            <Navbar />
-            <Container>
-              <Routing setLoading={setLoading} />
-            </Container>
+            <ContextCollection>
+              <Navbars />
+
+              <Container>
+                <Routing setLoading={setLoading} />
+              </Container>
+            </ContextCollection>
           </BrowserRouter>
         </div>
       )}

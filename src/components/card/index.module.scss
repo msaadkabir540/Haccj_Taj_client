@@ -50,30 +50,30 @@ $flag: "#{$host}flag.png";
   height: $height;
 }
 
-a[href] {
-  position: relative;
-  &,
-  &:link,
-  &:visited,
-  &:active {
-    text-decoration: none;
-    color: lighten($maroon-flush, 5);
-    text-shadow: 2px 2px 2px darken($big-stone, 10);
-    padding-bottom: 3px;
-    font-weight: bold;
-  }
-  &::after {
-    content: "";
-    @include pos(absolute, $left: 0, $bottom: 0);
-    background: $white;
-    @include size(0, 1px);
-    transition: 0.35s $transition;
-  }
-  &:hover::after {
-    width: 100%;
-    box-shadow: $box-shadow;
-  }
-}
+// a[href] {
+//   position: relative;
+//   &,
+//   &:link,
+//   &:visited,
+//   &:active {
+//     text-decoration: none;
+//     color: lighten($maroon-flush, 5);
+//     text-shadow: 2px 2px 2px darken($big-stone, 10);
+//     padding-bottom: 3px;
+//     font-weight: bold;
+//   }
+//   &::after {
+//     content: "";
+//     @include pos(absolute, $left: 0, $bottom: 0);
+//     background: $white;
+//     @include size(0, 1px);
+//     transition: 0.35s $transition;
+//   }
+//   &:hover::after {
+//     width: 100%;
+//     box-shadow: $box-shadow;
+//   }
+// }
 
 article.card {
   @include size($card-width, $card-height);
@@ -84,6 +84,9 @@ article.card {
   @media (max-width: 500px) {
     @include size($card-width-sm, $card-height-sm);
   }
+  @media (max-height: 800px) {
+    height: 300px;
+  }
   .thumb {
     display: flex;
     justify-content: center;
@@ -92,6 +95,9 @@ article.card {
     background: linear-gradient(to right, #3781fa, #becefc, #a2c6fe);
     background-size: cover;
     border-radius: $border-radius;
+    @media (max-height: 800px) {
+      height: 220px;
+    }
     img {
       width: 100px;
     }
@@ -111,6 +117,9 @@ article.card {
       font-size: 1rem;
       text-transform: uppercase;
       text-shadow: 0 0 0px lighten($big-stone, 20);
+      @media (max-height: 800px) {
+        font-size: 14px;
+      }
     }
     .flag {
       @include pos(absolute, $top: 50%, $right: 0);

@@ -84,19 +84,17 @@ const Login: React.FC = () => {
               />
               <div className={styles.btnContainer}>
                 <Button
-                  title={"Sign Up"}
-                  type="submit"
-                  // loaderClass={styles.loaderClass}
-                  className={styles.btn3}
-                  handleClick={() => navigate("/sign-up")}
-                />
-                <Button
                   title={"Login"}
                   type="submit"
                   loaderClass={styles.loaderClass}
                   className={styles.btn}
                   isLoading={isLoading}
-                  // disabled={!watch("employeecode") || !watch("password")}
+                />
+                <Button
+                  title={"Sign Up"}
+                  type="submit"
+                  className={styles.btn3}
+                  handleClick={() => navigate("/sign-up")}
                 />
 
                 <div
