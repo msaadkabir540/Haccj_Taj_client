@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
+import Modal from "@/components/modal";
 import Table from "@/components/table";
 import Button from "@/components/button";
 import Selection from "@/components/selection";
+import Pagination from "@/components/pagination";
+import DatePicker from "@/components/date-picker";
 import HeadingText from "@/components/heading-text";
 
 import { useClients } from "@/context/context-collection";
@@ -16,13 +19,15 @@ import editIcon from "@/assets/edit.svg";
 import filter from "@/assets/assets/filter.png";
 import delIcon from "@/assets/del-icon.svg";
 
-import styles from "./index.module.scss";
 import { OptionType } from "@/components/selection/selection-interface";
-import Modal from "@/components/modal";
+
+import styles from "./index.module.scss";
 
 const Treacbility: React.FC = () => {
-  const { control, register, watch, setValue } = useForm();
+  const { control, watch } = useForm();
   const [getTreacbility, setGetTreacbility] = useState();
+  const [startDate, setStartDate] = useState<Date | null>();
+  const [startDateTo, setStartDateTo] = useState<Date | null>();
   const [imageModal, setImageModal] = useState<{ url: string; isOpenImageModal: boolean }>({
     url: "",
     isOpenImageModal: false,
@@ -46,6 +51,14 @@ const Treacbility: React.FC = () => {
     }
   };
 
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
+  };
+
+  const handleStartDateChangeTo = (date: Date | null) => {
+    setStartDateTo(date);
+  };
+
   useEffect(() => {
     handleGetTreacbility({ employeeCode: Number(watch("employeeCode")?.value) });
   }, [watch("employeeCode")?.value]);
@@ -56,10 +69,10 @@ const Treacbility: React.FC = () => {
 
   return (
     <>
-      <div className={styles.header}>
-        <HeadingText heading="Treacbility" text="Treacbility data here" />
-      </div>
       <div className={styles.mainContainer}>
+        <div className={styles.header}>
+          <HeadingText heading="Treacbility" text="Treacbility data here" />
+        </div>
         <div className={styles.selectionList}>
           <div className={styles.selectionsContainer}>
             <div className={styles.selectionContainer}>
@@ -81,26 +94,29 @@ const Treacbility: React.FC = () => {
             </div>
 
             <div>
-              {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
-              {/* <label htmlFor="">From Date</label>
-            <ReactDatePicker
-              showIcon
-              timeInputLabel="Time:"
-              name="From date"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            /> */}
+              <DatePicker
+                label={"From"}
+                startDate={startDate}
+                handleChange={handleStartDateChange} // Pass the function to update startDate
+              />
+            </div>
+            <div>
+              <DatePicker
+                label={"To"}
+                startDate={startDateTo}
+                handleChange={handleStartDateChangeTo} // Pass the function to update startDate
+              />
             </div>
           </div>
           <div className={styles.pagination}>
-            {/* <Pagination
+            <Pagination
               page={1}
               pageSize={10}
               totalCount={20}
               // control={control}
               // setValue={setValue}
               perPageText="Records per page"
-            /> */}
+            />
           </div>
         </div>
         <Table
@@ -109,25 +125,21 @@ const Treacbility: React.FC = () => {
           isLoading={isLoading}
           actions={({ row }) => {
             return (
-              <td className={styles.iconRow} key={row?.id}>
-                <Button
-                  type="button"
-                  icon={editIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-
-                  // handleClick={() => {
-                  //   navigate(`/template/${row?._id}`);
-                  // }}
-                />
-                <Button
-                  type="button"
-                  icon={delIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-                  // isLoading={isDeleting === row?._id}
-                  // handleClick={() => handleDelete(row?._id)}
-                />
+              <td key={row?.id}>
+                <div className={styles.iconRow}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                </div>
               </td>
             );
           }}

@@ -1,15 +1,14 @@
-.header {
-  margin: 15px 0px;
-  .text {
-    padding: 15px 0px;
-  }
-}
-
 .mainContainer {
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  margin-top: 25px;
+  margin: 25px 10px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 7px 9px 0px #1a92ff70;
+  .header {
+    .text {
+      padding: 15px 0px;
+    }
+  }
   .selectionList {
     margin-bottom: 5px;
     display: flex;
@@ -17,6 +16,7 @@
     align-items: center;
     .selectionsContainer {
       display: flex;
+      gap: 15px;
       .selectionContainer {
         display: flex;
         align-items: flex-end;
@@ -112,10 +112,11 @@
     border: none !important;
     padding: 0px !important;
     margin: 0px !important;
+    padding: 19px 15px 15px 20px !important;
     max-width: 30px !important;
     &:hover {
+      max-width: 30px !important;
       background: #e0e0e0 !important;
-      padding: 19px 15px 15px 20px !important;
       border-radius: 26px !important;
       align-items: center !important;
       justify-content: center !important;

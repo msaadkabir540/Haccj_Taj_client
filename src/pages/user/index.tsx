@@ -19,6 +19,7 @@ import { EmployeeDataInterface, TryNowFormInterface, defaultFormValues } from ".
 
 import styles from "./index.module.scss";
 import HeadingText from "@/components/heading-text";
+import Paginations from "@/components/paginations";
 
 const User: React.FC = () => {
   const { register, handleSubmit, reset, control, setValue } = useForm<TryNowFormInterface>({
@@ -78,23 +79,48 @@ const User: React.FC = () => {
   return (
     <>
       <div className={styles.userContainer}>
-        <div>
-          <div className={styles.btnContainer}>
-            <div className={styles.header}>
-              <HeadingText
-                heading={"Employee"}
-                text="There is all employee data of the Taj Mahal Restaurant"
+        <div className={styles.mainContainer}>
+          <div>
+            <div className={styles.btnContainer}>
+              <div className={styles.header}>
+                <HeadingText
+                  heading={"Employee"}
+                  text="There is all employee data of the Taj Mahal Restaurant"
+                />
+              </div>
+              <Button
+                title="Create User"
+                handleClick={() => setIsUser(true)}
+                className={styles.btn}
               />
             </div>
-            <Button
-              title="Create User"
-              handleClick={() => setIsUser(true)}
-              className={styles.btn}
-            />
           </div>
-        </div>
-
-        <div className={styles.mainContainer}>
+          <Table
+            rows={employeesData as EmployeeDataInterface[]}
+            columns={Columns}
+            isLoading={isLoading}
+            tableCustomClass={styles.tableCustomClass}
+            actions={({ row }) => {
+              return (
+                <td key={row?.id}>
+                  <div className={styles.iconRow}>
+                    <Button
+                      type="button"
+                      icon={editIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                    <Button
+                      type="button"
+                      icon={delIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                  </div>
+                </td>
+              );
+            }}
+          />
           <div className={styles.pagination}>
             <Pagination
               page={1}
@@ -105,36 +131,6 @@ const User: React.FC = () => {
               perPageText="Records per page"
             />
           </div>
-          <Table
-            rows={employeesData as EmployeeDataInterface[]}
-            columns={Columns}
-            isLoading={isLoading}
-            tableCustomClass={styles.tableCustomClass}
-            actions={({ row }) => {
-              return (
-                <td className={styles.iconRow} key={row?.id}>
-                  <Button
-                    type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-
-                    // handleClick={() => {
-                    //   navigate(`/template/${row?._id}`);
-                    // }}
-                  />
-                  <Button
-                    type="button"
-                    icon={delIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                    // isLoading={isDeleting === row?._id}
-                    // handleClick={() => handleDelete(row?._id)}
-                  />
-                </td>
-              );
-            }}
-          />
         </div>
 
         {isUser && (
@@ -147,7 +143,7 @@ const User: React.FC = () => {
             className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
           >
             <div>
-              <div className={styles.heading}>Add User</div>
+              <div className={styles.heading}>Add Employee</div>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <div className={styles.inputFieldsContainer}>

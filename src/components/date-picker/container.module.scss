@@ -1,28 +1,44 @@
-@use "@/style/colors";
-@use "@/style/breakpoints";
-@import "@/style/mixin";
-
-.container {
-  max-width: 1520px;
-  margin: 0 auto;
-  padding: 0;
-  position: relative;
-  @media (max-height: 800px) {
-    max-width: 1250px;
-  }
-
-  @media (max-width: breakpoints.$tab) {
-    padding: 0 30px;
-  }
-  @media (max-width: breakpoints.$xs) {
-    padding: 0 10px;
-  }
-  @media (max-width: 380px) {
-    padding: 0 7px;
+.dateContainer {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  .labels {
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 400;
   }
 }
 
-.containerNone {
-  padding: 0px !important;
-  max-width: 100% !important;
+.react-datepicker__input-container {
+  height: 40px !important;
+}
+.react-datepicker-wrapper {
+  height: 40px !important;
+  height: 40px !important;
+  // input {
+  //   background: transparent !important;
+  //   border: 1px solid #c0c0c0 !important;
+  // }
+}
+
+.react-datepicker__input-container {
+  input {
+    display: block;
+    width: 100%;
+    background-color: black !important;
+  }
+}
+
+.datePicker {
+  padding: 15px;
+  height: 25.5px !important;
+  background: transparent !important;
+  border: 1px solid #c0c0c0;
+  .react-datepicker__calendar-icon {
+    padding: 20px !important;
+  }
+}
+
+.react-datepicker__calendar-icon {
+  height: 100px !important;
 }

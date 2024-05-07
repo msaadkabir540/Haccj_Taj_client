@@ -97,16 +97,46 @@ const Products: React.FC = () => {
 
   return (
     <div className={styles.userContainer}>
-      <div>
-        <div className={styles.btnContainer}>
-          <div className={styles.header}>
-            <HeadingText heading={"Product Type"} text="This is Product Type Data" />
-          </div>
-          <Button title="Add Product" handleClick={() => setIsUser(true)} className={styles.btn} />
-        </div>
-      </div>
-
       <div className={styles.mainContainer}>
+        <div>
+          <div className={styles.btnContainer}>
+            <div className={styles.header}>
+              <HeadingText heading={"Product Type"} text="This is Product Type Data" />
+            </div>
+            <Button
+              title="Add Product"
+              handleClick={() => setIsUser(true)}
+              className={styles.btn}
+            />
+          </div>
+        </div>
+
+        <Table
+          rows={allProducts as EmployeeDataInterface[]}
+          columns={Columns}
+          isLoading={isLoading}
+          tableCustomClass={styles.tableCustomClass}
+          actions={({ row }) => {
+            return (
+              <td key={row?.id}>
+                <div className={styles.iconRow}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                </div>
+              </td>
+            );
+          }}
+        />
         <div className={styles.pagination}>
           <Pagination
             page={1}
@@ -117,36 +147,6 @@ const Products: React.FC = () => {
             perPageText="Records per page"
           />
         </div>
-        <Table
-          rows={allProducts as EmployeeDataInterface[]}
-          columns={Columns}
-          isLoading={isLoading}
-          tableCustomClass={styles.tableCustomClass}
-          actions={({ row }) => {
-            return (
-              <td className={styles.iconRow} key={row?.id}>
-                <Button
-                  type="button"
-                  icon={editIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-
-                  // handleClick={() => {
-                  //   navigate(`/template/${row?._id}`);
-                  // }}
-                />
-                <Button
-                  type="button"
-                  icon={delIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-                  // isLoading={isDeleting === row?._id}
-                  // handleClick={() => handleDelete(row?._id)}
-                />
-              </td>
-            );
-          }}
-        />
       </div>
 
       {isUser && (
@@ -159,7 +159,7 @@ const Products: React.FC = () => {
           className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
         >
           <div>
-            <div className={styles.heading}>Add User</div>
+            <div className={styles.heading}>Add Product</div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <div className={styles.inputFieldsContainer}>

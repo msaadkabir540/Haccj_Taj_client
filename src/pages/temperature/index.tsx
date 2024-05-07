@@ -21,10 +21,14 @@ import HeadingText from "@/components/heading-text";
 import Selection from "@/components/selection";
 import { useClients } from "@/context/context-collection";
 import { OptionType } from "@/components/selection/selection-interface";
+import DatePicker from "@/components/date-picker";
 
 const Temperature: React.FC = () => {
   const { control, watch } = useForm();
+
+  const [startDate, setStartDate] = useState<Date | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [startDateTo, setStartDateTo] = useState<Date | null>();
   const [getTemperature, setGetTemperature] = useState<TemperatureInterface[]>();
 
   const context = useClients();
@@ -55,6 +59,14 @@ const Temperature: React.FC = () => {
     });
   }, [getTemperature]);
 
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
+  };
+
+  const handleStartDateChangeTo = (date: Date | null) => {
+    setStartDateTo(date);
+  };
+
   useEffect(() => {
     handleGetTemperature({ employeeCode: watch("employeeCode")?.value });
   }, [watch("employeeCode")]);
@@ -82,20 +94,50 @@ const Temperature: React.FC = () => {
                   customWidth="200px"
                 />
               </div>
-            </div>
 
-            <div>
-              {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
-              {/* <label htmlFor="">From Date</label>
-            <ReactDatePicker
-              showIcon
-              timeInputLabel="Time:"
-              name="From date"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            /> */}
+              <div>
+                <DatePicker
+                  label={"From"}
+                  startDate={startDate}
+                  handleChange={handleStartDateChange} // Pass the function to update startDate
+                />
+              </div>
+              <div>
+                <DatePicker
+                  label={"To"}
+                  startDate={startDateTo}
+                  handleChange={handleStartDateChangeTo} // Pass the function to update startDate
+                />
+              </div>
             </div>
           </div>
+        </div>
+        <div className={styles.pagination}>
+          <Table
+            rows={getTemperatureData as TemperatureInterface[]}
+            columns={Columns}
+            isLoading={isLoading}
+            actions={({ row }) => {
+              return (
+                <td key={row?.id}>
+                  <div className={styles.iconRow}>
+                    <Button
+                      type="button"
+                      icon={editIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                    <Button
+                      type="button"
+                      icon={delIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                  </div>
+                </td>
+              );
+            }}
+          />
           <div className={styles.pagination}>
             <Pagination
               page={1}
@@ -106,37 +148,6 @@ const Temperature: React.FC = () => {
               perPageText="Records per page"
             />
           </div>
-        </div>
-        <div className={styles.pagination}>
-          <Table
-            rows={getTemperatureData as TemperatureInterface[]}
-            columns={Columns}
-            isLoading={isLoading}
-            actions={({ row }) => {
-              return (
-                <td className={styles.iconRow} key={row?.id}>
-                  <Button
-                    type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-
-                    // handleClick={() => {
-                    //   navigate(`/template/${row?._id}`);
-                    // }}
-                  />
-                  <Button
-                    type="button"
-                    icon={delIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                    // isLoading={isDeleting === row?._id}
-                    // handleClick={() => handleDelete(row?._id)}
-                  />
-                </td>
-              );
-            }}
-          />
         </div>
       </div>
     </>

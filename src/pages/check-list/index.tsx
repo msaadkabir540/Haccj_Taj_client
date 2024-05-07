@@ -181,7 +181,7 @@ const CheckList = () => {
           className={`${styles.modalWrapper}`}
         >
           <div>
-            <div className={styles.heading}>Add Equipment</div>
+            <div className={styles.heading}>Add Check List</div>
             <form>
               <div>
                 <div className={styles.inputFieldsContainer}>
@@ -190,7 +190,7 @@ const CheckList = () => {
                     name="employee"
                     isDisable={true}
                     value={employeeName}
-                    label={"Enter Employee *"}
+                    label={"Enter Employee"}
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />
@@ -199,7 +199,7 @@ const CheckList = () => {
                     type="text"
                     name="task"
                     register={register}
-                    label={"Enter Task *"}
+                    label={"Enter Task"}
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />
@@ -210,13 +210,13 @@ const CheckList = () => {
                     type="text"
                     name="message"
                     register={register}
-                    label={"Enter Message *"}
+                    label={"Enter Message"}
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />
                   <div className={styles.Selections}>
                     <Selection
-                      label="Employee "
+                      label="Employee"
                       isMulti={false}
                       name="assignTo"
                       control={control}
@@ -235,10 +235,10 @@ const CheckList = () => {
                     className={styles.btn2}
                   />
                   <Button
-                    title="Add User"
-                    handleClick={() => handleAddCheckList()}
-                    className={styles.btn}
+                    title="Add Check List"
                     isLoading={isLoading}
+                    className={styles.btn}
+                    handleClick={() => handleAddCheckList()}
                   />
                 </div>
               </div>

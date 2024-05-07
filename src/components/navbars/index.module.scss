@@ -25,25 +25,13 @@
         cursor: pointer;
         color: #438afe;
         text-decoration: none;
+        background: linear-gradient(to right, transparent 50%, #438afe 50%);
+        background-size: 200% 100%;
+        transition: background-position 0.5s ease;
 
-        @media (max-height: 770px) {
-          padding: 5px;
-        }
-        &::after {
-          content: "";
-          position: absolute;
-          width: 100%;
-          height: 0.17rem;
-          background-color: #438afe;
-          left: 0;
-          bottom: 0;
-          transform-origin: 0% 100%;
-          transform: scaleX(0);
-          transition: transform 1s ease;
-        }
-
-        &:hover::after {
-          transform: scaleX(1); // Change scaleX to 1 on hover
+        &:hover {
+          background-position: -100% 0; /* Move background from left to right */
+          color: #ffffff;
         }
       }
     }

@@ -95,13 +95,13 @@ const Table: React.FC<TableInterface> = ({
                   ))}
                 </tbody>
               )}
+              {(rows?.length === 0 || rows === undefined || null) && (
+                <div className={style.flex}>
+                  <h5 style={{ textAlign: "center", width: "100%" }}>No Data</h5>
+                </div>
+              )}
             </table>
           </div>
-          {(rows?.length === 0 || rows === undefined || null) && (
-            <div className={style.flex}>
-              <h5 style={{ textAlign: "center", width: "100%" }}>No Data</h5>
-            </div>
-          )}
         </>
       ) : (
         <Loading pageLoader={true} loaderClass={style.loaderClass} diffHeight={600} />

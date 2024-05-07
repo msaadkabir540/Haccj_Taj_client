@@ -74,12 +74,7 @@ const Navbars = () => {
             </svg>
           </div>
         </div>
-        {/* <div className={styles.navButton}>
-          <div className={styles.animLayer}></div>
-          <Link to={"javascript:void(0)"}>
-            <div onClick={() => handleLogout()}>Log out</div>
-          </Link>
-        </div> */}
+
         <div className={styles.hamburgerMenu} onClick={toggleMobileMenu}>
           &#9776;
         </div>

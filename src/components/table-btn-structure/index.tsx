@@ -91,25 +91,21 @@ const tableBtnStructure = ({
           isLoading={isTableLoading}
           actions={({ row }) => {
             return (
-              <td className={styles.iconRow} key={row?.id}>
-                <Button
-                  type="button"
-                  icon={editIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-
-                  // handleClick={() => {
-                  //   navigate(`/template/${row?._id}`);
-                  // }}
-                />
-                <Button
-                  type="button"
-                  icon={delIcon}
-                  className={styles.iconsBtn}
-                  loaderClass={styles.loading}
-                  // isLoading={isDeleting === row?._id}
-                  // handleClick={() => handleDelete(row?._id)}
-                />
+              <td key={row?.id}>
+                <div className={styles.iconRow}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                  />
+                </div>
               </td>
             );
           }}
