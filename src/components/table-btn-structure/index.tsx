@@ -1,7 +1,8 @@
-import { useState } from "react";
-
 import Table from "../table";
+import Modal from "../modal";
+import Input from "../input";
 import Selection from "../selection";
+import Pagination from "../pagination";
 import Button from "@/components/button";
 import HeadingText from "@/components/heading-text";
 
@@ -11,69 +12,76 @@ import delIcon from "@/assets/del-icon.svg";
 import { InterfaceComponent } from "./interface-component";
 
 import styles from "./index.module.scss";
-import Pagination from "../pagination";
 
-const tableBtnStructure = ({
+const TableBtnStructure = ({
+  isDate,
   control,
   rowData,
-  Columns,
+  isCreate,
+  isFilter,
+  ColumnsData,
+  headingText,
   SelectOption,
+  headerPassage,
+  isFilterValid,
   isTableLoading,
+  handleFilterOpen,
+  handleOpenCreate,
+  handleApplyFilter,
 }: InterfaceComponent) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
-    <div className={styles.userContainer}>
-      <div>
+    <>
+      <div className={styles.userContainer}>
         <div className={styles.btnContainer}>
           <div className={styles.header}>
-            <HeadingText heading="Check List" text="Check List demo passage of here" />
+            <HeadingText heading={headingText} text={headerPassage} />
           </div>
-          <div>
-            <Button
-              title="Add Check List"
-              handleClick={() => setIsOpen(true)}
-              className={styles.btn}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={styles.mainContainer}>
-        <div className={styles.selectionList}>
-          <div className={styles.selectionsContainer}>
-            <Selection
-              label="Equipment Name"
-              isMulti={false}
-              name="name"
-              options={SelectOption}
-              control={control}
-              singleValueMaxWidth={"120px"}
-              singleValueMinWidth="200px"
-              customWidth="200px"
-            />
-            <Selection
-              label="Employee "
-              isMulti={false}
-              name="name"
-              options={SelectOption}
-              control={control}
-              singleValueMaxWidth={"120px"}
-              singleValueMinWidth="200px"
-              customWidth="200px"
-            />
+          {isCreate && (
             <div>
-              {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
-              {/* <label htmlFor="">From Date</label>
-            <ReactDatePicker
-              showIcon
-              timeInputLabel="Time:"
-              name="From date"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            /> */}
+              <Button
+                title={`Add ${headingText}`}
+                handleClick={handleOpenCreate}
+                className={styles.btn}
+              />
             </div>
+          )}
+        </div>
+
+        {isFilterValid && (
+          <div className={styles.btnBox}>
+            <Button
+              title="Filter"
+              handleClick={() => handleFilterOpen?.(true)}
+              className={styles.filterButton}
+            />
           </div>
+        )}
+        <div className={styles.mainContainer}>
+          <Table
+            rows={rowData}
+            columns={ColumnsData}
+            isLoading={isTableLoading}
+            actions={({ row }) => {
+              return (
+                <td key={row?.id}>
+                  <div className={styles.iconRow}>
+                    <Button
+                      type="button"
+                      icon={editIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                    <Button
+                      type="button"
+                      icon={delIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                    />
+                  </div>
+                </td>
+              );
+            }}
+          />
           <div className={styles.pagination}>
             <Pagination
               page={1}
@@ -85,33 +93,73 @@ const tableBtnStructure = ({
             />
           </div>
         </div>
-        <Table
-          rows={rowData}
-          columns={Columns}
-          isLoading={isTableLoading}
-          actions={({ row }) => {
-            return (
-              <td key={row?.id}>
-                <div className={styles.iconRow}>
-                  <Button
-                    type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                  />
-                  <Button
-                    type="button"
-                    icon={delIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                  />
-                </div>
-              </td>
-            );
-          }}
-        />
       </div>
-    </div>
+
+      <Modal
+        {...{
+          open: isFilter === true,
+          handleClose: () => handleFilterOpen?.(false),
+        }}
+        className={styles.ModalClassName}
+      >
+        <div className={styles.selectionsContainer}>
+          <div className={styles.modalHeading}>Temperature Filter</div>
+          <div className={styles.selectionContainer}>
+            <div className={styles.selections}>
+              <Selection
+                label="Employee "
+                isMulti={false}
+                name="employeeCode"
+                options={SelectOption as any}
+                control={control}
+                // singleValueMaxWidth={"120px"}
+                // singleValueMinWidth="200px"
+                // customWidth="200px"
+              />
+            </div>
+          </div>
+          {isDate && (
+            <>
+              <Input
+                type="date"
+                name="from"
+                label={"From"}
+                className={styles.labelClass}
+                // errorMessage={error}
+                inputClass={styles.dateClass}
+                // onChange={(e) => setValue(e.target.value)}
+              />
+
+              <Input
+                type="date"
+                name="toDate"
+                label={"To"}
+                className={styles.labelClass}
+                // errorMessage={error}
+                inputClass={styles.dateClass}
+                // onChange={(e) => setValue(e.target.value)}
+              />
+            </>
+          )}
+
+          <div className={styles.modalBtnContainer}>
+            <Button
+              title="cancel "
+              handleClick={() => {
+                handleFilterOpen?.(false);
+              }}
+              className={styles.btn2}
+            />
+            <Button
+              handleClick={handleApplyFilter}
+              title="Apply Filter"
+              className={styles.btn}
+              // isLoading={isTableLoading}
+            />
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
-export default tableBtnStructure;
+export default TableBtnStructure;

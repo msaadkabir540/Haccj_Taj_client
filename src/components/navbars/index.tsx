@@ -55,7 +55,7 @@ const Navbars = () => {
             <Link to="/">Dashboard</Link>
             <Link to="/user">Employees</Link>
             <Link to="/products">Add Products</Link>
-            <Link to="/checklist">Add Checklist</Link>
+            {/* <Link to="/checklist">Add Checklist</Link> */}
             <Link to="/equipment">Add Equipment</Link>
             <Link to="/machine">Add Machine</Link>
           </div>
@@ -101,9 +101,9 @@ const Navbars = () => {
                 <li onClick={() => setShowMobileMenu(false)}>
                   <Link to="/equipment">Add Equipments</Link>
                 </li>
-                <li onClick={() => setShowMobileMenu(false)}>
+                {/* <li onClick={() => setShowMobileMenu(false)}>
                   <Link to="/checklist">Add Checklist</Link>
-                </li>
+                </li> */}
                 <li onClick={() => setShowMobileMenu(false)}>
                   Logout
                   <svg

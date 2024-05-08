@@ -1,10 +1,18 @@
-import HeadingText from "@/components/heading-text";
+import TableBtnStructure from "@/components/table-btn-structure";
+
 import styles from "./index.module.scss";
 
 const Machine: React.FC = () => {
+  const handleOpenCreate = () => {};
   return (
     <div className={styles.header}>
-      <HeadingText heading={"Machine"} text={"Machine demo passage of here"} />
+      <TableBtnStructure
+        isCreate={true}
+        handleOpenCreate={handleOpenCreate}
+        headingText="Machine"
+        isFilterValid={false}
+        headerPassage="Machine demo passage of here"
+      />
     </div>
   );
 };

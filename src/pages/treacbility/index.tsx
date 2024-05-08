@@ -22,10 +22,12 @@ import delIcon from "@/assets/del-icon.svg";
 import { OptionType } from "@/components/selection/selection-interface";
 
 import styles from "./index.module.scss";
+import Input from "@/components/input";
 
 const Treacbility: React.FC = () => {
   const { control, watch } = useForm();
   const [getTreacbility, setGetTreacbility] = useState();
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>();
   const [startDateTo, setStartDateTo] = useState<Date | null>();
   const [imageModal, setImageModal] = useState<{ url: string; isOpenImageModal: boolean }>({
@@ -73,51 +75,12 @@ const Treacbility: React.FC = () => {
         <div className={styles.header}>
           <HeadingText heading="Treacbility" text="Treacbility data here" />
         </div>
-        <div className={styles.selectionList}>
-          <div className={styles.selectionsContainer}>
-            <div className={styles.selectionContainer}>
-              <div className={styles.imgContainer}>
-                <img src={filter} alt="" height={30} width={30} />
-              </div>
-              <div className={styles.selections}>
-                <Selection
-                  label="Employee "
-                  isMulti={false}
-                  name="employeeCode"
-                  options={employeeOptions as OptionType[]}
-                  control={control}
-                  singleValueMaxWidth={"120px"}
-                  singleValueMinWidth="200px"
-                  customWidth="200px"
-                />
-              </div>
-            </div>
-
-            <div>
-              <DatePicker
-                label={"From"}
-                startDate={startDate}
-                handleChange={handleStartDateChange} // Pass the function to update startDate
-              />
-            </div>
-            <div>
-              <DatePicker
-                label={"To"}
-                startDate={startDateTo}
-                handleChange={handleStartDateChangeTo} // Pass the function to update startDate
-              />
-            </div>
-          </div>
-          <div className={styles.pagination}>
-            <Pagination
-              page={1}
-              pageSize={10}
-              totalCount={20}
-              // control={control}
-              // setValue={setValue}
-              perPageText="Records per page"
-            />
-          </div>
+        <div className={styles.btnContainer}>
+          <Button
+            title="Filter"
+            handleClick={() => setIsFilter(true)}
+            className={styles.filterButton}
+          />
         </div>
         <Table
           rows={getTreacbility as any}
@@ -144,7 +107,16 @@ const Treacbility: React.FC = () => {
             );
           }}
         />
-
+        <div className={styles.pagination}>
+          <Pagination
+            page={1}
+            pageSize={10}
+            totalCount={20}
+            // control={control}
+            // setValue={setValue}
+            perPageText="Records per page"
+          />
+        </div>
         <Modal
           {...{
             open: imageModal.isOpenImageModal === true,
@@ -152,6 +124,67 @@ const Treacbility: React.FC = () => {
           }}
         >
           <img src={imageModal?.url} className={styles.videoPlayer} alt="images" />
+        </Modal>
+
+        <Modal
+          {...{
+            open: isFilter === true,
+            handleClose: () => setIsFilter(false),
+          }}
+          className={styles.ModalClassName}
+        >
+          <div className={styles.selectionsContainer}>
+            <div className={styles.modalHeading}>Treacbility Filter</div>
+            <div className={styles.selectionContainer}>
+              <div className={styles.selections}>
+                <Selection
+                  label="Employee "
+                  isMulti={false}
+                  name="employeeCode"
+                  options={employeeOptions as OptionType[]}
+                  control={control}
+                  // singleValueMaxWidth={"10px"}
+                  // singleValueMinWidth="200px"
+                  // customWidth="200px"
+                />
+              </div>
+            </div>
+
+            <Input
+              type="date"
+              name="from"
+              label={"From"}
+              className={styles.labelClass}
+              // errorMessage={error}
+              inputClass={styles.dateClass}
+              // onChange={(e) => setValue(e.target.value)}
+            />
+
+            <Input
+              type="date"
+              name="toDate"
+              label={"To"}
+              className={styles.labelClass}
+              // errorMessage={error}
+              inputClass={styles.dateClass}
+              // onChange={(e) => setValue(e.target.value)}
+            />
+            <div className={styles.modalBtnContainer}>
+              <Button
+                title="cancel "
+                handleClick={() => {
+                  setIsFilter(false);
+                }}
+                className={styles.btn2}
+              />
+              <Button
+                type="submit"
+                title="Apply Filter"
+                className={styles.btn}
+                // isLoading={isAddingUser}
+              />
+            </div>
+          </div>
         </Modal>
       </div>
     </>

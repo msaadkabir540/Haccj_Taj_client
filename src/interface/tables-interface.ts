@@ -32,6 +32,10 @@ interface RowsInterface {
   id: number;
   employeecode?: number;
   name?: string;
+  cleaning_area?: string;
+  machine_name?: string;
+  machine_type?: string;
+  oil_temperature?: string;
   employeeName?: string;
   email?: string;
   dob?: string;

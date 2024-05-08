@@ -22,13 +22,14 @@ import Selection from "@/components/selection";
 import { useClients } from "@/context/context-collection";
 import { OptionType } from "@/components/selection/selection-interface";
 import DatePicker from "@/components/date-picker";
+import Modal from "@/components/modal";
+import Input from "@/components/input";
 
 const Temperature: React.FC = () => {
   const { control, watch } = useForm();
 
-  const [startDate, setStartDate] = useState<Date | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [startDateTo, setStartDateTo] = useState<Date | null>();
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   const [getTemperature, setGetTemperature] = useState<TemperatureInterface[]>();
 
   const context = useClients();
@@ -37,8 +38,6 @@ const Temperature: React.FC = () => {
   const handleGetTemperature = async ({ employeeCode }: { employeeCode: string }) => {
     setIsLoading(true);
     try {
-      // const employeeCode = localStorage.getItem("employeecode");
-
       const employeecode = Number(employeeCode);
       const response = await getAllTemperature({ id: employeecode });
       if (response?.status === true) {
@@ -59,14 +58,6 @@ const Temperature: React.FC = () => {
     });
   }, [getTemperature]);
 
-  const handleStartDateChange = (date: Date | null) => {
-    setStartDate(date);
-  };
-
-  const handleStartDateChangeTo = (date: Date | null) => {
-    setStartDateTo(date);
-  };
-
   useEffect(() => {
     handleGetTemperature({ employeeCode: watch("employeeCode")?.value });
   }, [watch("employeeCode")]);
@@ -75,8 +66,14 @@ const Temperature: React.FC = () => {
     <>
       <div className={styles.loading}>
         <HeadingText heading={"Temperature"} text="Temperature demo passage of here" />
-
-        <div className={styles.selectionList}>
+        <div className={styles.btnContainer}>
+          <Button
+            title="Filter"
+            handleClick={() => setIsFilter(true)}
+            className={styles.filterButton}
+          />
+        </div>
+        {/* <div className={styles.selectionList}>
           <div className={styles.selectionsContainer}>
             <div className={styles.selectionContainer}>
               <div className={styles.imgContainer}>
@@ -111,7 +108,7 @@ const Temperature: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className={styles.pagination}>
           <Table
             rows={getTemperatureData as TemperatureInterface[]}
@@ -150,6 +147,67 @@ const Temperature: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        {...{
+          open: isFilter === true,
+          handleClose: () => setIsFilter(false),
+        }}
+        className={styles.ModalClassName}
+      >
+        <div className={styles.selectionsContainer}>
+          <div className={styles.modalHeading}>Temperature Filter</div>
+          <div className={styles.selectionContainer}>
+            <div className={styles.selections}>
+              <Selection
+                label="Employee "
+                isMulti={false}
+                name="employeeCode"
+                options={employeeOptions as OptionType[]}
+                control={control}
+                // singleValueMaxWidth={"120px"}
+                // singleValueMinWidth="200px"
+                // customWidth="200px"
+              />
+            </div>
+          </div>
+
+          <Input
+            type="date"
+            name="from"
+            label={"From"}
+            className={styles.labelClass}
+            // errorMessage={error}
+            inputClass={styles.dateClass}
+            // onChange={(e) => setValue(e.target.value)}
+          />
+
+          <Input
+            type="date"
+            name="toDate"
+            label={"To"}
+            className={styles.labelClass}
+            // errorMessage={error}
+            inputClass={styles.dateClass}
+            // onChange={(e) => setValue(e.target.value)}
+          />
+          <div className={styles.modalBtnContainer}>
+            <Button
+              title="cancel "
+              handleClick={() => {
+                setIsFilter(false);
+              }}
+              className={styles.btn2}
+            />
+            <Button
+              type="submit"
+              title="Apply Filter"
+              className={styles.btn}
+              // isLoading={isAddingUser}
+            />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

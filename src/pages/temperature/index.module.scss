@@ -4,16 +4,32 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 7px 9px 0px #1a92ff70;
+  height: 100%;
+  max-height: 80vh;
+  min-height: 80vh;
 
   .modalWrapper {
     padding: 15px 25px 25px 25px !important;
+  }
+
+  .btnContainer {
+    margin: 10px 10px;
+    .filterButton {
+      border-radius: 5px;
+      max-width: 130px;
+      min-width: 130px;
+      p {
+        color: #fafafa !important;
+        font-size: 15px !important;
+      }
+    }
   }
 
   .heading {
     font-size: 25px;
     font-weight: 600;
     margin: 10px 0px;
-    padding: 10px 0px;
+    padding: 10px 10px;
   }
 
   .labelClass {
@@ -94,33 +110,75 @@
   .pagination {
     margin: 10px;
   }
+}
 
-  .selectionList {
-    margin-bottom: 5px;
+.selectionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .dateClass {
+    width: 97% !important;
+  }
+  .modalHeading {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .selectionContainer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 700px) {
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      align-items: flex-end;
+    align-items: flex-end;
+    .selections {
+      width: 100%;
+      position: relative;
     }
-    .selectionsContainer {
-      display: flex;
-      .selectionContainer {
-        display: flex;
-        align-items: flex-end;
-        gap: 15px;
-        @media (max-width: 700px) {
-          flex-wrap: wrap;
-        }
-        .selections {
-          position: relative;
-        }
-      }
+  }
+
+  @media (max-width: 500px) {
+    flex-wrap: wrap;
+  }
+}
+.ModalClassName {
+  max-width: 31vw !important;
+  @media (max-width: 1100px) {
+    max-width: 41vw !important;
+  }
+  @media (max-width: 600px) {
+    max-width: 90vw !important;
+  }
+}
+.modalBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+
+  .btn2 {
+    border-radius: 5px;
+    max-width: 130px;
+    min-width: 130px;
+    background: transparent !important;
+    border: 1px solid #438afe;
+    p {
+      color: #438afe !important;
+      font-size: 15px !important;
     }
-    .pagination {
-      margin: 10px;
+  }
+
+  .btn {
+    border-radius: 5px;
+    max-width: 130px;
+    min-width: 130px;
+    p {
+      color: #fafafa !important;
+      font-size: 15px !important;
     }
+    // &:hover {
+    //   background: transparent !important;
+    //   border: 1px solid #438afe;
+    //   p {
+    //     color: #438afe !important;
+    //   }
+    // }
   }
 }
