@@ -53,7 +53,6 @@ const OilTemperature: React.FC = () => {
 
   const handleApplyFilter = () => {
     const employeeData = watch("employeeCode")?.value;
-
     setFiltersData(employeeData);
   };
 

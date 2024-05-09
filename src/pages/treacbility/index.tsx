@@ -6,35 +6,47 @@ import Table from "@/components/table";
 import Button from "@/components/button";
 import Selection from "@/components/selection";
 import Pagination from "@/components/pagination";
-import DatePicker from "@/components/date-picker";
 import HeadingText from "@/components/heading-text";
 
 import { useClients } from "@/context/context-collection";
 
-import { getAllTreacbility } from "@/api-services/treacbility";
+import {
+  deleteTrasability,
+  getAllTreacbility,
+  updateTrasability,
+} from "@/api-services/treacbility";
 
 import { Columns } from "./columns";
 
 import editIcon from "@/assets/edit.svg";
-import filter from "@/assets/assets/filter.png";
 import delIcon from "@/assets/del-icon.svg";
 
 import { OptionType } from "@/components/selection/selection-interface";
 
 import styles from "./index.module.scss";
 import Input from "@/components/input";
+import createNotification from "@/common/create-notification";
 
 const Treacbility: React.FC = () => {
-  const { control, watch } = useForm();
+  const { control, watch, setValue, register } = useForm();
   const [getTreacbility, setGetTreacbility] = useState();
   const [isFilter, setIsFilter] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<Date | null>();
-  const [startDateTo, setStartDateTo] = useState<Date | null>();
   const [imageModal, setImageModal] = useState<{ url: string; isOpenImageModal: boolean }>({
     url: "",
     isOpenImageModal: false,
   });
+  const [updatedValues, setUpdatedValues] = useState<{
+    tempId?: number;
+    employeeCode?: number;
+    isLoading?: boolean;
+    isDeleted?: boolean;
+  }>({
+    isLoading: false,
+    isDeleted: false,
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpdate, setIsUpdate] = useState<boolean>(true);
+  const [filtersData, setFiltersData] = useState<any>();
 
   const context = useClients();
   const employeeOptions = context ? context?.employeeOptions : "";
@@ -53,17 +65,82 @@ const Treacbility: React.FC = () => {
     }
   };
 
-  const handleStartDateChange = (date: Date | null) => {
-    setStartDate(date);
+  const handleEditTemperature = ({ tempId }: { tempId: number }) => {
+    const updatedData = getTreacbility?.find((data) => {
+      return data?.id === tempId;
+    });
+    setUpdatedValues({
+      tempId: updatedData?.id as number,
+      employeeCode: updatedData?.created_by as number,
+    });
+    setValue?.("trasability_name", updatedData?.trasability_name);
+    setValue?.("trasability_type", updatedData?.trasability_type);
+    setIsUpdate(true);
   };
 
-  const handleStartDateChangeTo = (date: Date | null) => {
-    setStartDateTo(date);
+  const handleUpdateTemp = async () => {
+    setUpdatedValues((prev) => ({ ...prev, isLoading: true }));
+    const data = {
+      id: updatedValues?.tempId,
+      trasability_name: watch("trasability_name"),
+      trasability_type: watch("trasability_type"),
+      employeecode: updatedValues?.employeeCode,
+    };
+
+    try {
+      const res = await updateTrasability({ data });
+
+      if (res.status === true) {
+        const updatedData = getTreacbility?.find((item) => item.id === data.id);
+
+        if (updatedData) {
+          const indexToUpdate = getTreacbility?.findIndex((temp) => temp.id === data.id);
+
+          if (indexToUpdate !== -1) {
+            getTreacbility[indexToUpdate] = {
+              ...getTreacbility[indexToUpdate],
+              equipment_name: data.equipment_name,
+              temperature_value: data.temperature_value,
+            };
+            setGetTreacbility([...getTreacbility]);
+          }
+        }
+
+        setUpdatedValues((prev) => ({ ...prev, isLoading: false }));
+        setIsUpdate(false);
+        setValue?.("trasability_name", "");
+        setValue?.("trasability_type", "");
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async ({ deleteId }: { deleteId: number }) => {
+    setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    try {
+      const res = await deleteTrasability({ id: deleteId });
+      if (res.status === true) {
+        const updatedData = getTreacbility?.filter((item) => item.id != deleteId);
+        setGetTreacbility(updatedData);
+        setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleApplyFilter = () => {
+    const employeeData = watch("employeeCode")?.value;
+
+    setFiltersData(employeeData);
   };
 
   useEffect(() => {
-    handleGetTreacbility({ employeeCode: Number(watch("employeeCode")?.value) });
-  }, [watch("employeeCode")?.value]);
+    handleGetTreacbility({ employeeCode: filtersData });
+  }, [filtersData]);
 
   const handleOpenModal = ({ url }: { url: string }) => {
     setImageModal((prev) => ({ ...prev, url: url, isOpenImageModal: true }));
@@ -95,12 +172,14 @@ const Treacbility: React.FC = () => {
                     icon={editIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
+                    handleClick={() => handleEditTemperature({ tracId: row?.id })}
                   />
                   <Button
                     type="button"
                     icon={delIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
+                    handleClick={() => handleDelete({ deleteId: row?.id })}
                   />
                 </div>
               </td>
@@ -117,6 +196,52 @@ const Treacbility: React.FC = () => {
             perPageText="Records per page"
           />
         </div>
+
+        <Modal
+          {...{
+            open: isUpdate === true,
+            handleClose: () => setIsUpdate(false),
+          }}
+          className={styles.ModalClassName}
+        >
+          <div className={styles.selectionsContainer}>
+            <div className={styles.modalHeading}>Update Treacbility</div>
+            <div className={styles.selectionContainer}></div>
+
+            <Input
+              type="text"
+              register={register}
+              name="trasability_name"
+              label={"Trasability Name"}
+              className={styles.labelClass}
+              inputClass={styles.dateClass}
+            />
+
+            <Input
+              type="text"
+              register={register}
+              name="trasability_type"
+              label={"Trasability Type"}
+              className={styles.labelClass}
+              inputClass={styles.dateClass}
+            />
+            <div className={styles.modalBtnContainer}>
+              <Button
+                title="cancel "
+                handleClick={() => {
+                  setIsUpdate(false);
+                }}
+                className={styles.btn2}
+              />
+              <Button
+                title="Update"
+                className={styles.btn}
+                handleClick={handleUpdateTemp}
+                isLoading={updatedValues?.isLoading}
+              />
+            </div>
+          </div>
+        </Modal>
         <Modal
           {...{
             open: imageModal.isOpenImageModal === true,
@@ -178,7 +303,7 @@ const Treacbility: React.FC = () => {
                 className={styles.btn2}
               />
               <Button
-                type="submit"
+                handleClick={handleApplyFilter}
                 title="Apply Filter"
                 className={styles.btn}
                 // isLoading={isAddingUser}
