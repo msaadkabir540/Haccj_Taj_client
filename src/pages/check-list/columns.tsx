@@ -1,19 +1,10 @@
-import moment from "moment";
-
 import { TableColumnRenderProps, TableColumns } from "@/components/table/table-interface";
+import moment from "moment";
 
 const Columns: TableColumns[] = [
   {
-    key: "equipment_name",
-    title: "Equipment Name",
-    render: ({ value }: TableColumnRenderProps) => {
-      // return value?.[0] || "";
-      return value as string;
-    },
-  },
-  {
-    key: "temperature_value",
-    title: "Temperature ",
+    key: "task",
+    title: "Task",
     render: ({ value }: TableColumnRenderProps) => {
       // return value?.[0] || "";
       return value as string;
@@ -21,8 +12,24 @@ const Columns: TableColumns[] = [
   },
 
   {
+    key: "message",
+    title: "Message",
+    render: ({ value }: TableColumnRenderProps) => {
+      // return value?.[0] || "";
+      return value as string;
+    },
+  },
+  {
+    key: "assign_to_name",
+    title: "Assign To",
+    render: ({ value }: TableColumnRenderProps) => {
+      // return value?.[0] || "";
+      return value as string;
+    },
+  },
+  {
     key: "created_by_name",
-    title: "Employee ",
+    title: "Assign By",
     render: ({ value }: TableColumnRenderProps) => {
       // return value?.[0] || "";
       return value as string;
@@ -35,7 +42,6 @@ const Columns: TableColumns[] = [
       return moment(value as string).format("DD-MM-YYYY") as string;
     },
   },
-
   { key: "actions", title: "Action" },
 ];
 

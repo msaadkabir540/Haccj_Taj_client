@@ -1,9 +1,15 @@
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-// axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
-axios.defaults.baseURL = "https://laravel.haccptaj.com/api";
+const baseURL = process.env.VITE_BASE_URL;
 
-axios.interceptors.request.use(
+const axiosApi = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axiosApi.interceptors.request.use(
   (req: AxiosRequestConfig) => {
     const localStorageToken = localStorage.getItem("token") || false;
     if (req.headers && req.headers["X-Access-Token"] !== "no token" && localStorageToken) {
@@ -20,7 +26,7 @@ axios.interceptors.request.use(
   },
 );
 
-axios.interceptors.response.use(
+axiosApi.interceptors.response.use(
   (successRes: AxiosResponse) => {
     return successRes;
   },
@@ -29,4 +35,4 @@ axios.interceptors.response.use(
   },
 );
 
-export default axios;
+export default axiosApi;

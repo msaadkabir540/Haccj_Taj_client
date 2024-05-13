@@ -47,7 +47,7 @@ const Columns = ({
   },
 
   {
-    key: "updated_at",
+    key: "created_at",
     title: "Create",
     render: ({ value }: TableColumnRenderProps) => {
       return moment(value as string).format("DD-MM-YYYY") as string;

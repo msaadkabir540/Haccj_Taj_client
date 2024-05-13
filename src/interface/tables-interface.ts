@@ -33,6 +33,10 @@ interface RowsInterface {
   employeecode?: number;
   name?: string;
   cleaning_area?: string;
+  created_by_name?: string;
+  assign_to_name?: string;
+  task?: string;
+  message?: string;
   machine_name?: string;
   machine_type?: string;
   oil_temperature?: string;

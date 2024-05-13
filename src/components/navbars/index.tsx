@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { useClients } from "@/context/context-collection";
+
 import logo from "@/assets/assets/taj-mahal-logo.png";
 
 import styles from "./index.module.scss";
@@ -13,6 +15,11 @@ const Navbars = () => {
   const [navbar, setNavbar] = useState({ show: "none", action: false });
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
   const [isLogout, setIsLogout] = useState<boolean>(false);
+
+  const context = useClients();
+  const loggedAdminStatus = context ? context?.loggedAdminStatus : "";
+  const loggedInUserName = context ? context?.loggedInUserName : "";
+  const isAdmin = loggedAdminStatus === "1" ? true : false;
 
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
@@ -53,15 +60,20 @@ const Navbars = () => {
         <div className={styles.navItems}>
           <div>
             <Link to="/">Dashboard</Link>
-            <Link to="/user">Employees</Link>
-            <Link to="/products">Add Products</Link>
-            {/* <Link to="/checklist">Add Checklist</Link> */}
-            <Link to="/equipment">Add Equipment</Link>
-            <Link to="/machine">Add Machine</Link>
+            {isAdmin && (
+              <>
+                <Link to="/user">Employees</Link>
+                <Link to="/products">Add Products</Link>
+                {/* <Link to="/checklist">Add Checklist</Link> */}
+                <Link to="/equipment">Add Equipment</Link>
+                <Link to="/machine">Add Machine</Link>
+              </>
+            )}
           </div>
         </div>
 
         <div className={styles.pages}>
+          <div>{loggedInUserName}</div>
           <div title="Logout" className={styles.logoutDiv}>
             <svg
               className={styles.logout}
@@ -92,18 +104,20 @@ const Navbars = () => {
                 <li onClick={() => setShowMobileMenu(false)}>
                   <Link to="/">Dashboard</Link>
                 </li>
-                <li onClick={() => setShowMobileMenu(false)}>
-                  <Link to="/user">Employees</Link>
-                </li>
-                <li onClick={() => setShowMobileMenu(false)}>
-                  <Link to="/temperature">Add Temperature</Link>
-                </li>
-                <li onClick={() => setShowMobileMenu(false)}>
-                  <Link to="/equipment">Add Equipments</Link>
-                </li>
-                {/* <li onClick={() => setShowMobileMenu(false)}>
-                  <Link to="/checklist">Add Checklist</Link>
-                </li> */}
+                {isAdmin && (
+                  <>
+                    <li onClick={() => setShowMobileMenu(false)}>
+                      <Link to="/user">Employees</Link>
+                    </li>
+                    <li onClick={() => setShowMobileMenu(false)}>
+                      <Link to="/temperature">Add Temperature</Link>
+                    </li>
+                    <li onClick={() => setShowMobileMenu(false)}>
+                      <Link to="/equipment">Add Equipments</Link>
+                    </li>
+                  </>
+                )}
+
                 <li onClick={() => setShowMobileMenu(false)}>
                   Logout
                   <svg

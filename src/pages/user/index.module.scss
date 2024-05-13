@@ -86,6 +86,17 @@
 .inputClass {
   width: 96% !important;
 }
+.checkBoxContainer {
+  .labelClass {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .checkBox {
+    width: 100% !important;
+  }
+}
 
 .modalBtnContainer {
   display: flex;
@@ -96,25 +107,18 @@
 
   .btn {
     border-radius: 5px;
-    max-width: 130px;
-    min-width: 130px;
+    max-width: 100px;
+    min-width: 100px;
     p {
       color: #fafafa !important;
       font-size: 15px !important;
     }
-    // &:hover {
-    //   background: transparent !important;
-    //   border: 1px solid #438afe;
-    //   p {
-    //     color: #438afe !important;
-    //   }
-    // }
   }
 
   .btn2 {
     border-radius: 5px;
-    max-width: 130px;
-    min-width: 130px;
+    max-width: 100px;
+    min-width: 100px;
     background: transparent !important;
     border: 1px solid #438afe;
     p {

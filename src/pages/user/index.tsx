@@ -8,7 +8,12 @@ import Button from "@/components/button";
 import Pagination from "@/components/pagination";
 import createNotification from "@/common/create-notification";
 
-import { addEmployees, getAllEmployees } from "@/api-services/user";
+import {
+  addEmployees,
+  deleteEmployee,
+  getAllEmployees,
+  updateEmployees,
+} from "@/api-services/user";
 
 import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
@@ -19,10 +24,9 @@ import { EmployeeDataInterface, TryNowFormInterface, defaultFormValues } from ".
 
 import styles from "./index.module.scss";
 import HeadingText from "@/components/heading-text";
-import Paginations from "@/components/paginations";
 
 const User: React.FC = () => {
-  const { register, handleSubmit, reset, control, setValue } = useForm<TryNowFormInterface>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<TryNowFormInterface>({
     defaultValues: defaultFormValues,
   });
 
@@ -30,23 +34,58 @@ const User: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<number>(0);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [allEmployees, setAllEmployees] = useState<EmployeeDataInterface[]>();
+
+  const [updatedValues, setUpdatedValues] = useState<{
+    tempId?: number;
+    employeeCode?: number;
+    isLoading?: boolean;
+    isDeleted?: boolean;
+  }>({
+    isLoading: false,
+    isDeleted: false,
+  });
 
   const onSubmit = async (data: TryNowFormInterface) => {
     setIsAddingUser(true);
-
+    const { updated_at, updated_by, isadmin, CREATED_AT, ...filteredData } = data;
+    const updatedData = { ...filteredData, isadmin: data?.isadmin === true ? 1 : 0 };
     try {
-      const response = await addEmployees({ data });
+      const addEmployee = { ...filteredData, isadmin: data?.isadmin === true ? 1 : 0 };
+
+      const response = isUpdate
+        ? await updateEmployees({ data: updatedData })
+        : await addEmployees({ data: addEmployee });
 
       if (response.status === true) {
         setIsAdding((prev) => prev + 1);
         setIsUser(false);
+        setIsUpdate(false);
         setIsAddingUser(false);
-        createNotification({ type: "success", message: "Employee successfully Add" });
+        reset({});
+        isUpdate
+          ? createNotification({ type: "success", message: "Employee update successfully." })
+          : createNotification({ type: "success", message: "Employee successfully Added." });
       }
     } catch (error) {
       console.error(error);
       createNotification({ type: "error", message: "error" });
+    }
+  };
+
+  const handleDelete = async ({ deleteId }: { deleteId: number }) => {
+    setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    try {
+      const res = await deleteEmployee({ id: deleteId });
+      if (res.status === true) {
+        const updatedData = allEmployees?.filter((item) => item.id != deleteId);
+        setAllEmployees(updatedData);
+        setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -71,6 +110,18 @@ const User: React.FC = () => {
       return dateA.getTime() - dateB.getTime();
     });
   }, [allEmployees]);
+
+  const handleEditEmployee = ({ employeeId }: { employeeId: number }) => {
+    const updatedData = allEmployees?.find((data) => {
+      return data?.id === employeeId;
+    });
+
+    reset({ ...updatedData });
+
+    updatedData?.isadmin === 1 ? setValue?.("isadmin", true) : setValue?.("isadmin", false);
+    setIsUser(true);
+    setIsUpdate(true);
+  };
 
   useEffect(() => {
     handleAllEmployee();
@@ -109,12 +160,14 @@ const User: React.FC = () => {
                       icon={editIcon}
                       className={styles.iconsBtn}
                       loaderClass={styles.loading}
+                      handleClick={() => handleEditEmployee({ employeeId: row?.id })}
                     />
                     <Button
                       type="button"
                       icon={delIcon}
                       className={styles.iconsBtn}
                       loaderClass={styles.loading}
+                      handleClick={() => handleDelete({ deleteId: row?.id })}
                     />
                   </div>
                 </td>
@@ -138,12 +191,15 @@ const User: React.FC = () => {
             open={isUser}
             showCross={true}
             handleCross={() => {
+              reset({});
               setIsUser(false);
+              setIsUpdate(false);
+              setIsAddingUser(false);
             }}
             className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
           >
             <div>
-              <div className={styles.heading}>Add Employee</div>
+              <div className={styles.heading}>{`${isUpdate ? "Update" : "Add"} Employee`}</div>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <div className={styles.inputFieldsContainer}>
@@ -151,8 +207,9 @@ const User: React.FC = () => {
                       required
                       type="number"
                       name="employeecode"
+                      isDisable={isUpdate ? true : false}
                       register={register}
-                      label={"Enter Employee Code *"}
+                      label={"Enter Employee Code "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
@@ -161,7 +218,7 @@ const User: React.FC = () => {
                       name="name"
                       type="text"
                       register={register}
-                      label={"Enter Employee Name *"}
+                      label={"Enter Employee Name "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
@@ -172,7 +229,7 @@ const User: React.FC = () => {
                       name="email"
                       type="email"
                       register={register}
-                      label={"Enter Employee Email *"}
+                      label={"Enter Employee Email "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
@@ -181,7 +238,7 @@ const User: React.FC = () => {
                       type="text"
                       name="contact_no"
                       register={register}
-                      label={"Enter Contact Number *"}
+                      label={"Enter Contact Number "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
@@ -191,7 +248,7 @@ const User: React.FC = () => {
                       type="text"
                       name="address"
                       register={register}
-                      label={"Enter Address *"}
+                      label={"Enter Address "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
@@ -199,23 +256,34 @@ const User: React.FC = () => {
                       type="text"
                       name="department"
                       register={register}
-                      label={"Enter Department *"}
+                      label={"Enter Department "}
                       className={styles.labelClass}
                       inputClass={styles.inputClass}
                     />
                   </div>
-
+                  <div className={styles.checkBoxContainer}>
+                    <Input
+                      type="checkbox"
+                      name="isadmin"
+                      register={register}
+                      label={"Admin"}
+                      className={styles.labelClass}
+                      inputClass={styles.checkBox}
+                    />
+                  </div>
                   <div className={styles.modalBtnContainer}>
                     <Button
                       title="Close "
                       handleClick={() => {
-                        reset();
+                        reset({});
                         setIsUser(false);
+                        setIsUpdate(false);
+                        setIsAddingUser(false);
                       }}
                       className={styles.btn2}
                     />
                     <Button
-                      title="Add User"
+                      title={`Save`}
                       type="submit"
                       className={styles.btn}
                       isLoading={isAddingUser}

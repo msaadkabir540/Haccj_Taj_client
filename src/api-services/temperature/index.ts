@@ -1,10 +1,19 @@
 import { axiosApiRequest } from "@/utils/api";
 
-export const getAllTemperature = async ({ id }: { id: number }) => {
+export const getAllTemperature = async ({
+  date,
+  edate,
+  data,
+}: {
+  date?: any;
+  edate?: any;
+  data?: any;
+}) => {
   try {
     const response = await axiosApiRequest({
-      method: "get",
-      url: `/get-temperature-data/${id}`,
+      method: "post",
+      url: `/get-temperature-data`,
+      params: { ...data, date, edate },
     });
 
     return response;

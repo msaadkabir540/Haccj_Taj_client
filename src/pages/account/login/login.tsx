@@ -15,6 +15,7 @@ import AuthComponent from "../auth-component";
 import { signIn } from "@/api-services/auth";
 
 import styles from "./index.module.scss";
+import { useClients } from "@/context/context-collection";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const Login: React.FC = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const [errorPassword, setErrorPassword] = useState<string>("");
 
+  const context = useClients();
+  const handleLoggedIn = context ? context?.handleLoggedIn : "";
   const { register, handleSubmit } = useForm<LoginFromInterface>({
     defaultValues: {
       password: "",
@@ -43,8 +46,9 @@ const Login: React.FC = () => {
       if (res.status === true) {
         localStorage.setItem("token", res.access_token);
         localStorage.setItem("employeecode", res?.employee?.employeecode);
+        localStorage.setItem("admin", res?.employee?.isadmin);
         createNotification({ type: "success", message: "Successfully Login" });
-
+        handleLoggedIn({ res });
         setIsLoading(false);
         navigate("/");
       } else {

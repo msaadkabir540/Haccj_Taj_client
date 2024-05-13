@@ -30,3 +30,16 @@ export const addEquipment = async ({
     console.error(e);
   }
 };
+
+export const deleteEquipment = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-temperature-equipment/${id}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

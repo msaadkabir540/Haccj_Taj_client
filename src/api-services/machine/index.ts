@@ -1,11 +1,10 @@
 import { axiosApiRequest } from "@/utils/api";
 
-export const getCheckListByEmployeeCode = async ({ data }: { data: any }) => {
+export const getCheckListByEmployeeCode = async ({ employeecode }: { employeecode: string }) => {
   try {
     const response = await axiosApiRequest({
-      method: "post",
-      url: `/get-checklist-data`,
-      params: { ...data },
+      method: "get",
+      url: `/add-oil-temperature-machines`,
     });
 
     return response;
@@ -14,15 +13,15 @@ export const getCheckListByEmployeeCode = async ({ data }: { data: any }) => {
   }
 };
 
-export const addCheckList = async ({
+export const addMachine = async ({
   data,
 }: {
-  data: { employeecode: number; task: string; message: string; assign_to: number };
+  data: { employeecode: number; machine_name: string };
 }) => {
   try {
     const response = await axiosApiRequest({
       method: "post",
-      url: `/add-checklist`,
+      url: `/add-oil-temperature-machines`,
       data: data,
     });
 
@@ -42,6 +41,19 @@ export const updateCheckList = async ({
       method: "post",
       url: `/update-checklist`,
       data: data,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const deleteMachine = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-oil-temperature-machine/${id}`,
     });
 
     return response;

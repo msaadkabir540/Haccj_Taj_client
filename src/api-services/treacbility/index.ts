@@ -1,10 +1,11 @@
 import { axiosApiRequest } from "@/utils/api";
 
-export const getAllTreacbility = async ({ employeecode }: { employeecode: number }) => {
+export const getAllTreacbility = async ({ data }: { data: any }) => {
   try {
     const response = await axiosApiRequest({
-      method: "get",
-      url: `/get-trasability-data/${employeecode}`,
+      method: "post",
+      url: `/get-trasability-data`,
+      params: { ...data },
     });
 
     return response;

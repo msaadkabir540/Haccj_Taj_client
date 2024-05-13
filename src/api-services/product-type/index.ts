@@ -30,3 +30,16 @@ export const addProductType = async ({
     console.error(e);
   }
 };
+
+export const deleteProduct = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-trasability-product/${id}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

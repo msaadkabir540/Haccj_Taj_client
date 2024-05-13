@@ -12,6 +12,7 @@ import delIcon from "@/assets/del-icon.svg";
 import { InterfaceComponent } from "./interface-component";
 
 import styles from "./index.module.scss";
+import { downloadReport } from "@/utils/helper";
 
 const TableBtnStructure = ({
   isDate,
@@ -19,8 +20,17 @@ const TableBtnStructure = ({
   rowData,
   isCreate,
   isFilter,
+  register,
+  isArea,
+  isUpdate = true,
+  deleteId,
+  isExport,
+  fileName,
+  isDeleted,
+  handleEdit,
   ColumnsData,
   headingText,
+  handleDelete,
   SelectOption,
   headerPassage,
   isFilterValid,
@@ -54,6 +64,14 @@ const TableBtnStructure = ({
               handleClick={() => handleFilterOpen?.(true)}
               className={styles.filterButton}
             />
+            {isExport && (
+              <Button
+                title="Export Data"
+                disabled={rowData?.length === 0 ? true : false}
+                handleClick={() => downloadReport({ data: rowData, fileName: fileName as string })}
+                className={styles.filterButton}
+              />
+            )}
           </div>
         )}
         <div className={styles.mainContainer}>
@@ -65,17 +83,23 @@ const TableBtnStructure = ({
               return (
                 <td key={row?.id}>
                   <div className={styles.iconRow}>
-                    <Button
-                      type="button"
-                      icon={editIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                    />
+                    {isUpdate && (
+                      <Button
+                        type="button"
+                        icon={editIcon}
+                        className={styles.iconsBtn}
+                        loaderClass={styles.loading}
+                        handleClick={() => handleEdit?.({ editId: row?.id })}
+                      />
+                    )}
                     <Button
                       type="button"
                       icon={delIcon}
+                      // isLoading={deleteId === row?.id && isDeleted}
+                      // isLoading={true}
                       className={styles.iconsBtn}
                       loaderClass={styles.loading}
+                      handleClick={() => handleDelete?.({ deleteId: row?.id })}
                     />
                   </div>
                 </td>
@@ -103,7 +127,7 @@ const TableBtnStructure = ({
         className={styles.ModalClassName}
       >
         <div className={styles.selectionsContainer}>
-          <div className={styles.modalHeading}>Temperature Filter</div>
+          <div className={styles.modalHeading}>Filter</div>
           <div className={styles.selectionContainer}>
             <div className={styles.selections}>
               <Selection
@@ -118,12 +142,27 @@ const TableBtnStructure = ({
               />
             </div>
           </div>
+          {isArea && (
+            <div className={styles.selections}>
+              <Selection
+                label="Area "
+                isMulti={false}
+                name="area"
+                options={areaOption as any}
+                control={control}
+                // singleValueMaxWidth={"120px"}
+                // singleValueMinWidth="200px"
+                // customWidth="200px"
+              />
+            </div>
+          )}
           {isDate && (
             <>
               <Input
                 type="date"
                 name="from"
                 label={"From"}
+                register={register}
                 className={styles.labelClass}
                 // errorMessage={error}
                 inputClass={styles.dateClass}
@@ -133,6 +172,7 @@ const TableBtnStructure = ({
               <Input
                 type="date"
                 name="toDate"
+                register={register}
                 label={"To"}
                 className={styles.labelClass}
                 // errorMessage={error}
@@ -163,3 +203,14 @@ const TableBtnStructure = ({
   );
 };
 export default TableBtnStructure;
+
+const areaOption = [
+  {
+    value: "Hall",
+    label: "Hall",
+  },
+  {
+    value: "Kitchen",
+    label: "Kitchen",
+  },
+];

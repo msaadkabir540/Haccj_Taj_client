@@ -8,12 +8,13 @@ import Input from "@/components/input";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import createNotification from "@/common/create-notification";
-import { addProductType, getProductTypes } from "@/api-services/product-type";
+import { addProductType, deleteProduct, getProductTypes } from "@/api-services/product-type";
 import { Columns } from "./columns";
 
 import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
 import { useClients } from "@/context/context-collection";
+import useDeleteEmployee from "custom-hook/custom-delete-hook";
 
 const Products: React.FC = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -23,6 +24,15 @@ const Products: React.FC = () => {
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<number>(0);
   const [productData, setProductData] = useState();
+  const [updatedValues, setUpdatedValues] = useState<{
+    tempId?: number;
+    employeeCode?: number;
+    isLoading?: boolean;
+    isDeleted?: boolean;
+  }>({
+    isLoading: false,
+    isDeleted: false,
+  });
 
   const context = useClients();
   const allEmployees = context ? context?.allEmployees : [];
@@ -32,6 +42,7 @@ const Products: React.FC = () => {
       acc[allEmployees?.employeecode] = allEmployees.name;
       return acc;
     }, {}) || {};
+
   const allProductByName = productData?.map((data) => ({
     ...data,
     employeeName: getUserUsername[data?.employeecode as string] || data?.employeecode,
@@ -56,6 +67,21 @@ const Products: React.FC = () => {
     } catch (error) {
       console.error(error);
       createNotification({ type: "error", message: "error" });
+    }
+  };
+
+  const handleDelete = async ({ deleteId }: { deleteId: number }) => {
+    setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    try {
+      const res = await deleteProduct({ id: deleteId });
+      if (res.status === true) {
+        const updatedData = productData?.filter((item) => item.id != deleteId);
+        setProductData(updatedData);
+        setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -122,15 +148,10 @@ const Products: React.FC = () => {
                 <div className={styles.iconRow}>
                   <Button
                     type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                  />
-                  <Button
-                    type="button"
                     icon={delIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
+                    handleClick={() => handleDelete({ deleteId: row?.id })}
                   />
                 </div>
               </td>

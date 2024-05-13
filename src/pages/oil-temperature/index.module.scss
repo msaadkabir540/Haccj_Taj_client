@@ -1,9 +1,70 @@
 .header {
   margin: 35px 15px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 7px 9px 0px #1a92ff70;
+
+  .selectionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .dateClass {
+      width: 95% !important;
+    }
+    .modalHeading {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .selectionContainer {
+      display: flex;
+      align-items: flex-end;
+      .selections {
+        width: 100%;
+        position: relative;
+      }
+    }
+    .datePickerClass {
+      display: flex;
+      gap: 10px;
+    }
+    @media (max-width: 500px) {
+      flex-wrap: wrap;
+    }
+  }
+
+  .modalBtnContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+
+    .btn {
+      border-radius: 5px;
+      max-width: 130px;
+      min-width: 130px;
+      p {
+        color: #fafafa !important;
+        font-size: 15px !important;
+      }
+      // &:hover {
+      //   background: transparent !important;
+      //   border: 1px solid #438afe;
+      //   p {
+      //     color: #438afe !important;
+      //   }
+      // }
+    }
+
+    .btn2 {
+      border-radius: 5px;
+      max-width: 130px;
+      min-width: 130px;
+      background: transparent !important;
+      border: 1px solid #438afe;
+      p {
+        color: #438afe !important;
+        font-size: 15px !important;
+      }
+    }
+  }
 }
 
 .thumbnailContainer {
@@ -23,6 +84,7 @@
       // flex items-center gap-5
       img {
         height: 50px;
+        width: 60px;
       }
     }
   }

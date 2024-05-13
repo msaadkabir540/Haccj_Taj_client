@@ -26,6 +26,7 @@ import { OptionType } from "@/components/selection/selection-interface";
 import styles from "./index.module.scss";
 import Input from "@/components/input";
 import createNotification from "@/common/create-notification";
+import ExcelExport, { downloadReport, excelExport } from "@/utils/helper";
 
 const Treacbility: React.FC = () => {
   const { control, watch, setValue, register } = useForm();
@@ -45,16 +46,37 @@ const Treacbility: React.FC = () => {
     isDeleted: false,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isUpdate, setIsUpdate] = useState<boolean>(true);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [filtersData, setFiltersData] = useState<any>();
 
   const context = useClients();
   const employeeOptions = context ? context?.employeeOptions : "";
+  const loggedInUser = context ? context?.loggedInUser : "";
+  const loggedAdminStatus = context ? context?.loggedAdminStatus : "";
+  const isAdmin = loggedAdminStatus === "1" ? true : false;
 
-  const handleGetTreacbility = async ({ employeeCode }: { employeeCode: number }) => {
+  const getUserUsername = context ? context?.getUserUsername : {};
+
+  const getTreacbilityByName = getTreacbility?.map((data) => ({
+    ...data,
+    created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
+  }));
+  const handleGetTreacbility = async ({ date, edate }: { date: any; edate: any }) => {
     setIsLoading(true);
+
+    const applyFilter = filtersData?.employeeCode
+      ? {
+          employee: filtersData?.employeeCode,
+          date,
+          edate,
+        }
+      : {
+          employeecode: Number(loggedInUser),
+          date,
+          edate,
+        };
     try {
-      const response = await getAllTreacbility({ employeecode: employeeCode });
+      const response = await getAllTreacbility({ data: applyFilter });
       if (response?.status === true) {
         setGetTreacbility(response?.trasabilityData);
         setIsLoading(false);
@@ -65,14 +87,15 @@ const Treacbility: React.FC = () => {
     }
   };
 
-  const handleEditTemperature = ({ tempId }: { tempId: number }) => {
+  const handleEditTemperature = ({ tracId }: { tracId: number }) => {
     const updatedData = getTreacbility?.find((data) => {
-      return data?.id === tempId;
+      return data?.id === tracId;
     });
     setUpdatedValues({
       tempId: updatedData?.id as number,
       employeeCode: updatedData?.created_by as number,
     });
+
     setValue?.("trasability_name", updatedData?.trasability_name);
     setValue?.("trasability_type", updatedData?.trasability_type);
     setIsUpdate(true);
@@ -99,8 +122,8 @@ const Treacbility: React.FC = () => {
           if (indexToUpdate !== -1) {
             getTreacbility[indexToUpdate] = {
               ...getTreacbility[indexToUpdate],
-              equipment_name: data.equipment_name,
-              temperature_value: data.temperature_value,
+              trasability_name: data.trasability_name,
+              trasability_type: data.trasability_type,
             };
             setGetTreacbility([...getTreacbility]);
           }
@@ -134,12 +157,17 @@ const Treacbility: React.FC = () => {
 
   const handleApplyFilter = () => {
     const employeeData = watch("employeeCode")?.value;
-
-    setFiltersData(employeeData);
+    const date = watch("from");
+    const edate = watch("toDate");
+    setFiltersData({ employeeCode: employeeData, date, edate });
+    setIsFilter(false);
   };
 
   useEffect(() => {
-    handleGetTreacbility({ employeeCode: filtersData });
+    handleGetTreacbility({
+      date: filtersData?.date,
+      edate: filtersData?.edate,
+    });
   }, [filtersData]);
 
   const handleOpenModal = ({ url }: { url: string }) => {
@@ -150,7 +178,7 @@ const Treacbility: React.FC = () => {
     <>
       <div className={styles.mainContainer}>
         <div className={styles.header}>
-          <HeadingText heading="Treacbility" text="Treacbility data here" />
+          <HeadingText heading="Treacbility" text="Represent the Products Records" />
         </div>
         <div className={styles.btnContainer}>
           <Button
@@ -158,9 +186,17 @@ const Treacbility: React.FC = () => {
             handleClick={() => setIsFilter(true)}
             className={styles.filterButton}
           />
+          <Button
+            title="Export Data"
+            handleClick={() =>
+              downloadReport({ data: getTreacbilityByName, fileName: "Treacbility" })
+            }
+            className={styles.filterButton}
+          />
         </div>
+
         <Table
-          rows={getTreacbility as any}
+          rows={getTreacbilityByName as any}
           columns={Columns({ handleOpenModal })}
           isLoading={isLoading}
           actions={({ row }) => {
@@ -261,24 +297,27 @@ const Treacbility: React.FC = () => {
           <div className={styles.selectionsContainer}>
             <div className={styles.modalHeading}>Treacbility Filter</div>
             <div className={styles.selectionContainer}>
-              <div className={styles.selections}>
-                <Selection
-                  label="Employee "
-                  isMulti={false}
-                  name="employeeCode"
-                  options={employeeOptions as OptionType[]}
-                  control={control}
-                  // singleValueMaxWidth={"10px"}
-                  // singleValueMinWidth="200px"
-                  // customWidth="200px"
-                />
-              </div>
+              {isAdmin && (
+                <div className={styles.selections}>
+                  <Selection
+                    label="Employee "
+                    isMulti={false}
+                    name="employeeCode"
+                    options={employeeOptions as OptionType[]}
+                    control={control}
+                    // singleValueMaxWidth={"10px"}
+                    // singleValueMinWidth="200px"
+                    // customWidth="200px"
+                  />
+                </div>
+              )}
             </div>
 
             <Input
               type="date"
               name="from"
               label={"From"}
+              register={register}
               className={styles.labelClass}
               // errorMessage={error}
               inputClass={styles.dateClass}
@@ -290,6 +329,7 @@ const Treacbility: React.FC = () => {
               name="toDate"
               label={"To"}
               className={styles.labelClass}
+              register={register}
               // errorMessage={error}
               inputClass={styles.dateClass}
               // onChange={(e) => setValue(e.target.value)}

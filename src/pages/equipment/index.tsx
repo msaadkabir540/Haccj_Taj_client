@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import Button from "@/components/button";
 
-import { addEquipment, getAllEquipment } from "@/api-services/equipment";
+import { addEquipment, deleteEquipment, getAllEquipment } from "@/api-services/equipment";
 
 import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
@@ -17,18 +17,11 @@ import Input from "@/components/input";
 import createNotification from "@/common/create-notification";
 import Pagination from "@/components/pagination";
 import HeadingText from "@/components/heading-text";
-import { useForm } from "react-hook-form";
-import MultiSelectBox from "@/components/multi-select-box";
-import Selection from "@/components/selection";
-import ReactDatePicker from "react-datepicker";
-import DatePicker from "@/components/date-picker";
 
 const Equipment = () => {
-  const { control } = useForm();
   const [isAdd, setIsAdd] = useState<number>(0);
   const [error, setError] = useState<string>("");
   const [value, setValue] = useState<string>("");
-  const [startDate, setStartDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,6 +54,7 @@ const Equipment = () => {
       // Handle errors if needed
     }
   };
+
   const handleGetEquipment = async () => {
     setIsLoading(true);
     try {
@@ -75,6 +69,21 @@ const Equipment = () => {
     }
   };
 
+  const handleDelete = async ({ deleteId }: { deleteId: number }) => {
+    // setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    try {
+      const res = await deleteEquipment({ id: deleteId });
+      if (res.status === true) {
+        const updatedData = getEquipment?.filter((item) => item.id != deleteId);
+        setGetEquipment(updatedData);
+        // setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const equipmentData = useMemo(() => {
     return getEquipment?.sort((a, b) => {
       const dateA = new Date(b.updated_at);
@@ -82,10 +91,6 @@ const Equipment = () => {
       return dateA.getTime() - dateB.getTime();
     });
   }, [getEquipment]);
-
-  const handleChange = ({ date }: { date: any }) => {
-    setStartDate(date);
-  };
 
   useEffect(() => {
     handleGetEquipment();
@@ -108,41 +113,7 @@ const Equipment = () => {
             </div>
           </div>
         </div>
-        <div className={styles.selectionList}>
-          <div className={styles.selectionsContainer}>
-            <Selection
-              label="Equipment Name"
-              isMulti={false}
-              name="name"
-              options={SelectOption}
-              control={control}
-              singleValueMaxWidth={"120px"}
-              singleValueMinWidth="200px"
-              customWidth="200px"
-            />
-            <Selection
-              label="Employee "
-              isMulti={false}
-              name="name"
-              options={SelectOption}
-              control={control}
-              singleValueMaxWidth={"120px"}
-              singleValueMinWidth="200px"
-              customWidth="200px"
-            />
-            <div>
-              {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
-              {/* <label htmlFor="">From Date</label>
-            <ReactDatePicker
-              showIcon
-              timeInputLabel="Time:"
-              name="From date"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-            /> */}
-            </div>
-          </div>
-        </div>
+
         <Table
           rows={equipmentData as EquipmentsInterface[]}
           columns={Columns}
@@ -153,15 +124,10 @@ const Equipment = () => {
                 <div className={styles.iconRow}>
                   <Button
                     type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                  />
-                  <Button
-                    type="button"
                     icon={delIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
+                    handleClick={() => handleDelete({ deleteId: row?.id })}
                   />
                 </div>
               </td>

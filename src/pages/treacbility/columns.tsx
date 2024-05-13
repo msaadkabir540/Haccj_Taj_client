@@ -31,7 +31,7 @@ const Columns = ({
                   style={{ borderRadius: "3px" }}
                 />
               )}
-              <div className={styles.text}>{row?.image_name}</div>
+              {/* <div className={styles.text}>{row?.image_name}</div> */}
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@ const Columns = ({
     },
   },
   {
-    key: "created_by",
+    key: "created_by_name",
     title: "created By",
     render: ({ value }: TableColumnRenderProps) => {
       return value as string;
@@ -62,7 +62,7 @@ const Columns = ({
     },
   },
   {
-    key: "updated_at",
+    key: "created_at",
     title: "Create ",
     render: ({ value }: TableColumnRenderProps) => {
       return moment(value as string).format("DD-MM-YYYY") as string;

@@ -13,7 +13,12 @@
   }
 
   .btnContainer {
-    margin: 10px 10px;
+    margin: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: 635px) {
+      flex-wrap: wrap;
+    }
     .filterButton {
       border-radius: 5px;
       max-width: 130px;

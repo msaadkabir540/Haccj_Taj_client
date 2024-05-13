@@ -27,6 +27,7 @@ import { TemperatureInterface } from "./temperature-interface";
 import { OptionType } from "@/components/selection/selection-interface";
 
 import styles from "./index.module.scss";
+import { downloadReport } from "@/utils/helper";
 
 const Temperature: React.FC = () => {
   const { control, watch, register, setValue } = useForm();
@@ -48,12 +49,28 @@ const Temperature: React.FC = () => {
 
   const context = useClients();
   const employeeOptions = context ? context?.employeeOptions : [];
+  const loggedInUser = context ? context?.loggedInUser : "";
+  const getUserUsername = context ? context?.getUserUsername : {};
+  const loggedAdminStatus = context ? context?.loggedAdminStatus : "";
+  const IsAdmin = loggedAdminStatus === "1" ? true : false;
 
-  const handleGetTemperature = async ({ employeeCode }: { employeeCode: string }) => {
+  const getAllTemperatureByName = getTemperature?.map((data) => ({
+    ...data,
+    created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
+  }));
+  const handleGetTemperature = async ({ date, edate }: { date: any; edate: any }) => {
     setIsLoading(true);
     try {
-      const employeecode = Number(employeeCode);
-      const response = await getAllTemperature({ id: employeecode });
+      const employeecode = Number(loggedInUser);
+
+      const applyFilter = filtersData?.employeeCode
+        ? {
+            employee: filtersData?.employeeCode,
+          }
+        : {
+            employeecode: employeecode,
+          };
+      const response = await getAllTemperature({ data: applyFilter, date, edate });
       if (response?.status === true) {
         setGetTemperature(response?.temperatureData);
         setIsLoading(false);
@@ -131,38 +148,43 @@ const Temperature: React.FC = () => {
     }
   };
 
-  const getTemperatureData = useMemo(() => {
-    return getTemperature?.sort((a, b) => {
-      const dateA = new Date(b.updated_at);
-      const dateB = new Date(a.updated_at);
-      return dateA.getTime() - dateB.getTime();
-    });
-  }, [getTemperature]);
-
   const handleApplyFilter = () => {
     const employeeData = watch("employeeCode")?.value;
-
-    setFiltersData(employeeData);
+    const date = watch("from");
+    const edate = watch("toDate");
+    setFiltersData({ employeeCode: employeeData, date, edate });
+    setIsFilter(false);
   };
 
   useEffect(() => {
-    handleGetTemperature({ employeeCode: filtersData });
-  }, [filtersData]);
+    handleGetTemperature({
+      date: filtersData?.date,
+      edate: filtersData?.edate,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersData, loggedInUser]);
 
   return (
     <>
       <div className={styles.loading}>
-        <HeadingText heading={"Temperature"} text="Temperature demo passage of here" />
+        <HeadingText heading={"Temperature"} text="Presented for consumer consumption" />
         <div className={styles.btnContainer}>
           <Button
             title="Filter"
             handleClick={() => setIsFilter(true)}
             className={styles.filterButton}
           />
+          <Button
+            title="Export Data"
+            handleClick={() =>
+              downloadReport({ data: getAllTemperatureByName, fileName: "Temperature" })
+            }
+            className={styles.filterButton}
+          />
         </div>
         <div className={styles.pagination}>
           <Table
-            rows={getTemperatureData as TemperatureInterface[]}
+            rows={getAllTemperatureByName as TemperatureInterface[]}
             columns={Columns}
             isLoading={isLoading}
             actions={({ row }) => {
@@ -257,20 +279,23 @@ const Temperature: React.FC = () => {
         <div className={styles.selectionsContainer}>
           <div className={styles.modalHeading}>Temperature Filter</div>
           <div className={styles.selectionContainer}>
-            <div className={styles.selections}>
-              <Selection
-                label="Employee "
-                isMulti={false}
-                name="employeeCode"
-                options={employeeOptions as OptionType[]}
-                control={control}
-              />
-            </div>
+            {IsAdmin && (
+              <div className={styles.selections}>
+                <Selection
+                  label="Employee "
+                  isMulti={false}
+                  name="employeeCode"
+                  options={employeeOptions as OptionType[]}
+                  control={control}
+                />
+              </div>
+            )}
           </div>
 
           <Input
             type="date"
             name="from"
+            register={register}
             label={"From"}
             className={styles.labelClass}
             inputClass={styles.dateClass}
@@ -280,6 +305,7 @@ const Temperature: React.FC = () => {
             type="date"
             name="toDate"
             label={"To"}
+            register={register}
             className={styles.labelClass}
             inputClass={styles.dateClass}
           />
