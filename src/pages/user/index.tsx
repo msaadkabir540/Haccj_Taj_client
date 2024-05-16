@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
 import Input from "@/components/input";
@@ -26,6 +27,7 @@ import styles from "./index.module.scss";
 import HeadingText from "@/components/heading-text";
 
 const User: React.FC = () => {
+  const navigate = useNavigate();
   const { register, handleSubmit, reset, watch, setValue } = useForm<TryNowFormInterface>({
     defaultValues: defaultFormValues,
   });
@@ -92,7 +94,7 @@ const User: React.FC = () => {
   const handleAllEmployee = async () => {
     try {
       setIsLoading(true);
-      const response = await getAllEmployees();
+      const response = await getAllEmployees({ navigate: navigate });
       if (response?.status === true) {
         setAllEmployees(response?.data);
         setIsLoading(false);
@@ -140,7 +142,7 @@ const User: React.FC = () => {
                 />
               </div>
               <Button
-                title="Create User"
+                title="Add Employee"
                 handleClick={() => setIsUser(true)}
                 className={styles.btn}
               />
@@ -174,16 +176,6 @@ const User: React.FC = () => {
               );
             }}
           />
-          <div className={styles.pagination}>
-            <Pagination
-              page={1}
-              pageSize={10}
-              totalCount={20}
-              // control={control}
-              // setValue={setValue}
-              perPageText="Records per page"
-            />
-          </div>
         </div>
 
         {isUser && (

@@ -49,3 +49,16 @@ export const updateCheckList = async ({
     console.error(e);
   }
 };
+
+export const deleteCheckList = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-checklist/${id}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

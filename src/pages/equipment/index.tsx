@@ -134,16 +134,6 @@ const Equipment = () => {
             );
           }}
         />
-        <div className={styles.pagination}>
-          <Pagination
-            page={1}
-            pageSize={10}
-            totalCount={20}
-            // control={control}
-            // setValue={setValue}
-            perPageText="Records per page"
-          />
-        </div>
       </div>
 
       {isOpen && (
@@ -182,7 +172,7 @@ const Equipment = () => {
                     className={styles.btn2}
                   />
                   <Button
-                    title="Add User"
+                    title="Save"
                     handleClick={() => handleAddEquipments()}
                     className={styles.btn}
                     isLoading={isAdding}

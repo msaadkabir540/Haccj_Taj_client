@@ -86,7 +86,7 @@ const Products: React.FC = () => {
   };
 
   const handleGetProductType = async () => {
-    setIsLoading(false);
+    setIsLoading(true);
     try {
       const response = await getProductTypes();
 
@@ -138,7 +138,7 @@ const Products: React.FC = () => {
         </div>
 
         <Table
-          rows={allProducts as EmployeeDataInterface[]}
+          rows={allProducts}
           columns={Columns}
           isLoading={isLoading}
           tableCustomClass={styles.tableCustomClass}
@@ -158,16 +158,6 @@ const Products: React.FC = () => {
             );
           }}
         />
-        <div className={styles.pagination}>
-          <Pagination
-            page={1}
-            pageSize={10}
-            totalCount={20}
-            // control={control}
-            // setValue={setValue}
-            perPageText="Records per page"
-          />
-        </div>
       </div>
 
       {isUser && (

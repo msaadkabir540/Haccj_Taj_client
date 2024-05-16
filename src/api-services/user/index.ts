@@ -9,6 +9,10 @@ export const getAllEmployees = async () => {
 
     return response;
   } catch (e) {
+    if (e?.response?.status === 401) {
+      window.location.href = "/login";
+      localStorage.clear();
+    }
     console.error(e);
   }
 };

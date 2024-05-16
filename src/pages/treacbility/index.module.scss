@@ -17,7 +17,7 @@
     flex-direction: column;
     gap: 15px;
     .dateClass {
-      width: 97% !important;
+      width: 95% !important;
     }
     .modalHeading {
       font-size: 20px;
@@ -98,6 +98,9 @@
 
 .ModalClassName {
   max-width: 31vw !important;
+  @media (max-width: 600px) {
+    max-width: 90vw !important;
+  }
 }
 
 .videoPlayer {

@@ -38,25 +38,30 @@ const Login: React.FC = () => {
       setError("Employee code is required");
       setErrorPassword("password is required");
     } else {
-      setError("");
-      setErrorPassword("");
-      setIsLoading(true);
-      const res = await signIn({ data });
+      try {
+        setError("");
+        setErrorPassword("");
+        setIsLoading(true);
+        const res = await signIn({ data });
 
-      if (res.status === true) {
-        localStorage.setItem("token", res.access_token);
-        localStorage.setItem("employeecode", res?.employee?.employeecode);
-        localStorage.setItem("admin", res?.employee?.isadmin);
-        createNotification({ type: "success", message: "Successfully Login" });
-        handleLoggedIn({ res });
+        if (res.status === true) {
+          localStorage.setItem("token", res.access_token);
+          localStorage.setItem("employeecode", res?.employee?.employeecode);
+          localStorage.setItem("admin", res?.employee?.isadmin);
+          createNotification({ type: "success", message: "Successfully Login" });
+          handleLoggedIn({ res });
+          setIsLoading(false);
+          navigate("/");
+        } else {
+          setIsLoading(false);
+          createNotification({
+            type: "error",
+            message: res?.response?.data?.message || "Failed To Login.",
+          });
+        }
+      } catch (error) {
         setIsLoading(false);
-        navigate("/");
-      } else {
-        setIsLoading(false);
-        createNotification({
-          type: "error",
-          message: res?.response?.data?.message || "Failed To Login.",
-        });
+        console.error(error);
       }
     }
   };

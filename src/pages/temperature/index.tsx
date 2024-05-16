@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useEffect, useMemo, useState } from "react";
 
 import Table from "@/components/table";
 import Modal from "@/components/modal";
 import Input from "@/components/input";
 import Button from "@/components/button";
 import Selection from "@/components/selection";
-import Pagination from "@/components/pagination";
 import HeadingText from "@/components/heading-text";
 import createNotification from "@/common/create-notification";
 
@@ -30,6 +30,7 @@ import styles from "./index.module.scss";
 import { downloadReport } from "@/utils/helper";
 
 const Temperature: React.FC = () => {
+  const navigate = useNavigate();
   const { control, watch, register, setValue } = useForm();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,15 +64,14 @@ const Temperature: React.FC = () => {
     try {
       const employeecode = Number(loggedInUser);
 
-      const applyFilter = filtersData?.employeeCode
-        ? {
-            employee: filtersData?.employeeCode,
-          }
-        : {
-            employeecode: employeecode,
-          };
-      const response = await getAllTemperature({ data: applyFilter, date, edate });
-      if (response?.status === true) {
+      const applyFilter = {
+        employee: filtersData?.employeeCode,
+        employeecode: employeecode,
+      };
+      const response = await getAllTemperature({ data: applyFilter, date, edate, navigate });
+      if (response?.status === 401) {
+        navigate("/login");
+      } else if (response?.status === true) {
         setGetTemperature(response?.temperatureData);
         setIsLoading(false);
       }
@@ -174,13 +174,15 @@ const Temperature: React.FC = () => {
             handleClick={() => setIsFilter(true)}
             className={styles.filterButton}
           />
-          <Button
-            title="Export Data"
-            handleClick={() =>
-              downloadReport({ data: getAllTemperatureByName, fileName: "Temperature" })
-            }
-            className={styles.filterButton}
-          />
+          {IsAdmin && (
+            <Button
+              title="Export Data"
+              handleClick={() =>
+                downloadReport({ data: getAllTemperatureByName, fileName: "Temperature" })
+              }
+              className={styles.filterButton}
+            />
+          )}
         </div>
         <div className={styles.pagination}>
           <Table
@@ -210,16 +212,6 @@ const Temperature: React.FC = () => {
               );
             }}
           />
-          <div className={styles.pagination}>
-            <Pagination
-              page={1}
-              pageSize={10}
-              totalCount={20}
-              // control={control}
-              // setValue={setValue}
-              perPageText="Records per page"
-            />
-          </div>
         </div>
       </div>
 

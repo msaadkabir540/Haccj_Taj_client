@@ -17,6 +17,7 @@ const Machine: React.FC = () => {
   const loggedInEmployeeCode = localStorage?.getItem("employeecode") || "";
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAdded, setIsAdded] = useState<number>(0);
   const [getAllMachine, setGetAllMachine] = useState<any>();
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [filtersData, setFiltersData] = useState<string>("");
@@ -54,6 +55,7 @@ const Machine: React.FC = () => {
     try {
       const res = await addMachine({ data });
       if (res.status) {
+        setIsAdded(isAdded + 1);
         setIsOpen(false);
         setIsCreateUpdate((prev) => ({ ...prev, isLoading: false }));
         createNotification({ type: "success", message: "Add Machine successfully." });
@@ -67,24 +69,29 @@ const Machine: React.FC = () => {
   const handleGetMachine = async () => {
     setIsCreateUpdate((prev) => ({ ...prev, isGetLoading: true }));
     try {
-      const applyFilter = filtersData
-        ? {
-            employee: filtersData,
-          }
-        : {
-            employeecode: Number(loggedInUser),
-          };
+      const applyFilter = {
+        employee: filtersData,
+        employeecode: Number(loggedInUser),
+      };
       const response = await getAllOilTempAndMachine({ data: applyFilter });
       if (response?.status === true) {
         setGetAllMachine(response?.oilMachineData);
         setIsCreateUpdate((prev) => ({ ...prev, isGetLoading: false }));
-        setIsFilter(false);
       }
     } catch (error) {
       setIsCreateUpdate((prev) => ({ ...prev, isGetLoading: false }));
 
       console.error(error);
     }
+  };
+
+  const handleFilterOpen = (argu: boolean) => {
+    setIsFilter(argu);
+  };
+  const handleApplyFilter = () => {
+    const employeeCode = watch("employeeCode")?.value;
+    setFiltersData(employeeCode);
+    setIsFilter(false);
   };
 
   const handleDelete = async ({ deleteId }: { deleteId: number }) => {
@@ -111,16 +118,16 @@ const Machine: React.FC = () => {
 
   useEffect(() => {
     handleGetMachine();
-  }, [filtersData]);
+  }, [filtersData, isAdded]);
 
   return (
     <div className={styles.header}>
       <TableBtnStructure
         isCreate={true}
-        headingText="Machine"
         isUpdate={false}
-        ColumnsData={Columns}
         control={control}
+        headingText="Machine"
+        ColumnsData={Columns}
         handleDelete={handleDelete}
         rowData={allMachineByEmployeeName}
         handleOpenCreate={handleOpenCreate}
@@ -134,7 +141,7 @@ const Machine: React.FC = () => {
           open: isOpen === true,
           handleClose: () => setIsOpen(false),
         }}
-        className={styles.ModalClassName}
+        className={styles.modalClassName}
       >
         <div className={styles.selectionsContainer}>
           <div

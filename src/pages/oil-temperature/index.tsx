@@ -56,13 +56,10 @@ const OilTemperature: React.FC = () => {
     setIsCreate((prev) => ({ ...prev, isLoading: true }));
 
     try {
-      const applyFilter = filtersData
-        ? {
-            employee: filtersData?.employeeCode,
-          }
-        : {
-            employeecode: Number(loggedInUser),
-          };
+      const applyFilter = {
+        employee: filtersData?.employeeCode,
+        employeecode: Number(loggedInUser),
+      };
       const response = await getAllOilTempAndMachine({ data: { ...applyFilter, date, edate } });
       if (response?.status === true) {
         setGetOilTemperature(response?.oilTemperatureData);
@@ -173,13 +170,14 @@ const OilTemperature: React.FC = () => {
     <div className={styles.header}>
       <TableBtnStructure
         isCreate={false}
-        isExport={true}
+        isExport={isAdmin}
         fileName="Oil_Temperature"
         control={control}
         isFilter={isFilter}
+        isAdmin={isAdmin}
         isDate={true}
         register={register}
-        isFilterValid={isAdmin as boolean}
+        isFilterValid={true as boolean}
         handleDelete={handleDelete}
         rowData={getOilTemperature}
         headingText="Oil Temperature"
@@ -191,7 +189,7 @@ const OilTemperature: React.FC = () => {
         SelectOption={employeeOptions as any}
         ColumnsData={Columns({ handleOpenModal })}
         isTableLoading={isCreate?.isLoading as boolean}
-        headerPassage="Oli Temperature demo passage of here"
+        headerPassage="Presented for oli changes"
       />
       <Modal
         {...{

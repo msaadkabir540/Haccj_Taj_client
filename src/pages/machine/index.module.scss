@@ -5,7 +5,7 @@
     flex-direction: column;
     gap: 15px;
     .dateClass {
-      width: 95% !important;
+      width: 97% !important;
     }
     .modalHeading {
       font-size: 20px;
@@ -62,5 +62,11 @@
         font-size: 15px !important;
       }
     }
+  }
+}
+
+.modalClassName {
+  @media (max-width: 600px) {
+    max-width: 90vw !important;
   }
 }

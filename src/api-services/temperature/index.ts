@@ -4,10 +4,12 @@ export const getAllTemperature = async ({
   date,
   edate,
   data,
+  navigate,
 }: {
   date?: any;
   edate?: any;
   data?: any;
+  navigate: any;
 }) => {
   try {
     const response = await axiosApiRequest({
@@ -15,9 +17,12 @@ export const getAllTemperature = async ({
       url: `/get-temperature-data`,
       params: { ...data, date, edate },
     });
-
     return response;
   } catch (e) {
+    if (e?.response?.status === 401) {
+      navigate("/login");
+      localStorage.clear();
+    }
     console.error(e);
   }
 };

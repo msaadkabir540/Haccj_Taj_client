@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate, useNavigate } from "react-router-dom";
 
 import Routing from "@/routes/index";
 import Navbar from "./components/navbar";
+import Navbars from "./components/navbars";
 import Loading from "./components/loading";
 import Container from "@/components/container";
 
@@ -13,12 +14,13 @@ import { setUsers } from "./reducers";
 
 import logo from "@/assets/assets/taj mahal logo.png";
 
-import style from "./app.module.scss";
-import "./app.module.scss";
-import Navbars from "./components/navbars";
 import { ContextCollection } from "./context/context-collection";
 
+import "./app.module.scss";
+import style from "./app.module.scss";
+
 const Dashboard = () => {
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -37,7 +39,10 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    if (!token) {
+      localStorage.removeItem("token"); // Remove token
+      window.location.href = "/login";
+    } else {
       handleAllUser();
     }
   }, []);

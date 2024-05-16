@@ -64,17 +64,12 @@ const Treacbility: React.FC = () => {
   const handleGetTreacbility = async ({ date, edate }: { date: any; edate: any }) => {
     setIsLoading(true);
 
-    const applyFilter = filtersData?.employeeCode
-      ? {
-          employee: filtersData?.employeeCode,
-          date,
-          edate,
-        }
-      : {
-          employeecode: Number(loggedInUser),
-          date,
-          edate,
-        };
+    const applyFilter = {
+      employee: filtersData?.employeeCode,
+      employeecode: Number(loggedInUser),
+      date,
+      edate,
+    };
     try {
       const response = await getAllTreacbility({ data: applyFilter });
       if (response?.status === true) {
@@ -186,13 +181,15 @@ const Treacbility: React.FC = () => {
             handleClick={() => setIsFilter(true)}
             className={styles.filterButton}
           />
-          <Button
-            title="Export Data"
-            handleClick={() =>
-              downloadReport({ data: getTreacbilityByName, fileName: "Treacbility" })
-            }
-            className={styles.filterButton}
-          />
+          {isAdmin && (
+            <Button
+              title="Export Data"
+              handleClick={() =>
+                downloadReport({ data: getTreacbilityByName, fileName: "Treacbility" })
+              }
+              className={styles.filterButton}
+            />
+          )}
         </div>
 
         <Table
@@ -222,16 +219,6 @@ const Treacbility: React.FC = () => {
             );
           }}
         />
-        <div className={styles.pagination}>
-          <Pagination
-            page={1}
-            pageSize={10}
-            totalCount={20}
-            // control={control}
-            // setValue={setValue}
-            perPageText="Records per page"
-          />
-        </div>
 
         <Modal
           {...{

@@ -28,11 +28,14 @@ const CleaningPlan: React.FC = () => {
   const [filtersData, setFiltersData] = useState<{
     employeeCode: string | undefined;
     area: string | undefined;
+    date: any;
+    edate: any;
   }>();
 
   const context = useClients();
   const employeeOptions = context ? context?.employeeOptions : "";
   const loggedInUser = context ? context?.loggedInUser : "";
+  const isAdmin = context ? context?.isAdmin : "";
 
   const handleFilterOpen = (argu: boolean) => {
     setIsFilter(argu);
@@ -41,15 +44,17 @@ const CleaningPlan: React.FC = () => {
   const handleGetCleaningPlan = async () => {
     setIsCreate((prev) => ({ ...prev, isLoading: true }));
     try {
-      const applyFilter = filtersData?.employeeCode
-        ? {
-            employee: Number(filtersData?.employeeCode),
-          }
-        : {
-            employeecode: Number(loggedInUser),
-          };
+      const applyFilter = {
+        employee: Number(filtersData?.employeeCode),
+        employeecode: Number(loggedInUser),
+      };
       const response = await getAllCleaningPlan({
-        data: { ...applyFilter, area: filtersData?.area },
+        data: {
+          ...applyFilter,
+          cleaning_area: filtersData?.area,
+          date: filtersData?.date,
+          edate: filtersData?.edate,
+        },
       });
       if (response?.status === true) {
         setGetCleaningPlan(response?.cleaningData);
@@ -73,8 +78,10 @@ const CleaningPlan: React.FC = () => {
   const handleApplyFilter = () => {
     const employeeData = watch("employeeCode")?.value;
     const area = watch("area")?.value;
+    const date = watch("from");
+    const edate = watch("toDate");
 
-    setFiltersData((prev) => ({ ...prev, employeecode: employeeData, area: area }));
+    setFiltersData((prev) => ({ ...prev, employeeCode: employeeData, area: area, date, edate }));
     setIsFilter(false);
   };
 
@@ -105,7 +112,8 @@ const CleaningPlan: React.FC = () => {
         isCreate={false}
         control={control}
         isFilter={isFilter}
-        isExport={true}
+        isExport={isAdmin as boolean}
+        isAdmin={isAdmin as boolean}
         fileName="Cleaning_Plan"
         isUpdate={false}
         isFilterValid={true}
@@ -119,7 +127,7 @@ const CleaningPlan: React.FC = () => {
         SelectOption={employeeOptions as any}
         ColumnsData={Columns({ handleOpenModal })}
         isTableLoading={isCreate?.isLoading as boolean}
-        headerPassage="Cleaning Plan demo passage of here"
+        headerPassage="Presenting for cleaning activities"
       />
       <Modal
         {...{

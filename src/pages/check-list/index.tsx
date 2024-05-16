@@ -11,6 +11,7 @@ import styles from "./index.module.scss";
 import { useClients } from "@/context/context-collection";
 import {
   addCheckList,
+  deleteCheckList,
   getCheckListByEmployeeCode,
   updateCheckList,
 } from "@/api-services/check-list";
@@ -22,6 +23,7 @@ import TableBtnStructure from "@/components/table-btn-structure";
 
 const CheckList = () => {
   const { control, register, watch, setValue, reset } = useForm();
+
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,8 +38,10 @@ const CheckList = () => {
     url?: string;
     isTableLoading?: boolean;
     isUpdateRowId?: number;
+    isAddUpdate?: number | undefined;
   }>({
     url: "",
+    isAddUpdate: 0,
     isLoading: false,
     isTableLoading: false,
     isOpenImageModal: false,
@@ -67,18 +71,25 @@ const CheckList = () => {
       label: data?.name,
     })) || [];
 
-  const handleGetCheckList = async ({ date, edate }: { date: any; edate: ant }) => {
+  const handleGetCheckList = async ({
+    date,
+    edate,
+    assign_to,
+  }: {
+    date: any;
+    edate: any;
+    assign_to: string;
+  }) => {
     try {
-      const applyFilter = filtersData
-        ? {
-            employee: filtersData?.employeeCode,
-          }
-        : {
-            employeecode: Number(loggedInUser),
-          };
+      const applyFilter = {
+        employee: filtersData?.employeeCode,
+        employeecode: Number(loggedInUser),
+      };
 
       setIsCreate((prev) => ({ ...prev, isTableLoading: true }));
-      const res = await getCheckListByEmployeeCode({ data: { ...applyFilter, date, edate } });
+      const res = await getCheckListByEmployeeCode({
+        data: { ...applyFilter, date, edate, assign_to },
+      });
       const checkListData = res?.data === "N/A" ? [] : res?.data;
 
       if (res.status === true) {
@@ -124,7 +135,9 @@ const CheckList = () => {
         if (res.status === true) {
           reset({});
           setIsOpen(false);
+          setIsUpdate(false);
           setIsLoading(false);
+          setIsCreate((prev) => ({ ...prev, isAddUpdate: 1 + 1 }));
         } else {
           setIsLoading(false);
         }
@@ -143,7 +156,8 @@ const CheckList = () => {
     const employeeData = watch("employeeCode")?.value;
     const date = watch("from");
     const edate = watch("toDate");
-    setFiltersData({ employeeCode: employeeData, date, edate });
+    const assign_to = watch("assign_to")?.value;
+    setFiltersData({ employeeCode: employeeData, date, edate, assign_to });
     setIsFilter(false);
   };
 
@@ -165,12 +179,29 @@ const CheckList = () => {
     setIsUpdate(true);
   };
 
+  const handleDelete = async ({ deleteId }: { deleteId: number }) => {
+    setIsCreate((prev) => ({ ...prev, isDelete: true }));
+    try {
+      const res = await deleteCheckList({ id: deleteId });
+      if (res.status === true) {
+        const updatedData = getAllCheckList?.filter((item) => item.id != deleteId);
+        setGetAllCheckList(updatedData);
+        setIsCreate((prev) => ({ ...prev, isDelete: false }));
+
+        createNotification({ type: "success", message: res?.message });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     handleGetCheckList({
       date: filtersData?.date,
       edate: filtersData?.edate,
+      assign_to: filtersData?.assign_to,
     });
-  }, [filtersData]);
+  }, [filtersData, isCreate?.isAddUpdate]);
 
   useEffect(() => {
     if (employeeCode) {
@@ -183,15 +214,18 @@ const CheckList = () => {
     <div>
       <TableBtnStructure
         isDate={true}
-        isExport={true}
+        isExport={isAdmin}
         fileName="CheckList"
         isCreate={isAdmin}
         control={control}
         isFilter={isFilter}
-        isFilterValid={isAdmin}
+        isAdmin={isAdmin}
+        isFilterValid={true}
         ColumnsData={Columns}
+        handleDelete={handleDelete}
         handleEdit={handleEdit}
         register={register}
+        isAssignTo={true}
         headingText="Check List"
         rowData={getAllCheckListByName}
         handleOpenCreate={handleOpenCreate}
@@ -199,7 +233,7 @@ const CheckList = () => {
         handleApplyFilter={handleApplyFilter}
         SelectOption={employeeOptions as any}
         isTableLoading={isCreate?.isTableLoading as boolean}
-        headerPassage="Check List demo passage of here"
+        headerPassage="Recordable path tracking"
       />
 
       {isOpen && (
@@ -210,6 +244,7 @@ const CheckList = () => {
             reset({});
             setIsLoading(false);
             setIsOpen(false);
+            setIsUpdate(false);
           }}
           className={`${styles.modalWrapper}`}
         >
@@ -223,7 +258,7 @@ const CheckList = () => {
                     name="employee"
                     isDisable={true}
                     value={employeeName}
-                    label={"Enter Employee"}
+                    label={"Assign By"}
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />
@@ -249,7 +284,7 @@ const CheckList = () => {
                   />
                   <div className={styles.Selections}>
                     <Selection
-                      label="Employee"
+                      label="Assign To"
                       isMulti={false}
                       name="assignTo"
                       control={control}
@@ -265,11 +300,12 @@ const CheckList = () => {
                       reset({});
                       setIsLoading(false);
                       setIsOpen(false);
+                      setIsUpdate(false);
                     }}
                     className={styles.btn2}
                   />
                   <Button
-                    title="Add Check List"
+                    title="Save"
                     isLoading={isLoading}
                     className={styles.btn}
                     handleClick={() => handleAddCheckList()}
@@ -281,166 +317,6 @@ const CheckList = () => {
         </Modal>
       )}
     </div>
-    // <div className={styles.userContainer}>
-    //   <div>
-    //     <div className={styles.btnContainer}>
-    //       <div className={styles.header}>
-    //         <HeadingText heading="Check List" text="Check List demo passage of here" />
-    //       </div>
-    //       <div>
-    //         <Button
-    //           title="Add Check List"
-    //           handleClick={() => setIsOpen(true)}
-    //           className={styles.btn}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div className={styles.mainContainer}>
-    //     <div className={styles.selectionList}>
-    //       <div className={styles.selectionsContainer}>
-    //         {/* <Selection
-    //           label="Employee "
-    //           isMulti={false}
-    //           name="employeeCode"
-    //           options={employeeOptions}
-    //           control={control}
-    //           singleValueMaxWidth={"120px"}
-    //           singleValueMinWidth="200px"
-    //           customWidth="200px"
-    //         /> */}
-
-    //         <div>
-    //           {/* <DatePicker label={"From"} startDate={startDate} handleChange={setStartDate} /> */}
-    //           {/* <label htmlFor="">From Date</label>
-    //         <ReactDatePicker
-    //           showIcon
-    //           timeInputLabel="Time:"
-    //           name="From date"
-    //           selected={startDate}
-    //           onChange={(date) => setStartDate(date)}
-    //         /> */}
-    //         </div>
-    //       </div>
-    //       <div className={styles.pagination}>
-    //         {/* <Pagination
-    //           page={1}
-    //           pageSize={10}
-    //           totalCount={20}
-    //           // control={control}
-    //           // setValue={setValue}
-    //           perPageText="Records per page"
-    //         /> */}
-    //       </div>
-    //     </div>
-    //     {/* <Table
-    //     // rows={equipmentData}
-    //     // columns={Columns}
-    //     // isLoading={isLoading}
-    //     // actions={({ row }) => {
-    //     //   return (
-    //     //     <td className={styles.iconRow} key={row?.id}>
-    //     //       <Button
-    //     //         type="button"
-    //     //         icon={editIcon}
-    //     //         className={styles.iconsBtn}
-    //     //         loaderClass={styles.loading}
-
-    //     //         // handleClick={() => {
-    //     //         //   navigate(`/template/${row?._id}`);
-    //     //         // }}
-    //     //       />
-    //     //       <Button
-    //     //         type="button"
-    //     //         icon={delIcon}
-    //     //         className={styles.iconsBtn}
-    //     //         loaderClass={styles.loading}
-    //     //         // isLoading={isDeleting === row?._id}
-    //     //         // handleClick={() => handleDelete(row?._id)}
-    //     //       />
-    //     //     </td>
-    //     //   );
-    //     // }}
-    //     // /> */}
-    //   </div>
-
-    //   {isOpen && (
-    //     <Modal
-    //       open={isOpen}
-    //       showCross={true}
-    //       handleCross={() => {
-    //         setIsOpen(false);
-    //       }}
-    //       className={`${styles.modalWrapper}`}
-    //     >
-    //       <div>
-    //         <div className={styles.heading}>Add Check List</div>
-    //         <form>
-    //           <div>
-    //             <div className={styles.inputFieldsContainer}>
-    //               <Input
-    //                 type="text"
-    //                 name="employee"
-    //                 isDisable={true}
-    //                 value={employeeName}
-    //                 label={"Enter Employee"}
-    //                 className={styles.labelClass}
-    //                 inputClass={styles.inputClass}
-    //               />
-    //               <Input
-    //                 required
-    //                 type="text"
-    //                 name="task"
-    //                 register={register}
-    //                 label={"Enter Task"}
-    //                 className={styles.labelClass}
-    //                 inputClass={styles.inputClass}
-    //               />
-    //             </div>
-    //             <div className={styles.inputFieldsContainer}>
-    //               <Input
-    //                 required
-    //                 type="text"
-    //                 name="message"
-    //                 register={register}
-    //                 label={"Enter Message"}
-    //                 className={styles.labelClass}
-    //                 inputClass={styles.inputClass}
-    //               />
-    //               <div className={styles.Selections}>
-    //                 <Selection
-    //                   label="Employee"
-    //                   isMulti={false}
-    //                   name="assignTo"
-    //                   control={control}
-    //                   options={employeeOptions}
-    //                 />
-    //               </div>
-    //             </div>
-
-    //             <div className={styles.modalBtnContainer}>
-    //               <Button
-    //                 title="Close "
-    //                 handleClick={() => {
-    //                   // setValue("");
-    //                   setIsOpen(false);
-    //                 }}
-    //                 className={styles.btn2}
-    //               />
-    //               <Button
-    //                 title="Add Check List"
-    //                 isLoading={isLoading}
-    //                 className={styles.btn}
-    //                 handleClick={() => handleAddCheckList()}
-    //               />
-    //             </div>
-    //           </div>
-    //         </form>
-    //       </div>
-    //     </Modal>
-    //   )}
-    // </div>
   );
 };
 export default CheckList;

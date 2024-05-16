@@ -22,12 +22,11 @@ const TableBtnStructure = ({
   isFilter,
   register,
   isArea,
-  isUpdate = true,
-  deleteId,
+  isAdmin,
   isExport,
   fileName,
-  isDeleted,
   handleEdit,
+  isAssignTo,
   ColumnsData,
   headingText,
   handleDelete,
@@ -35,6 +34,7 @@ const TableBtnStructure = ({
   headerPassage,
   isFilterValid,
   isTableLoading,
+  isUpdate = true,
   handleFilterOpen,
   handleOpenCreate,
   handleApplyFilter,
@@ -106,7 +106,7 @@ const TableBtnStructure = ({
               );
             }}
           />
-          <div className={styles.pagination}>
+          {/* <div className={styles.pagination}>
             <Pagination
               page={1}
               pageSize={10}
@@ -115,7 +115,7 @@ const TableBtnStructure = ({
               // setValue={setValue}
               perPageText="Records per page"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -128,20 +128,22 @@ const TableBtnStructure = ({
       >
         <div className={styles.selectionsContainer}>
           <div className={styles.modalHeading}>Filter</div>
-          <div className={styles.selectionContainer}>
-            <div className={styles.selections}>
-              <Selection
-                label="Employee "
-                isMulti={false}
-                name="employeeCode"
-                options={SelectOption as any}
-                control={control}
-                // singleValueMaxWidth={"120px"}
-                // singleValueMinWidth="200px"
-                // customWidth="200px"
-              />
+          {isAdmin && (
+            <div className={styles.selectionContainer}>
+              <div className={styles.selections}>
+                <Selection
+                  label="Employee "
+                  isMulti={false}
+                  name="employeeCode"
+                  options={SelectOption as any}
+                  control={control}
+                  // singleValueMaxWidth={"120px"}
+                  // singleValueMinWidth="200px"
+                  // customWidth="200px"
+                />
+              </div>
             </div>
-          </div>
+          )}
           {isArea && (
             <div className={styles.selections}>
               <Selection
@@ -180,6 +182,22 @@ const TableBtnStructure = ({
                 // onChange={(e) => setValue(e.target.value)}
               />
             </>
+          )}
+          {isAssignTo && (
+            <div className={styles.selectionContainer}>
+              <div className={styles.selections}>
+                <Selection
+                  label="Assign To "
+                  isMulti={false}
+                  name="assign_to"
+                  options={SelectOption as any}
+                  control={control}
+                  // singleValueMaxWidth={"120px"}
+                  // singleValueMinWidth="200px"
+                  // customWidth="200px"
+                />
+              </div>
+            </div>
           )}
 
           <div className={styles.modalBtnContainer}>
