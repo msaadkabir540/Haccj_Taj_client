@@ -19,10 +19,6 @@ export const getAllTemperature = async ({
     });
     return response;
   } catch (e) {
-    if (e?.response?.status === 401) {
-      navigate("/login");
-      localStorage.clear();
-    }
     console.error(e);
   }
 };

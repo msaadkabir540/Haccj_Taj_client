@@ -38,11 +38,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    if (!token) {
-      localStorage.removeItem("token"); // Remove token
-      window.location.href = "/login";
-    } else {
+    if (token) {
       handleAllUser();
     }
   }, []);

@@ -57,14 +57,14 @@ const Columns = ({
     title: "Oil Temperature",
     render: ({ value }: TableColumnRenderProps) => {
       return value as string;
-      // return moment(value as string).format("DD-MM-YYYY");
+      // return moment(value as string).format("MMM DD, YYYY | HH:mm");
     },
   },
   {
     key: "created_at",
     title: "Create",
     render: ({ value }: TableColumnRenderProps) => {
-      return moment(value as string).format("DD-MM-YYYY") as string;
+      return moment(value as string).format("MMM DD, YYYY | HH:mm") as string;
     },
   },
   { key: "actions", title: "Action" },

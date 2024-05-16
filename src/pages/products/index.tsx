@@ -127,7 +127,7 @@ const Products: React.FC = () => {
         <div>
           <div className={styles.btnContainer}>
             <div className={styles.header}>
-              <HeadingText heading={"Product Type"} text="This is Product Type Data" />
+              <HeadingText heading={"Product Type"} text="Add Treacbility Product List" />
             </div>
             <Button
               title="Add Product"

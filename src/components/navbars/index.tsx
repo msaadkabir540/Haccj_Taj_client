@@ -63,10 +63,10 @@ const Navbars = () => {
             {isAdmin && (
               <>
                 <Link to="/user">Employees</Link>
-                <Link to="/products">Add Products</Link>
+                <Link to="/products">Add Trasability Product</Link>
                 {/* <Link to="/checklist">Add Checklist</Link> */}
-                <Link to="/equipment">Add Equipment</Link>
-                <Link to="/machine">Add Machine</Link>
+                <Link to="/equipment">Add Temperature Equipment</Link>
+                <Link to="/machine">Add Oil Temperature Machine</Link>
               </>
             )}
           </div>
@@ -110,10 +110,13 @@ const Navbars = () => {
                       <Link to="/user">Employees</Link>
                     </li>
                     <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/temperature">Add Temperature</Link>
+                      <Link to="/products">Add Trasability Product</Link>
                     </li>
                     <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/equipment">Add Equipments</Link>
+                      <Link to="/equipment">Add Temperature Equipment</Link>
+                    </li>
+                    <li onClick={() => setShowMobileMenu(false)}>
+                      <Link to="/machine">Add Oil Temperature Machine</Link>
                     </li>
                   </>
                 )}

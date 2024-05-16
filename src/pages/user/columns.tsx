@@ -29,7 +29,7 @@ const Columns: TableColumns[] = [
     title: "Email",
     render: ({ value }: TableColumnRenderProps) => {
       return value as string;
-      // return moment(value as string).format("DD-MM-YYYY");
+      // return moment(value as string).format("MMM DD, YYYY | HH:mm");
     },
   },
   {

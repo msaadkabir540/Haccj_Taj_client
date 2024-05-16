@@ -60,7 +60,14 @@ const Equipment = () => {
     try {
       const response = await getAllEquipment();
       if (response?.status === true) {
-        setGetEquipment(response?.data);
+        if (Array.isArray(response?.data)) {
+          // If response.data is already an array
+          setGetEquipment(response.data);
+        } else {
+          const dataArray = [];
+          setGetEquipment(dataArray);
+        }
+
         setIsLoading(false);
       }
     } catch (error) {
@@ -84,14 +91,6 @@ const Equipment = () => {
     }
   };
 
-  const equipmentData = useMemo(() => {
-    return getEquipment?.sort((a, b) => {
-      const dateA = new Date(b.updated_at);
-      const dateB = new Date(a.updated_at);
-      return dateA.getTime() - dateB.getTime();
-    });
-  }, [getEquipment]);
-
   useEffect(() => {
     handleGetEquipment();
   }, [isAdd]);
@@ -102,7 +101,7 @@ const Equipment = () => {
         <div>
           <div className={styles.btnContainer}>
             <div className={styles.header}>
-              <HeadingText heading="Equipment" text="Equipment demo passage of here" />
+              <HeadingText heading="Equipment" text="Add Temperature Equipment List" />
             </div>
             <div>
               <Button
@@ -115,7 +114,7 @@ const Equipment = () => {
         </div>
 
         <Table
-          rows={equipmentData as EquipmentsInterface[]}
+          rows={getEquipment as EquipmentsInterface[]}
           columns={Columns}
           isLoading={isLoading}
           actions={({ row }) => {

@@ -23,7 +23,7 @@ const Columns: TableColumns[] = [
     key: "updated_at",
     title: "Date",
     render: ({ value }: TableColumnRenderProps) => {
-      return moment(value as string).format("DD-MM-YYYY") as string;
+      return moment(value as string).format("MMM DD, YYYY | HH:mm") as string;
     },
   },
 

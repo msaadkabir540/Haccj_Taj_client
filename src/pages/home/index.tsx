@@ -25,7 +25,7 @@ export default Home;
 
 const data = [
   { id: 1, link: "temperature", name: "Temperature", imageCards: thermometer },
-  { id: 2, link: "treacbility", name: "Treacbility", imageCards: audit },
+  { id: 2, link: "treacbility", name: "Trasability", imageCards: audit },
   { id: 3, link: "checklist", name: "Check List", imageCards: checkList },
   { id: 5, link: "oil-temperature", name: "Oil Temperature", imageCards: Oil },
   { id: 4, link: "cleaning-plan", name: "Cleaning Plan", imageCards: Cleaning },

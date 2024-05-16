@@ -132,7 +132,7 @@ const Machine: React.FC = () => {
         rowData={allMachineByEmployeeName}
         handleOpenCreate={handleOpenCreate}
         SelectOption={employeeOptions as any}
-        headerPassage="Machine demo passage of here"
+        headerPassage="Add Oli Temperature Machine List"
         isTableLoading={isCreateUpdate?.isGetLoading as boolean}
       />
 

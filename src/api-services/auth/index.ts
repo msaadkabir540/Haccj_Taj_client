@@ -1,6 +1,7 @@
 import { axiosApiRequest } from "@/utils/api";
 
 import { LoginFromInterface } from "@/interface/account-interface";
+import createNotification from "@/common/create-notification";
 
 export const signIn = async ({ data }: { data: LoginFromInterface }) => {
   try {
@@ -15,8 +16,14 @@ export const signIn = async ({ data }: { data: LoginFromInterface }) => {
     });
 
     return response;
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    if (error?.response?.data?.status === false) {
+      createNotification({
+        type: "error",
+        message: error?.response?.data?.message || "Failed To Login.",
+      });
+    }
+    console.error(error);
   }
 };
 
