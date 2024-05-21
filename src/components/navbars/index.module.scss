@@ -36,6 +36,23 @@
           color: #ffffff;
         }
       }
+      .activeTab {
+        text-shadow: none;
+        font-weight: bolder;
+        position: relative;
+        display: inline;
+        list-style: none;
+        // margin: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #438afe;
+        text-decoration: none;
+        background: linear-gradient(to right, transparent 50%, #438afe 50%);
+        background-size: 200% 100%;
+        background-position: -100% 0;
+        color: #ffffff;
+        transition: background-position 0.5s ease;
+      }
     }
     @media (max-width: 770px) {
       display: none;

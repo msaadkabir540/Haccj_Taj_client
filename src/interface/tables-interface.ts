@@ -34,7 +34,12 @@ interface RowsInterface {
   name?: string;
   cleaning_area?: string;
   created_by_name?: string;
+  assign_start?: string;
+  assign_end?: string;
+  product_name?: string;
+  expire_at?: string;
   assign_to_name?: string;
+  decision?: string;
   task?: string;
   message?: string;
   machine_name?: string;

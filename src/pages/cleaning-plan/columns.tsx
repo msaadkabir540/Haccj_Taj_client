@@ -50,7 +50,7 @@ const Columns = ({
     key: "created_at",
     title: "Create",
     render: ({ value }: TableColumnRenderProps) => {
-      return moment(value as string).format("MMM DD, YYYY | HH:mm") as string;
+      return moment.utc(value as string).format("MMM DD, YYYY | HH:mm") as string;
     },
   },
   { key: "actions", title: "Action" },

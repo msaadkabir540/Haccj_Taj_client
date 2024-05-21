@@ -2,16 +2,16 @@ import { TableColumnRenderProps, TableColumns } from "@/components/table/table-i
 import moment from "moment";
 
 const Columns: TableColumns[] = [
-  // {
-  //   key: "employeeName",
-  //   title: "Employee Name",
-  //   render: ({ value }: TableColumnRenderProps) => {
-  //     // return value?.[0] || "";
-  //     return value as string;
-  //   },
-  // },
   {
-    key: "machine_name",
+    key: "employeeName",
+    title: "Employee Name",
+    render: ({ value }: TableColumnRenderProps) => {
+      // return value?.[0] || "";
+      return value as string;
+    },
+  },
+  {
+    key: "product_name",
     title: "Product Name",
     render: ({ value }: TableColumnRenderProps) => {
       // return value?.[0] || "";

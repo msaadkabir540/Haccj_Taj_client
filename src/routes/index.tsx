@@ -17,6 +17,8 @@ import Machine from "@/pages/machine";
 import CleaningPlan from "@/pages/cleaning-plan";
 import OilTemperature from "@/pages/oil-temperature";
 import CheckList from "@/pages/check-list";
+import ProductName from "@/pages/product-name";
+import ProductType from "@/pages/product-type";
 
 interface PrivateRouteInterface {
   element: React.FC<any>;
@@ -51,6 +53,8 @@ const Routing = ({ setLoading }: { setLoading: any }) => {
       <Route path="/temperature" element={<PrivateRoute element={Temperature} />} />
       <Route path="/treacbility" element={<PrivateRoute element={Treacbility} />} />
       <Route path="/cleaning-plan" element={<PrivateRoute element={CleaningPlan} />} />
+      <Route path="/product-name" element={<PrivateRoute element={ProductName} />} />
+      <Route path="/products-type" element={<PrivateRoute element={ProductType} />} />
       <Route path="/oil-temperature" element={<PrivateRoute element={OilTemperature} />} />
       {/*  not private route */}
       <Route path="/login" element={<Login />} />

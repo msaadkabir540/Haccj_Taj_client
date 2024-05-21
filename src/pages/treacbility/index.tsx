@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 
 import Modal from "@/components/modal";
 import Table from "@/components/table";
+import Input from "@/components/input";
 import Button from "@/components/button";
 import Selection from "@/components/selection";
-import Pagination from "@/components/pagination";
 import HeadingText from "@/components/heading-text";
+import createNotification from "@/common/create-notification";
 
 import { useClients } from "@/context/context-collection";
 
@@ -18,15 +19,14 @@ import {
 
 import { Columns } from "./columns";
 
+import { downloadReport } from "@/utils/helper";
+
 import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
 
 import { OptionType } from "@/components/selection/selection-interface";
 
 import styles from "./index.module.scss";
-import Input from "@/components/input";
-import createNotification from "@/common/create-notification";
-import ExcelExport, { downloadReport, excelExport } from "@/utils/helper";
 
 const Treacbility: React.FC = () => {
   const { control, watch, setValue, register } = useForm();
@@ -61,7 +61,14 @@ const Treacbility: React.FC = () => {
     ...data,
     created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
   }));
-  const handleGetTreacbility = async ({ date, edate }: { date: any; edate: any }) => {
+  const handleGetTreacbility = async ({
+    date,
+    edate,
+    // expire_at,
+  }: {
+    date: any;
+    edate: any;
+  }) => {
     setIsLoading(true);
 
     const applyFilter = {
@@ -69,6 +76,7 @@ const Treacbility: React.FC = () => {
       employeecode: Number(loggedInUser),
       date,
       edate,
+      // expire_at,
     };
     try {
       const response = await getAllTreacbility({ data: applyFilter });
@@ -102,6 +110,7 @@ const Treacbility: React.FC = () => {
       id: updatedValues?.tempId,
       trasability_name: watch("trasability_name"),
       trasability_type: watch("trasability_type"),
+      expire_at: watch("expireAt"),
       employeecode: updatedValues?.employeeCode,
     };
 
@@ -119,6 +128,7 @@ const Treacbility: React.FC = () => {
               ...getTreacbility[indexToUpdate],
               trasability_name: data.trasability_name,
               trasability_type: data.trasability_type,
+              expire_at: data.expire_at,
             };
             setGetTreacbility([...getTreacbility]);
           }
@@ -169,11 +179,13 @@ const Treacbility: React.FC = () => {
     setImageModal((prev) => ({ ...prev, url: url, isOpenImageModal: true }));
   };
 
+  console.log(watch("expireAt"));
+
   return (
     <>
       <div className={styles.mainContainer}>
         <div className={styles.header}>
-          <HeadingText heading="Treacbility" text="Represent the Products Records" />
+          <HeadingText heading="Trasability" text="Represent the Products Records" />
         </div>
         <div className={styles.btnContainer}>
           <Button
@@ -248,6 +260,16 @@ const Treacbility: React.FC = () => {
               className={styles.labelClass}
               inputClass={styles.dateClass}
             />
+            <Input
+              type="date"
+              name="expireAt"
+              label={"Expire At"}
+              className={styles.labelClass}
+              register={register}
+              // errorMessage={error}
+              inputClass={styles.dateClass}
+              // onChange={(e) => setValue(e.target.value)}
+            />
             <div className={styles.modalBtnContainer}>
               <Button
                 title="cancel "
@@ -321,6 +343,7 @@ const Treacbility: React.FC = () => {
               inputClass={styles.dateClass}
               // onChange={(e) => setValue(e.target.value)}
             />
+
             <div className={styles.modalBtnContainer}>
               <Button
                 title="cancel "

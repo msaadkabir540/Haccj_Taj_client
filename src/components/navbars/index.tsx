@@ -21,6 +21,8 @@ const Navbars = () => {
   const loggedInUserName = context ? context?.loggedInUserName : "";
   const isAdmin = loggedAdminStatus === "1" ? true : false;
 
+  const linksToRender = isAdmin ? pageNameWithLink : notAdminPageNameWithLink;
+
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
   };
@@ -59,16 +61,17 @@ const Navbars = () => {
         </div>
         <div className={styles.navItems}>
           <div>
-            <Link to="/">Dashboard</Link>
-            {isAdmin && (
-              <>
-                <Link to="/user">Employees</Link>
-                <Link to="/products">Add Trasability Product</Link>
-                {/* <Link to="/checklist">Add Checklist</Link> */}
-                <Link to="/equipment">Add Temperature Equipment</Link>
-                <Link to="/machine">Add Oil Temperature Machine</Link>
-              </>
-            )}
+            {linksToRender?.map((navbarList) => {
+              return (
+                <Link
+                  className={pathname === navbarList?.link ? styles.activeTab : ""}
+                  key={navbarList?.id}
+                  to={navbarList?.link}
+                >
+                  {navbarList?.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -101,25 +104,13 @@ const Navbars = () => {
           <div className={styles.mobileNavItems}>
             <div className={styles.ListMenu}>
               <ul>
-                <li onClick={() => setShowMobileMenu(false)}>
-                  <Link to="/">Dashboard</Link>
-                </li>
-                {isAdmin && (
-                  <>
-                    <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/user">Employees</Link>
+                {linksToRender?.map((navbarList) => {
+                  return (
+                    <li key={navbarList?.id} onClick={() => setShowMobileMenu(false)}>
+                      <Link to={navbarList?.link}>{navbarList?.name}</Link>
                     </li>
-                    <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/products">Add Trasability Product</Link>
-                    </li>
-                    <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/equipment">Add Temperature Equipment</Link>
-                    </li>
-                    <li onClick={() => setShowMobileMenu(false)}>
-                      <Link to="/machine">Add Oil Temperature Machine</Link>
-                    </li>
-                  </>
-                )}
+                  );
+                })}
 
                 <li onClick={() => setShowMobileMenu(false)}>
                   Logout
@@ -188,3 +179,44 @@ const showNav = (pathname: string) =>
   /^\/(password-reset|showcase|embed|player|album-media-upload)\//.test(pathname)
     ? "none"
     : "flex";
+
+const pageNameWithLink = [
+  {
+    id: 1,
+    name: "Dashboard",
+    link: "/",
+  },
+  {
+    id: 2,
+    name: "Employees",
+    link: "/user",
+  },
+  {
+    id: 3,
+    name: "Add Trasability Product",
+    link: "/products",
+  },
+  {
+    id: 4,
+    name: "Add Temperature Equipment",
+    link: "/equipment",
+  },
+  {
+    id: 5,
+    name: "Add Product Name",
+    link: "/product-name",
+  },
+  {
+    id: 6,
+    name: "Add Oil Temperature Machine",
+    link: "/machine",
+  },
+];
+
+const notAdminPageNameWithLink = [
+  {
+    id: 1,
+    name: "Dashboard",
+    link: "/",
+  },
+];

@@ -117,6 +117,8 @@ const Selection = ({
     }),
   };
 
+  console.log({ errorMessage });
+
   return (
     <div className={`${style.container} ${className} `}>
       {label && (

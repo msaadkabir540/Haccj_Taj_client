@@ -46,6 +46,10 @@ const CheckList = () => {
     isTableLoading: false,
     isOpenImageModal: false,
   });
+  const [imageModal, setImageModal] = useState<{ url: string; isOpenImageModal: boolean }>({
+    url: "",
+    isOpenImageModal: false,
+  });
 
   const employeeCode = localStorage.getItem("employeecode");
 
@@ -56,11 +60,12 @@ const CheckList = () => {
   const loggedAdminStatus = context ? context?.loggedAdminStatus : "";
   const isAdmin = loggedAdminStatus === "1" ? true : false;
 
-  const getAllCheckListByName = getAllCheckList?.map((data) => ({
-    ...data,
-    assign_to_name: getUserUsername[data?.assign_to as string] || data?.assign_to,
-    created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
-  }));
+  const getAllCheckListByName =
+    getAllCheckList?.map((data) => ({
+      ...data,
+      assign_to_name: getUserUsername[data?.assign_to as string] || data?.assign_to,
+      created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
+    })) || [];
   const findLoggedInEmployee = allEmployees?.find((user) => {
     return user?.employeecode === Number(employeeCode);
   });
@@ -105,6 +110,8 @@ const CheckList = () => {
   const handleAddCheckList = async () => {
     if (watch("assignTo")?.value === "") {
       setError("Please Enter Employee");
+    } else if (watch("decision")?.value === "" || watch("decision") === undefined) {
+      setError("Required");
     } else {
       setIsLoading(true);
       setError("");
@@ -113,6 +120,9 @@ const CheckList = () => {
           employeecode: findLoggedInEmployee?.employeecode,
           task: watch("task"),
           message: watch("message"),
+          assign_end: watch("assign_end"),
+          assign_start: watch("assign_start"),
+          decision: watch("decision")?.value,
           assign_to: Number(watch("assignTo")?.value),
         };
 
@@ -163,13 +173,26 @@ const CheckList = () => {
 
   const handleOpenCreate = () => setIsOpen(true);
 
+  const formatDate = ({ dateString }: { dateString: string }) => {
+    return dateString?.split(" ")?.[0];
+  };
+
   const handleEdit = ({ editId }: { editId: number }) => {
     const updatedData = getAllCheckList?.find((data) => {
       return data?.id === editId;
     });
+    const assignStart = formatDate({ dateString: updatedData?.assign_start });
+    const assignEnd = formatDate({ dateString: updatedData?.assign_end });
+
+    console.log({ assignStart });
+    console.log({ assignEnd });
+
     setIsCreate((prev) => ({ ...prev, isUpdateRowId: editId }));
     setValue("message", updatedData?.message);
     setValue("task", updatedData?.task);
+    setValue("assign_start", assignStart);
+    setValue("assign_end", assignEnd);
+    // setValue("assign_end", updatedData?.assign_end);
     const setAssignTo = employeeOptions?.find((data) => {
       return data?.value === updatedData?.assign_to;
     });
@@ -193,6 +216,10 @@ const CheckList = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleOpenModal = ({ url }: { url: string }) => {
+    setImageModal((prev) => ({ ...prev, url: url, isOpenImageModal: true }));
   };
 
   useEffect(() => {
@@ -221,7 +248,7 @@ const CheckList = () => {
         isFilter={isFilter}
         isAdmin={isAdmin}
         isFilterValid={true}
-        ColumnsData={Columns}
+        ColumnsData={Columns(handleOpenModal)}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         register={register}
@@ -249,7 +276,7 @@ const CheckList = () => {
           className={`${styles.modalWrapper}`}
         >
           <div>
-            <div className={styles.heading}>Add Check List</div>
+            <div className={styles.heading}>Check List</div>
             <form>
               <div>
                 <div className={styles.inputFieldsContainer}>
@@ -282,6 +309,33 @@ const CheckList = () => {
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />
+                  <Input
+                    type="date"
+                    name="assign_start"
+                    label={"Assign Start"}
+                    className={styles.labelClass}
+                    register={register}
+                    inputClass={styles.inputClass}
+                  />
+                  <Input
+                    type="date"
+                    name="assign_end"
+                    label={"Assign End"}
+                    className={styles.labelClass}
+                    register={register}
+                    inputClass={styles.inputClass}
+                  />
+                  <div className={styles.Selections}>
+                    <Selection
+                      label="Task Status"
+                      isMulti={false}
+                      errorMessage={error}
+                      name="decision"
+                      defaultValue={decisionOption?.[0]}
+                      control={control}
+                      options={decisionOption}
+                    />
+                  </div>
                   <div className={styles.Selections}>
                     <Selection
                       label="Assign To"
@@ -316,7 +370,20 @@ const CheckList = () => {
           </div>
         </Modal>
       )}
+      <Modal
+        {...{
+          open: imageModal.isOpenImageModal === true,
+          handleClose: () => setImageModal((prev) => ({ ...prev, isOpenImageModal: false })),
+        }}
+      >
+        <img src={imageModal?.url} className={styles.videoPlayer} alt="images" />
+      </Modal>
     </div>
   );
 };
 export default CheckList;
+
+const decisionOption = [
+  { value: "P", label: "Pending" },
+  { value: "D", label: "Done" },
+];

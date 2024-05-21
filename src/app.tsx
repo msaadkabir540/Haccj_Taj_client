@@ -55,7 +55,6 @@ const Dashboard = () => {
           <BrowserRouter>
             <ContextCollection>
               <Navbars />
-
               <Container>
                 <Routing setLoading={setLoading} />
               </Container>
