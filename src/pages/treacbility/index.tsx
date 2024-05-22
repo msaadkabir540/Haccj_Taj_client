@@ -61,6 +61,7 @@ const Treacbility: React.FC = () => {
     ...data,
     created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
   }));
+
   const handleGetTreacbility = async ({
     date,
     edate,
@@ -178,8 +179,6 @@ const Treacbility: React.FC = () => {
   const handleOpenModal = ({ url }: { url: string }) => {
     setImageModal((prev) => ({ ...prev, url: url, isOpenImageModal: true }));
   };
-
-  console.log(watch("expireAt"));
 
   return (
     <>

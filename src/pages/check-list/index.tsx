@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Table from "@/components/table";
+import Input from "@/components/input";
+import Modal from "@/components/modal";
 import Button from "@/components/button";
 import Selection from "@/components/selection";
-import Pagination from "@/components/pagination";
-import HeadingText from "@/components/heading-text";
+import createNotification from "@/common/create-notification";
+import TableBtnStructure from "@/components/table-btn-structure";
 
-import styles from "./index.module.scss";
+import { Columns } from "./columns";
+
 import { useClients } from "@/context/context-collection";
+
 import {
   addCheckList,
   deleteCheckList,
   getCheckListByEmployeeCode,
   updateCheckList,
 } from "@/api-services/check-list";
-import Input from "@/components/input";
-import Modal from "@/components/modal";
-import createNotification from "@/common/create-notification";
-import { Columns } from "./columns";
-import TableBtnStructure from "@/components/table-btn-structure";
+
+import styles from "./index.module.scss";
 
 const CheckList = () => {
-  const { control, register, watch, setValue, reset } = useForm();
+  const { control, register, watch, setValue, reset, handleSubmit } = useForm();
 
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,7 +31,11 @@ const CheckList = () => {
   const [getAllCheckList, setGetAllCheckList] = useState();
   const [filtersData, setFiltersData] = useState<any>();
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<{
+    assignTo: any;
+  }>({
+    assignTo: null,
+  });
   const [isCreate, setIsCreate] = useState<{
     isLoading?: boolean;
     isOpenImageModal?: boolean;
@@ -39,7 +43,11 @@ const CheckList = () => {
     isTableLoading?: boolean;
     isUpdateRowId?: number;
     isAddUpdate?: number | undefined;
+    isDelete: boolean;
+    deleteId?: number | undefined;
   }>({
+    deleteId: 0,
+    isDelete: false,
     url: "",
     isAddUpdate: 0,
     isLoading: false,
@@ -63,8 +71,8 @@ const CheckList = () => {
   const getAllCheckListByName =
     getAllCheckList?.map((data) => ({
       ...data,
-      assign_to_name: getUserUsername[data?.assign_to as string] || data?.assign_to,
-      created_by_name: getUserUsername[data?.created_by as string] || data?.created_by,
+      assign_to_name: getUserUsername?.[data?.assign_to as string] || data?.assign_to,
+      created_by_name: getUserUsername?.[data?.created_by as string] || data?.created_by,
     })) || [];
   const findLoggedInEmployee = allEmployees?.find((user) => {
     return user?.employeecode === Number(employeeCode);
@@ -85,15 +93,27 @@ const CheckList = () => {
     edate: any;
     assign_to: string;
   }) => {
+    const newDate = new Date();
+    newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset());
+    const isoDate = newDate.toISOString();
+    const formattedDate = isoDate.split("T")[0];
+
     try {
-      const applyFilter = {
-        employee: filtersData?.employeeCode,
-        employeecode: Number(loggedInUser),
-      };
+      const applyFilter = isAdmin
+        ? {
+            employee: filtersData?.employeeCode,
+            employeecode: Number(loggedInUser),
+          }
+        : {
+            assign_to: filtersData?.employeeCode || Number(loggedInUser),
+            employeecode: Number(loggedInUser),
+            date: date || formattedDate,
+            edate: edate || formattedDate,
+          };
 
       setIsCreate((prev) => ({ ...prev, isTableLoading: true }));
       const res = await getCheckListByEmployeeCode({
-        data: { ...applyFilter, date, edate, assign_to },
+        data: { ...applyFilter },
       });
       const checkListData = res?.data === "N/A" ? [] : res?.data;
 
@@ -107,14 +127,24 @@ const CheckList = () => {
     }
   };
 
-  const handleAddCheckList = async () => {
-    if (watch("assignTo")?.value === "") {
-      setError("Please Enter Employee");
-    } else if (watch("decision")?.value === "" || watch("decision") === undefined) {
-      setError("Required");
+  const handleAddCheckList = async (data: any) => {
+    if (watch("assignTo") === undefined) {
+      setError((prev) => ({ ...prev, assignTo: "Required" }));
+    } else if (watch("decision") === "" || watch("decision") === undefined) {
+      setError((prev) => ({ ...prev, decision: "Required" }));
+    } else if (watch("assign_end")?.trim()?.length === 0 || undefined) {
+      setError((prev) => ({ ...prev, assign_end: "Required" }));
+    } else if (watch("assign_start")?.trim()?.length === 0 || undefined) {
+      setError((prev) => ({ ...prev, assign_start: "Required" }));
     } else {
       setIsLoading(true);
-      setError("");
+      setError((prev) => ({
+        ...prev,
+        assign_start: "",
+        assign_end: "",
+        decision: "",
+        assignTo: "",
+      }));
       try {
         const data = {
           employeecode: findLoggedInEmployee?.employeecode,
@@ -184,9 +214,6 @@ const CheckList = () => {
     const assignStart = formatDate({ dateString: updatedData?.assign_start });
     const assignEnd = formatDate({ dateString: updatedData?.assign_end });
 
-    console.log({ assignStart });
-    console.log({ assignEnd });
-
     setIsCreate((prev) => ({ ...prev, isUpdateRowId: editId }));
     setValue("message", updatedData?.message);
     setValue("task", updatedData?.task);
@@ -203,18 +230,18 @@ const CheckList = () => {
   };
 
   const handleDelete = async ({ deleteId }: { deleteId: number }) => {
-    setIsCreate((prev) => ({ ...prev, isDelete: true }));
+    setIsCreate((prev) => ({ ...prev, isDelete: true, deleteId }));
     try {
       const res = await deleteCheckList({ id: deleteId });
       if (res.status === true) {
         const updatedData = getAllCheckList?.filter((item) => item.id != deleteId);
         setGetAllCheckList(updatedData);
-        setIsCreate((prev) => ({ ...prev, isDelete: false }));
-
+        setIsCreate((prev) => ({ ...prev, isDelete: false, deleteId: 0 }));
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
       console.error(error);
+      setIsCreate((prev) => ({ ...prev, isDelete: false, deleteId: 0 }));
     }
   };
 
@@ -244,11 +271,14 @@ const CheckList = () => {
         isExport={isAdmin}
         fileName="CheckList"
         isCreate={isAdmin}
+        isDeleted={isCreate?.isDelete}
+        deleteId={isCreate?.deleteId}
         control={control}
         isFilter={isFilter}
         isAdmin={isAdmin}
+        isUpdate={isAdmin}
         isFilterValid={true}
-        ColumnsData={Columns(handleOpenModal)}
+        ColumnsData={Columns({ handleOpenModal })}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         register={register}
@@ -277,7 +307,7 @@ const CheckList = () => {
         >
           <div>
             <div className={styles.heading}>Check List</div>
-            <form>
+            <form onSubmit={handleSubmit(handleAddCheckList)}>
               <div>
                 <div className={styles.inputFieldsContainer}>
                   <Input
@@ -315,6 +345,7 @@ const CheckList = () => {
                     label={"Assign Start"}
                     className={styles.labelClass}
                     register={register}
+                    errorMessage={error?.assign_start}
                     inputClass={styles.inputClass}
                   />
                   <Input
@@ -323,14 +354,16 @@ const CheckList = () => {
                     label={"Assign End"}
                     className={styles.labelClass}
                     register={register}
+                    errorMessage={error?.assign_end}
                     inputClass={styles.inputClass}
                   />
                   <div className={styles.Selections}>
                     <Selection
                       label="Task Status"
                       isMulti={false}
-                      errorMessage={error}
+                      errorMessage={error?.decision}
                       name="decision"
+                      // ={error?.decision}
                       defaultValue={decisionOption?.[0]}
                       control={control}
                       options={decisionOption}
@@ -343,6 +376,7 @@ const CheckList = () => {
                       name="assignTo"
                       control={control}
                       options={employeeOptions}
+                      errorMessage={error?.assignTo}
                     />
                   </div>
                 </div>
@@ -360,9 +394,10 @@ const CheckList = () => {
                   />
                   <Button
                     title="Save"
+                    type="submit"
                     isLoading={isLoading}
                     className={styles.btn}
-                    handleClick={() => handleAddCheckList()}
+                    // handleClick={() => handleAddCheckList()}
                   />
                 </div>
               </div>

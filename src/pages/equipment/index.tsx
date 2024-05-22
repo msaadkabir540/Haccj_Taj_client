@@ -1,22 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 
+import Input from "@/components/input";
+import Modal from "@/components/modal";
+import Table from "@/components/table";
 import Button from "@/components/button";
+import HeadingText from "@/components/heading-text";
+import createNotification from "@/common/create-notification";
+
+import { Columns } from "./columns";
 
 import { addEquipment, deleteEquipment, getAllEquipment } from "@/api-services/equipment";
 
-import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
 
 import { EquipmentsInterface } from "./equipments-interface";
+import { RowsInterface } from "@/interface/tables-interface";
 
 import styles from "./index.module.scss";
-import Table from "@/components/table";
-import { Columns } from "./columns";
-import Modal from "@/components/modal";
-import Input from "@/components/input";
-import createNotification from "@/common/create-notification";
-import Pagination from "@/components/pagination";
-import HeadingText from "@/components/heading-text";
 
 const Equipment = () => {
   const [isAdd, setIsAdd] = useState<number>(0);
@@ -64,7 +64,7 @@ const Equipment = () => {
           // If response.data is already an array
           setGetEquipment(response.data);
         } else {
-          const dataArray = [];
+          const dataArray: EquipmentsInterface[] | [] = [];
           setGetEquipment(dataArray);
         }
 
@@ -114,7 +114,7 @@ const Equipment = () => {
         </div>
 
         <Table
-          rows={getEquipment as EquipmentsInterface[]}
+          rows={getEquipment as RowsInterface[]}
           columns={Columns}
           isLoading={isLoading}
           actions={({ row }) => {

@@ -29,7 +29,9 @@ const Products: React.FC = () => {
     employeeCode?: number;
     isLoading?: boolean;
     isDeleted?: boolean;
+    deleteId?: number;
   }>({
+    deleteId: 0,
     isLoading: false,
     isDeleted: false,
   });
@@ -152,6 +154,7 @@ const Products: React.FC = () => {
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
                     handleClick={() => handleDelete({ deleteId: row?.id })}
+                    isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
                   />
                 </div>
               </td>

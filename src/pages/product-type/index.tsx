@@ -8,12 +8,13 @@ import Button from "@/components/button";
 import HeadingText from "@/components/heading-text";
 import createNotification from "@/common/create-notification";
 
-import { deleteProducts, getProducts } from "@/api-services/product-type";
+import { deleteProducts, getProducts, updateProducts } from "@/api-services/product-type";
 
 import { useClients } from "@/context/context-collection";
 
 import { Columns } from "./columns";
 
+import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
 
 import styles from "./index.module.scss";
@@ -28,8 +29,9 @@ const ProductType: React.FC = () => {
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<number>(0);
   const [productData, setProductData] = useState();
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updatedValues, setUpdatedValues] = useState<{
-    tempId?: number;
+    id?: number;
     employeeCode?: number;
     deleteId?: number;
     isLoading?: boolean;
@@ -39,10 +41,15 @@ const ProductType: React.FC = () => {
     deleteId: 0,
     isDeleted: false,
   });
+  const [imageModal, setImageModal] = useState<{ url: string; isOpenImageModal: boolean }>({
+    url: "",
+    isOpenImageModal: false,
+  });
 
   const context = useClients();
   const allEmployees = context ? context?.allEmployees : [];
   const loggedInUser = context ? context?.loggedInUser : "";
+  const isAdmin = context ? context?.isAdmin : "";
 
   const getUserUsername: { [key: string]: string } =
     allEmployees?.reduce((acc: { [key: string]: string }, allEmployees) => {
@@ -58,6 +65,7 @@ const ProductType: React.FC = () => {
   const onSubmit = async (data: any) => {
     setIsAddingUser(true);
     const productData = {
+      id: updatedValues?.id,
       Employeecode: Number(loggedInEmployeeCode),
       product_name: data?.product_name,
       product_type: data?.product_type,
@@ -70,10 +78,12 @@ const ProductType: React.FC = () => {
         setIsAdding((prev) => prev + 1);
         setIsUser(false);
         setIsAddingUser(false);
+        setIsUpdate(false);
         createNotification({ type: "success", message: "Product successfully Add" });
         reset({});
       }
     } catch (error) {
+      setIsAddingUser(false);
       console.error(error);
       createNotification({ type: "error", message: "error" });
     }
@@ -94,6 +104,23 @@ const ProductType: React.FC = () => {
     }
   };
 
+  const handleEdit = ({ id }: { id: number }) => {
+    const updatedData = productData?.find((data) => {
+      return data?.id === id;
+    });
+    setUpdatedValues({
+      id: updatedData?.id as number,
+      employeeCode: updatedData?.created_by as number,
+    });
+
+    setValue?.("product_name", updatedData?.product_name);
+    setValue?.("product_type", updatedData?.product_type);
+    setIsUpdate(true);
+  };
+  const handleOpenModal = ({ url }: { url: string }) => {
+    setImageModal((prev) => ({ ...prev, url: url, isOpenImageModal: true }));
+  };
+
   const handleGetProductType = async () => {
     setIsLoading(true);
     try {
@@ -101,7 +128,7 @@ const ProductType: React.FC = () => {
         Employeecode: Number(loggedInUser),
       };
       const response = await getProducts({ data });
-      const productNameData = response?.data === "N/A" ? [] : response?.data;
+      const productNameData = response?.productsData === "N/A" ? [] : response?.productsData;
       if (response.status === true) {
         setProductData(productNameData);
         setIsLoading(false);
@@ -143,13 +170,22 @@ const ProductType: React.FC = () => {
 
         <Table
           rows={allProductByName}
-          columns={Columns}
+          columns={Columns({ handleOpenModal })}
           isLoading={isLoading}
           tableCustomClass={styles.tableCustomClass}
           actions={({ row }) => {
             return (
               <td key={row?.id}>
                 <div className={styles.iconRow}>
+                  {isAdmin && (
+                    <Button
+                      type="button"
+                      icon={editIcon}
+                      className={styles.iconsBtn}
+                      loaderClass={styles.loading}
+                      handleClick={() => handleEdit({ id: row?.id })}
+                    />
+                  )}
                   <Button
                     type="button"
                     icon={delIcon}
@@ -165,12 +201,12 @@ const ProductType: React.FC = () => {
         />
       </div>
 
-      {isUser && (
+      {isUpdate && (
         <Modal
-          open={isUser}
+          open={isUpdate}
           showCross={true}
           handleCross={() => {
-            setIsUser(false);
+            setIsUpdate(false);
           }}
           className={`${styles.modalWrapper} ${isUser ? styles.open : ""}`}
         >
@@ -204,12 +240,13 @@ const ProductType: React.FC = () => {
                     title="Close "
                     handleClick={() => {
                       reset();
-                      setIsUser(false);
+                      setIsAddingUser(false);
+                      setIsUpdate(false);
                     }}
                     className={styles.btn2}
                   />
                   <Button
-                    title="Add Product"
+                    title="Save"
                     type="submit"
                     className={styles.btn}
                     isLoading={isAddingUser}
@@ -220,6 +257,14 @@ const ProductType: React.FC = () => {
           </div>
         </Modal>
       )}
+      <Modal
+        {...{
+          open: imageModal.isOpenImageModal === true,
+          handleClose: () => setImageModal((prev) => ({ ...prev, isOpenImageModal: false })),
+        }}
+      >
+        <img src={imageModal?.url} className={styles.videoPlayer} alt="images" />
+      </Modal>
     </div>
   );
 };

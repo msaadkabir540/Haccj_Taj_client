@@ -206,6 +206,7 @@ const Temperature: React.FC = () => {
                       className={styles.iconsBtn}
                       loaderClass={styles.loading}
                       handleClick={() => handleDelete({ deleteId: row?.id })}
+                      isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
                     />
                   </div>
                 </td>

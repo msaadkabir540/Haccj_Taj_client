@@ -24,9 +24,13 @@ const Machine: React.FC = () => {
   const [isCreateUpdate, setIsCreateUpdate] = useState<{
     isLoading: boolean;
     isUpdated: boolean;
+    isDeleted: boolean;
+    deleteId: number;
     isGetLoading?: boolean;
   }>({
+    deleteId: 0,
     isLoading: false,
+    isDeleted: false,
     isGetLoading: false,
     isUpdated: false,
   });
@@ -101,7 +105,7 @@ const Machine: React.FC = () => {
       if (res.status === true) {
         const updatedData = getAllMachine?.filter((item) => item.id != deleteId);
         setGetAllMachine(updatedData);
-        setIsCreateUpdate((prev) => ({ ...prev, isDeleted: false }));
+        setIsCreateUpdate((prev) => ({ ...prev, isDeleted: false, deleteId: 0 }));
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
@@ -124,13 +128,17 @@ const Machine: React.FC = () => {
     <div className={styles.header}>
       <TableBtnStructure
         isCreate={true}
+        isFilterValid={false}
         isUpdate={false}
         control={control}
         headingText="Machine"
         ColumnsData={Columns}
         handleDelete={handleDelete}
+        isAdmin={isAdmin as boolean}
+        deleteId={isCreateUpdate?.deleteId}
         rowData={allMachineByEmployeeName}
         handleOpenCreate={handleOpenCreate}
+        isDeleted={isCreateUpdate?.isDeleted}
         SelectOption={employeeOptions as any}
         headerPassage="Add Oli Temperature Machine List"
         isTableLoading={isCreateUpdate?.isGetLoading as boolean}

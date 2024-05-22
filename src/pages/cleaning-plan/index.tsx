@@ -108,20 +108,22 @@ const CleaningPlan: React.FC = () => {
   return (
     <div className={styles.header}>
       <TableBtnStructure
+        deleteId={0}
+        isDate={true}
         isArea={true}
+        isUpdate={false}
         isCreate={false}
         control={control}
-        isFilter={isFilter}
-        isExport={isAdmin as boolean}
-        isAdmin={isAdmin as boolean}
-        fileName="Cleaning_Plan"
-        isUpdate={false}
-        isFilterValid={true}
-        isDate={true}
+        isDeleted={false}
         register={register}
+        isFilter={isFilter}
+        isFilterValid={true}
+        fileName="Cleaning_Plan"
         rowData={getCleaningPlan}
         headingText="Cleaning Plan"
         handleDelete={handleDelete}
+        isExport={isAdmin as boolean}
+        isAdmin={isAdmin as boolean}
         handleFilterOpen={handleFilterOpen}
         handleApplyFilter={handleApplyFilter}
         SelectOption={employeeOptions as any}

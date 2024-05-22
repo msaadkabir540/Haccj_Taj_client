@@ -11,7 +11,7 @@ interface ClientContextInterface {
   loggedInUser?: string | undefined | null;
   loggedInUserName?: string | undefined;
   loggedAdminStatus?: number | null;
-  isAdmin?: boolean;
+  isAdmin?: boolean | undefined;
   handleLoggedIn?: any;
 }
 

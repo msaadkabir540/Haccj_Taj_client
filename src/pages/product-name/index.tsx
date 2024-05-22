@@ -88,6 +88,7 @@ const ProductName: React.FC = () => {
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
+      setUpdatedValues((prev) => ({ ...prev, isDeleted: false, deleteId: 0 }));
       console.error(error);
     }
   };

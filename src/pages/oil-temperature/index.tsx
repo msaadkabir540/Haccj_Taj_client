@@ -1,22 +1,26 @@
-import styles from "./index.module.scss";
-import TableBtnStructure from "@/components/table-btn-structure";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+
+import Modal from "@/components/modal";
+import Input from "@/components/input";
+import Button from "@/components/button";
+import createNotification from "@/common/create-notification";
+import TableBtnStructure from "@/components/table-btn-structure";
+
+import { useClients } from "@/context/context-collection";
+
+import { Columns } from "./columns";
+
 import {
   deleteOilTemperature,
-  getAllOilTemp,
   getAllOilTempAndMachine,
   updateOilTemp,
 } from "@/api-services/oil-temperature";
-import { Columns } from "./columns";
-import Modal from "@/components/modal";
-import { useClients } from "@/context/context-collection";
-import createNotification from "@/common/create-notification";
-import Input from "@/components/input";
-import Button from "@/components/button";
+
+import styles from "./index.module.scss";
 
 const OilTemperature: React.FC = () => {
-  const { register, handleSubmit, reset, setValue, control, watch } = useForm();
+  const { register, setValue, control, watch } = useForm();
   const [isCreate, setIsCreate] = useState<{
     isLoading?: boolean;
     isOpenImageModal?: boolean;
@@ -142,6 +146,7 @@ const OilTemperature: React.FC = () => {
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
+      setUpdatedValues((prev) => ({ ...prev, isLoading: false }));
       console.error(error);
     }
   };

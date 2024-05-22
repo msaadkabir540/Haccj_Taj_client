@@ -109,6 +109,20 @@ export const getProducts = async ({ data }: { data: any }) => {
   }
 };
 
+export const updateProducts = async ({ data }: { data: any }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "post",
+      url: `/update-productsData`,
+      data,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 // export const addProducts = async ({
 //   data,
 // }: {

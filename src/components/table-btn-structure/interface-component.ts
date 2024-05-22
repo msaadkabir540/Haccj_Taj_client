@@ -11,6 +11,8 @@ interface InterfaceComponent {
   isAssignTo?: boolean;
   isDate?: boolean;
   isArea?: boolean;
+  deleteId: number | undefined;
+  isDeleted?: boolean;
   isAdmin?: boolean;
   handleOpenCreate?: () => void;
   handleEdit?: ({ editId }: { editId: number }) => void;

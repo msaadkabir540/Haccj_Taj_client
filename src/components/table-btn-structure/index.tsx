@@ -15,16 +15,18 @@ import styles from "./index.module.scss";
 import { downloadReport } from "@/utils/helper";
 
 const TableBtnStructure = ({
+  isArea,
   isDate,
   control,
+  isAdmin,
   rowData,
   isCreate,
   isFilter,
   register,
-  isArea,
-  isAdmin,
   isExport,
   fileName,
+  deleteId,
+  isDeleted,
   handleEdit,
   isAssignTo,
   ColumnsData,
@@ -95,8 +97,7 @@ const TableBtnStructure = ({
                     <Button
                       type="button"
                       icon={delIcon}
-                      // isLoading={deleteId === row?.id && isDeleted}
-                      // isLoading={true}
+                      isLoading={deleteId && deleteId === row?.id && isDeleted && isDeleted}
                       className={styles.iconsBtn}
                       loaderClass={styles.loading}
                       handleClick={() => handleDelete?.({ deleteId: row?.id })}
@@ -106,16 +107,6 @@ const TableBtnStructure = ({
               );
             }}
           />
-          {/* <div className={styles.pagination}>
-            <Pagination
-              page={1}
-              pageSize={10}
-              totalCount={20}
-              // control={control}
-              // setValue={setValue}
-              perPageText="Records per page"
-            />
-          </div> */}
         </div>
       </div>
 
@@ -137,9 +128,6 @@ const TableBtnStructure = ({
                   name="employeeCode"
                   options={SelectOption as any}
                   control={control}
-                  // singleValueMaxWidth={"120px"}
-                  // singleValueMinWidth="200px"
-                  // customWidth="200px"
                 />
               </div>
             </div>
@@ -166,9 +154,7 @@ const TableBtnStructure = ({
                 label={"From"}
                 register={register}
                 className={styles.labelClass}
-                // errorMessage={error}
                 inputClass={styles.dateClass}
-                // onChange={(e) => setValue(e.target.value)}
               />
 
               <Input
@@ -177,13 +163,11 @@ const TableBtnStructure = ({
                 register={register}
                 label={"To"}
                 className={styles.labelClass}
-                // errorMessage={error}
                 inputClass={styles.dateClass}
-                // onChange={(e) => setValue(e.target.value)}
               />
             </>
           )}
-          {isAssignTo && (
+          {isAssignTo && isAdmin && (
             <div className={styles.selectionContainer}>
               <div className={styles.selections}>
                 <Selection
@@ -192,9 +176,6 @@ const TableBtnStructure = ({
                   name="assign_to"
                   options={SelectOption as any}
                   control={control}
-                  // singleValueMaxWidth={"120px"}
-                  // singleValueMinWidth="200px"
-                  // customWidth="200px"
                 />
               </div>
             </div>

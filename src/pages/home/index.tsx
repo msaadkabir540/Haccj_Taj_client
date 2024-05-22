@@ -17,7 +17,6 @@ const Home: React.FC = () => {
         {data?.map(({ id, name, imageCards, link }) => (
           <Card key={id} id={id} name={name} link={link} imageCards={imageCards} />
         ))}
-        {/* <Cards name={"Temperature"} /> */}
       </div>
     </div>
   );
@@ -28,7 +27,7 @@ const data = [
   { id: 1, link: "temperature", name: "Temperature", imageCards: thermometer },
   { id: 2, link: "treacbility", name: "Trasability", imageCards: audit },
   { id: 3, link: "checklist", name: "Check List", imageCards: checkList },
-  { id: 5, link: "oil-temperature", name: "Oil Temperature", imageCards: Oil },
   { id: 4, link: "cleaning-plan", name: "Cleaning Plan", imageCards: Cleaning },
+  { id: 5, link: "oil-temperature", name: "Oil Temperature", imageCards: Oil },
   { id: 6, link: "products-type", name: "Products", imageCards: Products },
 ];
