@@ -69,7 +69,7 @@ const ProductName: React.FC = () => {
         setIsUser(false);
         setIsAddingUser(false);
         createNotification({ type: "success", message: "Product successfully Add" });
-        reset({});
+        setValue("product_name", "");
       }
     } catch (error) {
       console.error(error);
@@ -109,6 +109,12 @@ const ProductName: React.FC = () => {
     }
   };
 
+  const sortedProducts = allProductByName?.sort((a, b) => {
+    const dateA = new Date(a?.updated_at);
+    const dateB = new Date(b?.updated_at);
+    return dateB - dateA;
+  });
+
   const employeeName = getUserUsername[loggedInEmployeeCode] || loggedInEmployeeCode;
 
   useEffect(() => {
@@ -138,7 +144,7 @@ const ProductName: React.FC = () => {
         </div>
 
         <Table
-          rows={allProductByName}
+          rows={sortedProducts}
           columns={Columns}
           isLoading={isLoading}
           tableCustomClass={styles.tableCustomClass}
@@ -181,6 +187,7 @@ const ProductName: React.FC = () => {
                     name="employeecode"
                     register={register}
                     label={"Employee"}
+                    isDisable={true}
                     className={styles.labelClass}
                     inputClass={styles.inputClass}
                   />

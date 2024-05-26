@@ -26,6 +26,19 @@ const Equipment = () => {
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [getEquipment, setGetEquipment] = useState<EquipmentsInterface[]>();
+  const [updatedValues, setUpdatedValues] = useState<{
+    isDelete: boolean;
+    deleteId: number;
+  }>({
+    isDelete: true,
+    deleteId: 0,
+  });
+
+  const sortedEquipment = getEquipment?.sort((a, b) => {
+    const dateA = new Date(a.updated_at);
+    const dateB = new Date(b.updated_at);
+    return dateB - dateA;
+  });
 
   const handleAddEquipments = async () => {
     setIsAdding(true);
@@ -77,13 +90,13 @@ const Equipment = () => {
   };
 
   const handleDelete = async ({ deleteId }: { deleteId: number }) => {
-    // setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    setUpdatedValues((prev) => ({ ...prev, isDeleted: true, deleteId }));
     try {
       const res = await deleteEquipment({ id: deleteId });
       if (res.status === true) {
         const updatedData = getEquipment?.filter((item) => item.id != deleteId);
         setGetEquipment(updatedData);
-        // setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        setUpdatedValues((prev) => ({ ...prev, isDeleted: false, deleteId: 0 }));
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
@@ -114,7 +127,7 @@ const Equipment = () => {
         </div>
 
         <Table
-          rows={getEquipment as RowsInterface[]}
+          rows={sortedEquipment as RowsInterface[]}
           columns={Columns}
           isLoading={isLoading}
           actions={({ row }) => {
@@ -126,6 +139,9 @@ const Equipment = () => {
                     icon={delIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
+                    isLoading={
+                      updatedValues?.isDelete === true && updatedValues?.deleteId === row?.id
+                    }
                     handleClick={() => handleDelete({ deleteId: row?.id })}
                   />
                 </div>

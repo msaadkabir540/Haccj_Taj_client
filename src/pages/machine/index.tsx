@@ -63,6 +63,7 @@ const Machine: React.FC = () => {
         setIsOpen(false);
         setIsCreateUpdate((prev) => ({ ...prev, isLoading: false }));
         createNotification({ type: "success", message: "Add Machine successfully." });
+        setValue("machine_name", "");
       }
     } catch (error) {
       setIsCreateUpdate((prev) => ({ ...prev, isLoading: false }));
@@ -114,6 +115,12 @@ const Machine: React.FC = () => {
     }
   };
 
+  const sortedMachineData = allMachineByEmployeeName?.sort((a, b) => {
+    const dateA = new Date(a?.updated_at);
+    const dateB = new Date(b?.updated_at);
+    return dateB - dateA;
+  });
+
   useEffect(() => {
     if (employeeName) {
       setValue?.("employeecode", employeeName);
@@ -134,9 +141,9 @@ const Machine: React.FC = () => {
         headingText="Machine"
         ColumnsData={Columns}
         handleDelete={handleDelete}
+        rowData={sortedMachineData}
         isAdmin={isAdmin as boolean}
         deleteId={isCreateUpdate?.deleteId}
-        rowData={allMachineByEmployeeName}
         handleOpenCreate={handleOpenCreate}
         isDeleted={isCreateUpdate?.isDeleted}
         SelectOption={employeeOptions as any}

@@ -65,6 +65,7 @@ const Products: React.FC = () => {
         setIsUser(false);
         setIsAddingUser(false);
         createNotification({ type: "success", message: "Product successfully Add" });
+        setValue("product_type", "");
       }
     } catch (error) {
       console.error(error);
@@ -73,13 +74,13 @@ const Products: React.FC = () => {
   };
 
   const handleDelete = async ({ deleteId }: { deleteId: number }) => {
-    setUpdatedValues((prev) => ({ ...prev, isDeleted: true }));
+    setUpdatedValues((prev) => ({ ...prev, isDeleted: true, deleteId }));
     try {
       const res = await deleteProduct({ id: deleteId });
       if (res.status === true) {
         const updatedData = productData?.filter((item) => item.id != deleteId);
         setProductData(updatedData);
-        setUpdatedValues((prev) => ({ ...prev, isDeleted: false }));
+        setUpdatedValues((prev) => ({ ...prev, isDeleted: false, deleteId: 0 }));
         createNotification({ type: "success", message: res?.message });
       }
     } catch (error) {
@@ -135,6 +136,7 @@ const Products: React.FC = () => {
               title="Add Product"
               handleClick={() => setIsUser(true)}
               className={styles.btn}
+              // isLoading
             />
           </div>
         </div>

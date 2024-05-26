@@ -160,11 +160,6 @@ const ProductType: React.FC = () => {
             <div className={styles.header}>
               <HeadingText heading={"Products"} text="Add Products List" />
             </div>
-            {/* <Button
-              title="Add Products"
-              handleClick={() => setIsUser(true)}
-              className={styles.btn}
-            /> */}
           </div>
         </div>
 
