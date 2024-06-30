@@ -24,6 +24,7 @@ interface InterfaceComponent {
 
   isExport?: boolean;
   fileName?: string;
+  tableCustomCss?: string;
   //   necessary
   isCreate: boolean;
   isFilterValid: boolean;

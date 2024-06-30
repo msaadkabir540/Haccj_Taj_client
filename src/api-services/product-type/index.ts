@@ -152,3 +152,94 @@ export const deleteProducts = async ({ id }: { id: number }) => {
     console.error(e);
   }
 };
+
+// Productivity product type
+
+export const addProductivityType = async ({
+  data,
+}: {
+  data: { employeecode: number; product_type: string };
+}) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "post",
+      url: `/add-products-productType`,
+      data: { employeecode: Number(data?.employeecode), product_type: data?.product_type },
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getProductsType = async () => {
+  try {
+    const response = await axiosApiRequest({
+      method: "get",
+      url: `/get-products-productType`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const deleteProductsType = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-products-product/${id}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+// Productivity product type
+
+export const addProductivityName = async ({
+  data,
+}: {
+  data: { employeecode: number; product_name: string };
+}) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "post",
+      url: `/add-products-productName`,
+      data: { employeecode: Number(data?.employeecode), product_name: data?.product_name },
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getProductsName = async () => {
+  try {
+    const response = await axiosApiRequest({
+      method: "get",
+      url: `/get-products-productName`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const deleteProductsName = async ({ id }: { id: number }) => {
+  try {
+    const response = await axiosApiRequest({
+      method: "delete",
+      url: `/delete-products-productName/${id}`,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};

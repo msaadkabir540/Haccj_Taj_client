@@ -268,6 +268,7 @@ const CheckList = () => {
     <div>
       <TableBtnStructure
         isDate={true}
+        tableCustomCss={styles.tableCustomCss}
         isExport={isAdmin}
         fileName="CheckList"
         isCreate={isAdmin}

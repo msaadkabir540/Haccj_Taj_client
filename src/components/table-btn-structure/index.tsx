@@ -34,6 +34,7 @@ const TableBtnStructure = ({
   handleDelete,
   SelectOption,
   headerPassage,
+  tableCustomCss,
   isFilterValid,
   isTableLoading,
   isUpdate = true,
@@ -79,6 +80,7 @@ const TableBtnStructure = ({
         <div className={styles.mainContainer}>
           <Table
             rows={rowData}
+            tableCustomClass={tableCustomCss}
             columns={ColumnsData}
             isLoading={isTableLoading}
             actions={({ row }) => {

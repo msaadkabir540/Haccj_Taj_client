@@ -8,35 +8,35 @@ const Columns = ({
 }: {
   handleOpenModal: ({ url }: { url: string }) => void;
 }): TableColumns[] => [
-  {
-    key: "image",
-    title: "Image",
-    render: ({ row }: TableColumnRenderProps) => {
-      return (
-        <div className={styles.thumbnailContainer}>
-          <div className={`${styles.iconDiv} flex items-center gap-4`}>
-            <div
-              className={` ${styles.imagesDiv} `}
-              onClick={() =>
-                handleOpenModal?.({
-                  url: `https://laravel.haccptaj.com/${row.image}`,
-                })
-              }
-            >
-              {(row as any)?.image && (
-                <img
-                  src={`https://laravel.haccptaj.com/${row.image}` as string}
-                  alt="themeVideoThumbnailUrl"
-                  style={{ borderRadius: "3px" }}
-                />
-              )}
-              {/* <div className={styles.text}>{row?.image_name}</div> */}
-            </div>
-          </div>
-        </div>
-      );
-    },
-  },
+  // {
+  //   key: "image",
+  //   title: "Image",
+  //   render: ({ row }: TableColumnRenderProps) => {
+  //     return (
+  //       <div className={styles.thumbnailContainer}>
+  //         <div className={`${styles.iconDiv} flex items-center gap-4`}>
+  //           <div
+  //             className={` ${styles.imagesDiv} `}
+  //             onClick={() =>
+  //               handleOpenModal?.({
+  //                 url: `https://laravel.haccptaj.com/${row.image}`,
+  //               })
+  //             }
+  //           >
+  //             {(row as any)?.image && (
+  //               <img
+  //                 src={`https://laravel.haccptaj.com/${row.image}` as string}
+  //                 alt="themeVideoThumbnailUrl"
+  //                 style={{ borderRadius: "3px" }}
+  //               />
+  //             )}
+  //             {/* <div className={styles.text}>{row?.image_name}</div> */}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     key: "machine_name",
     title: "Machine Name",

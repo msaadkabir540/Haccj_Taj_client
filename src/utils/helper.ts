@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as XLSX from "xlsx";
 
 export const downloadReport = ({ data, fileName }: { data: any; fileName: string }) => {
@@ -25,4 +26,21 @@ export const downloadReport = ({ data, fileName }: { data: any; fileName: string
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }, 0);
+};
+
+export const useOutsideClickHook: (
+  ref: React.RefObject<HTMLElement>,
+  callback: () => void,
+) => void = (ref, callback) => {
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
 };

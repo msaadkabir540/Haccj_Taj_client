@@ -22,42 +22,67 @@ code {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-  background: transparent;
+  width: 5px;
+  /* Remove scrollbar space */
+  background: #e6e7e8;
+  /* Optional: just make scrollbar invisible */
+  height: 5px;
+  border-radius: 8px;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-
-  border-radius: 100vw;
-
-  margin-block: 0.5em;
-}
-
+/* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-  background: #7e7e7e;
-
-  border-radius: 100vw;
-
-  -webkit-border-radius: 100vw;
-
-  -moz-border-radius: 100vw;
-
-  -ms-border-radius: 100vw;
-
-  -o-border-radius: 100vw;
+  background: #c7c8ca;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar:vertical {
-  width: 5px; /* Remove scrollbar space */
-
-  background: transparent; /* Optional: just make scrollbar invisible */
-
+  width: 5px;
+  /* Remove scrollbar space */
+  background: #e6e7e8;
+  /* Optional: just make scrollbar invisible */
   height: 5px;
-
   border-radius: 8px;
+  // display: none;
 }
+
+// ::-webkit-scrollbar {
+//   width: 0px;
+//   height: 0px;
+//   background: transparent;
+// }
+
+// ::-webkit-scrollbar-track {
+//   background: transparent;
+
+//   border-radius: 100vw;
+
+//   margin-block: 0.5em;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background: #7e7e7e;
+
+//   border-radius: 100vw;
+
+//   -webkit-border-radius: 100vw;
+
+//   -moz-border-radius: 100vw;
+
+//   -ms-border-radius: 100vw;
+
+//   -o-border-radius: 100vw;
+// }
+
+// ::-webkit-scrollbar:vertical {
+//   width: 5px; /* Remove scrollbar space */
+
+//   background: transparent; /* Optional: just make scrollbar invisible */
+
+//   height: 5px;
+
+//   border-radius: 8px;
+// }
 
 .jsoneditor-mode-code {
   height: 500px;

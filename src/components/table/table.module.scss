@@ -1,10 +1,14 @@
 .tableClass {
   border-collapse: collapse;
   text-indent: initial;
-  border-spacing: 0px 13px;
+  border-spacing: 0px;
   width: 100%;
   margin-top: 0px;
   box-shadow: 0px 1px 14px -3px #3e527a;
+  @media (max-width: 1100px) {
+    width: 1300px;
+  }
+
   thead {
     position: sticky;
     top: 0px;
@@ -62,9 +66,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 94%;
   position: absolute;
   top: 30%;
+  height: calc(100vh - 389px);
   h5 {
     font-size: 20px;
     font-weight: 500;
@@ -99,10 +104,17 @@ table {
   cursor: pointer;
   background-color: #438afe;
 }
+
 .TBodyCustom {
-  height: 100%;
-  max-height: 55vh;
-  min-height: 55vh;
+  height: calc(100vh - 355px);
   overflow-y: auto;
-  position: relative;
+  border-radius: 5px;
+  background: #fff;
+  // scrollbar-width: thin;
+
+  @media (max-width: 1100px) {
+    max-width: 1200px;
+    width: 100%;
+    overflow-x: auto;
+  }
 }

@@ -115,6 +115,13 @@
   }
 }
 
+.leftDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
 .menuListData {
   display: flex;
   justify-content: space-between;
@@ -122,6 +129,7 @@
 }
 .dropDownClass {
   display: flex;
+  cursor: pointer;
   padding: 10px;
   justify-content: center;
   align-items: center;

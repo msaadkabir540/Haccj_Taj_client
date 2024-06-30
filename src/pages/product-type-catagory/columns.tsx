@@ -38,42 +38,29 @@ const Columns = ({
   //     );
   //   },
   // },
+
   {
-    key: "trasability_name",
-    title: "Name",
+    key: "employeeName",
+    title: "Employee",
     render: ({ value }: TableColumnRenderProps) => {
       // return value?.[0] || "";
       return value as string;
     },
   },
   {
-    key: "trasability_type",
-    title: "Type",
+    key: "product_type",
+    title: "Product Type",
     render: ({ value }: TableColumnRenderProps) => {
+      // return value?.[0] || "";
       return value as string;
-    },
-  },
-  {
-    key: "created_by_name",
-    title: "created By",
-    render: ({ value }: TableColumnRenderProps) => {
-      return value as string;
-      // return moment(value as string).format("MMM DD, YYYY | HH:mm");
     },
   },
 
   {
     key: "created_at",
-    title: "Create ",
+    title: "Created At",
     render: ({ value }: TableColumnRenderProps) => {
       return moment.utc(value as string).format("MMM DD, YYYY | HH:mm") as string;
-    },
-  },
-  {
-    key: "expire_at",
-    title: "Expire",
-    render: ({ value }: TableColumnRenderProps) => {
-      return moment.utc(value as string).format("MMM DD, YYYY") as string;
     },
   },
   { key: "actions", title: "Action" },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useClients } from "@/context/context-collection";
@@ -8,8 +8,10 @@ import logo from "@/assets/assets/taj-mahal-logo.png";
 import styles from "./index.module.scss";
 import Button from "../button";
 import Modal from "../modal";
+import { useOutsideClickHook } from "@/utils/helper";
 
 const Navbars = () => {
+  const navbarRef: any = useRef();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [navbar, setNavbar] = useState({ show: "none", action: false });
@@ -21,7 +23,7 @@ const Navbars = () => {
   const context = useClients();
   const loggedAdminStatus = context ? context?.loggedAdminStatus : "";
   const loggedInUserName = context ? context?.loggedInUserName : "";
-  const isAdmin = loggedAdminStatus === "1" ? true : false;
+  const isAdmin = loggedAdminStatus === ("1" as string) ? true : false;
 
   const linksToRender = isAdmin ? pageNameWithLink : notAdminPageNameWithLink;
 
@@ -51,10 +53,13 @@ const Navbars = () => {
     navigate(`/login`);
   };
   const handleOpen = () => setOpen(!open);
+  const handleEmptyValue = () => setValue("");
+
+  useOutsideClickHook(navbarRef, () => setOpen(false));
 
   return (
     <>
-      <div className={styles.navbar} style={{ display: `${showNav(pathname)}` }}>
+      <div ref={navbarRef} className={styles.navbar} style={{ display: `${showNav(pathname)}` }}>
         <div className={styles.listDiv}>
           <div className={styles.navLogo}>
             <div>
@@ -73,6 +78,7 @@ const Navbars = () => {
                       className={pathname === navbarList?.link ? styles.activeTab : ""}
                       key={navbarList?.id}
                       to={navbarList?.link}
+                      onClick={handleEmptyValue}
                     >
                       {navbarList?.name}
                     </Link>
@@ -80,12 +86,14 @@ const Navbars = () => {
                 })}
               </div>
             </div>
-            {isAdmin && (
-              <div className={styles.dropDownClass} onClick={handleOpen}>
-                <div className={styles.marginLeft}>
-                  Add Catagory{" "}
-                  <span style={{ color: "#438afe" }}>{value ? ` : ${value}` : ""}</span>
-                  {value && (
+          </div>
+        </div>
+        <div className={styles.leftDiv}>
+          {isAdmin && (
+            <div className={styles.dropDownClass} onClick={handleOpen}>
+              <div className={styles.marginLeft}>
+                Add Catagory <span style={{ color: "#438afe" }}>{value ? ` : ${value}` : ""}</span>
+                {/* {value && (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="12"
@@ -94,6 +102,7 @@ const Navbars = () => {
                       fill="none"
                       onClick={(e) => {
                         e.stopPropagation();
+
                         setValue("");
                       }}
                     >
@@ -102,58 +111,57 @@ const Navbars = () => {
                         fill="#2A2E34"
                       />
                     </svg>
-                  )}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="13"
-                    height="8"
-                    viewBox="0 0 13 8"
-                    fill="none"
-                  >
-                    <path
-                      d="M1.8418 1.5L6.92085 6.5L11.9999 1.5"
-                      stroke="#2A2E34"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                {open && (
-                  <div className={styles.menu}>
-                    {pageNameWithLinkOption?.map((data) => (
-                      <Link
-                        className={pathname === data?.value ? styles.activeTab : ""}
-                        key={data?.value}
-                        to={data?.value}
-                      >
-                        <div
-                          key={data?.label}
-                          onClick={() => setValue(data?.label)}
-                          className={styles.menuList}
-                        >
-                          {data?.label}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                  )} */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="8"
+                  viewBox="0 0 13 8"
+                  fill="none"
+                >
+                  <path
+                    d="M1.8418 1.5L6.92085 6.5L11.9999 1.5"
+                    stroke="#2A2E34"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </div>
-            )}
-          </div>
-        </div>
-        <div className={styles.pages}>
-          <div>{loggedInUserName}</div>
-          <div title="Logout" className={styles.logoutDiv}>
-            <svg
-              className={styles.logout}
-              onClick={() => setIsLogout(true)}
-              focusable="false"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
-            </svg>
+              {open && (
+                <div className={styles.menu}>
+                  {pageNameWithLinkOption?.map((data) => (
+                    <Link
+                      className={pathname === data?.value ? styles.activeTab : ""}
+                      key={data?.value}
+                      to={data?.value}
+                    >
+                      <div
+                        key={data?.label}
+                        onClick={() => setValue(data?.label)}
+                        className={styles.menuList}
+                      >
+                        {data?.label}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          <div className={styles.pages}>
+            <div>{loggedInUserName}</div>
+            <div title="Logout" className={styles.logoutDiv}>
+              <svg
+                className={styles.logout}
+                onClick={() => setIsLogout(true)}
+                focusable="false"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+              </svg>
+            </div>
           </div>
         </div>
         <div className={styles.hamburgerMenu} onClick={toggleMobileMenu}>
@@ -261,6 +269,10 @@ const pageNameWithLink = [
 
 const pageNameWithLinkOption = [
   {
+    label: "Add Product Name",
+    value: "/product-name",
+  },
+  {
     label: "Add Trasability Product",
     value: "/products",
   },
@@ -269,12 +281,16 @@ const pageNameWithLinkOption = [
     value: "/equipment",
   },
   {
-    label: "Add Product Name",
-    value: "/product-name",
-  },
-  {
     label: "Add Oil Temperature Machine",
     value: "/machine",
+  },
+  {
+    label: "Add Production Product Type",
+    value: "/products-type-catagory",
+  },
+  {
+    label: "Add Production Product Name",
+    value: "/production-products-name",
   },
 ];
 
