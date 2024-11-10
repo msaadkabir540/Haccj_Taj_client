@@ -9,6 +9,7 @@ const Authentication: React.FC = () => {
         <div className={styles.wave_card_shape}></div>
       </div>
     </div>
+    //
   );
 };
 export default Authentication;
