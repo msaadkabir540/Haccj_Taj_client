@@ -85,27 +85,41 @@ const TableBtnStructure = ({
             isLoading={isTableLoading}
             actions={({ row }) => {
               return (
-                <td key={row?.id}>
-                  <div className={styles.iconRow}>
-                    {isUpdate && (
-                      <Button
-                        type="button"
-                        icon={editIcon}
-                        className={styles.iconsBtn}
-                        loaderClass={styles.loading}
-                        handleClick={() => handleEdit?.({ editId: row?.id })}
-                      />
-                    )}
-                    <Button
-                      type="button"
-                      icon={delIcon}
-                      isLoading={deleteId && deleteId === row?.id && isDeleted && isDeleted}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleDelete?.({ deleteId: row?.id })}
-                    />
-                  </div>
-                </td>
+                <div>
+                  {isUpdate && (
+                    // <Button
+                    //   type="button"
+                    //   title="Edit"
+                    //   // icon={editIcon}
+                    //   className="!rounded-md !border !mr-2 !bg-white !border-gray-300 !cursor-pointer !px-3 !py-2 !text-sm !font-medium !hover:bg-gray-50 !shadow-sm !transition-colors !duration-200"
+                    //   loaderClass={styles.loading}
+                    //   handleClick={() => handleEdit?.({ editId: row?.id })}
+                    // />
+                    <button
+                      onClick={() => handleEdit?.({ editId: row?.id })}
+                      className="rounded-md border mr-2 border-gray-300 cursor-pointer px-3 py-2 text-sm font-medium hover:bg-gray-50 shadow-sm transition-colors duration-200"
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {/* <Button
+                    type="button"
+                    icon={delIcon}
+                    isLoading={deleteId && deleteId === row?.id && isDeleted && isDeleted}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    handleClick={() => handleDelete?.({ deleteId: row?.id })}
+                  /> */}
+
+                  <button
+                    onClick={() => handleDelete?.({ deleteId: row?.id })}
+                    className="rounded-md bg-red-600 cursor-pointer hover:bg-red-700 text-white px-3 py-2 text-sm font-medium shadow-sm transition-colors duration-200"
+                  >
+                    {deleteId && deleteId === row?.id && isDeleted && isDeleted
+                      ? "deleting..."
+                      : "Delete"}
+                  </button>
+                </div>
               );
             }}
           />

@@ -16,13 +16,16 @@
     margin: 10px 0px;
     display: flex;
     justify-content: space-between;
+
     @media (max-width: 635px) {
       flex-wrap: wrap;
     }
+
     .filterButton {
       border-radius: 5px;
       max-width: 130px;
       min-width: 130px;
+
       p {
         color: #fafafa !important;
         font-size: 15px !important;
@@ -64,10 +67,12 @@
       border-radius: 5px;
       max-width: 130px;
       min-width: 130px;
+
       p {
         color: #fafafa !important;
         font-size: 15px !important;
       }
+
       // &:hover {
       //   background: transparent !important;
       //   border: 1px solid #438afe;
@@ -83,6 +88,7 @@
       min-width: 130px;
       background: transparent !important;
       border: 1px solid #438afe;
+
       p {
         color: #438afe !important;
         font-size: 15px !important;
@@ -100,8 +106,9 @@
       border: none !important;
       padding: 0px !important;
       margin: 0px !important;
-      padding: 19px 15px 15px 20px !important;
+      // padding: 19px 15px 15px 20px !important;
       max-width: 30px !important;
+
       &:hover {
         max-width: 30px !important;
         background: #e0e0e0 !important;
@@ -125,13 +132,16 @@
   .dateClass {
     width: 97% !important;
   }
+
   .modalHeading {
     font-size: 20px;
     font-weight: 600;
   }
+
   .selectionContainer {
     display: flex;
     align-items: flex-end;
+
     .selections {
       width: 100%;
       position: relative;
@@ -142,15 +152,19 @@
     flex-wrap: wrap;
   }
 }
+
 .ModalClassName {
   max-width: 31vw !important;
+
   @media (max-width: 1100px) {
     max-width: 41vw !important;
   }
+
   @media (max-width: 600px) {
     max-width: 90vw !important;
   }
 }
+
 .modalBtnContainer {
   display: flex;
   justify-content: flex-end;
@@ -164,6 +178,7 @@
     min-width: 130px;
     background: transparent !important;
     border: 1px solid #438afe;
+
     p {
       color: #438afe !important;
       font-size: 15px !important;
@@ -174,10 +189,12 @@
     border-radius: 5px;
     max-width: 130px;
     min-width: 130px;
+
     p {
       color: #fafafa !important;
       font-size: 15px !important;
     }
+
     // &:hover {
     //   background: transparent !important;
     //   border: 1px solid #438afe;

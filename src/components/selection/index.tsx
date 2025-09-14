@@ -146,42 +146,11 @@ const Selection = ({
                 isMulti={isMulti}
                 value={value}
                 isClearable
-
-                // components={{
-                //   ...(showNumber && {
-                //     MultiValue: (props) => {
-                //       const { getValue, data } = props;
-                //       const selectedOptions = getValue();
-                //       const currentOptionIdx = selectedOptions.findIndex(
-                //         (option) => option?.value === data?.value,
-                //       );
-                //       if (selectedOptions?.length > 1) {
-                //         return currentOptionIdx === 0 ? (
-                //           <p className={style.pp}>{selectedOptions?.length} Selected</p>
-                //         ) : (
-                //           <></>
-                //         );
-                //       } else {
-                //         return currentOptionIdx === 0 ? (
-                //           <p className={style.pp}>{data?.label}</p>
-                //         ) : (
-                //           <></>
-                //         );
-                //       }
-                //     },
-                //   }),
-                // }}
               />
             );
           }}
         />
       )}
-
-      {/* <label htmlFor={id}>
-        <div className={`${style.icon} ${iconClass}`}>
-          <ImageComponent src={"/assets/down.png"} alt="dropdown" className={style.img} />
-        </div>
-      </label> */}
 
       {errorMessage ? <span className={style.errorMessage}>{errorMessage}</span> : ""}
     </div>

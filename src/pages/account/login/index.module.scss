@@ -10,13 +10,15 @@
   position: relative;
   z-index: 10;
 }
+
 .inputContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
+
   input {
-    padding: 14px 0px 15px 13px !important;
+    padding: 10px !important;
   }
 }
 
@@ -29,21 +31,25 @@ h2 {
   margin: 5px;
   text-align: center;
 }
+
 .btnContainer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   flex-direction: column-reverse;
   gap: 20px;
+
   @media (max-width: 600px) {
     flex-direction: column;
   }
 }
+
 .forgetPassword {
   cursor: pointer;
   font-weight: 600;
   font-size: 15px;
 }
+
 .forgetPassword:hover {
   color: #438afe;
 }
@@ -52,6 +58,7 @@ h2 {
   border-radius: 23px !important;
   background-color: #438afe !important;
   height: 45px;
+
   p {
     color: white !important;
     font-size: 18px !important;
@@ -67,6 +74,7 @@ h2 {
   border-radius: 18px;
   color: #438efa;
 }
+
 .signUpContainer {
   display: flex;
   justify-content: space-between;
@@ -110,6 +118,7 @@ h2 {
     //   color: #3d3d3d !important;
     // }
   }
+
   @media (max-width: 800px) {
     display: block;
   }
@@ -132,10 +141,12 @@ h2 {
   align-items: center;
   flex-direction: column;
   gap: 20px;
+
   .textAccount {
     color: #ffff;
     font-size: 25px;
     font-weight: 700;
+
     @media (max-width: 1209px) and (min-width: 800px) {
       font-size: 18px;
     }
@@ -144,17 +155,19 @@ h2 {
   @media (max-width: 1500px) and (min-width: 1210px) {
     right: 4vw;
   }
+
   @media (max-width: 1209px) and (min-width: 800px) {
     right: 4vw;
   }
+
   @media (max-width: 800px) {
     display: none;
   }
 }
 
 .iconsClass {
-  right: 11px !important;
-  top: 10px !important;
+  right: 25px !important;
+  top: 15px !important;
   width: 30px !important;
   height: 30px !important;
 }

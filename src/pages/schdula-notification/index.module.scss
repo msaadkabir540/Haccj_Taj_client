@@ -1,0 +1,21 @@
+.classGrid {
+  display: none; // hide on mobile
+
+  @media (min-width: 640px) {
+    // show on sm and above
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.5rem; // gap-2
+    padding: 0.75rem 1rem; // py-3 px-4
+    font-size: 0.75rem; // text-xs
+    font-weight: 500;
+    color: #737373; // text-neutral-500
+    border-bottom: 1px solid #e5e5e5;
+
+    @media (min-width: 768px) {
+      // md breakpoint
+      font-size: 1.125rem; // text-lg
+      line-height: 1.75rem;
+    }
+  }
+}

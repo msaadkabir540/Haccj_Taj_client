@@ -21,6 +21,8 @@ import ProductName from "@/pages/product-name";
 import ProductType from "@/pages/product-type";
 import ProductTypeCatagory from "@/pages/product-type-catagory";
 import ProductNameCatagory from "@/pages/product-name-catagory";
+import Attendance from "@/pages/attendance";
+import ScheduledNotificationsModule from "@/pages/schdula-notification";
 
 interface PrivateRouteInterface {
   element: React.FC<any>;
@@ -49,6 +51,11 @@ const Routing = ({ setLoading }: { setLoading: any }) => {
       <Route path="/" element={<PrivateRoute element={Home} />} />
       <Route path="/user" element={<PrivateRoute element={User} />} />
       <Route path="/machine" element={<PrivateRoute element={Machine} />} />
+      <Route path="/attendance" element={<PrivateRoute element={Attendance} />} />
+      <Route
+        path="/scheduled-notifications"
+        element={<PrivateRoute element={ScheduledNotificationsModule} />}
+      />
       <Route path="/products" element={<PrivateRoute element={Products} />} />
       <Route path="/checkList" element={<PrivateRoute element={CheckList} />} />
       <Route path="/equipment" element={<PrivateRoute element={Equipment} />} />

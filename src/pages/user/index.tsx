@@ -28,7 +28,7 @@ import HeadingText from "@/components/heading-text";
 
 const User: React.FC = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, watch, setValue } = useForm<TryNowFormInterface>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<any>({
     defaultValues: defaultFormValues,
   });
 
@@ -49,7 +49,7 @@ const User: React.FC = () => {
     isDeleted: false,
   });
 
-  const onSubmit = async (data: TryNowFormInterface) => {
+  const onSubmit = async (data: any) => {
     setIsAddingUser(true);
     const { updated_at, updated_by, isadmin, CREATED_AT, ...filteredData } = data;
     const updatedData = { ...filteredData, isadmin: data?.isadmin === true ? 1 : 0 };
@@ -94,7 +94,7 @@ const User: React.FC = () => {
   const handleAllEmployee = async () => {
     try {
       setIsLoading(true);
-      const response = await getAllEmployees({ navigate: navigate });
+      const response = await getAllEmployees();
       if (response?.status === true) {
         setAllEmployees(response?.data);
         setIsLoading(false);
@@ -149,30 +149,29 @@ const User: React.FC = () => {
             </div>
           </div>
           <Table
-            rows={employeesData as EmployeeDataInterface[]}
+            rows={employeesData as any}
             columns={Columns}
             isLoading={isLoading}
             tableCustomClass={styles.tableCustomClass}
             actions={({ row }) => {
               return (
-                <td key={row?.id}>
-                  <div className={styles.iconRow}>
-                    <Button
-                      type="button"
-                      icon={editIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleEditEmployee({ employeeId: row?.id })}
-                    />
-                    <Button
-                      type="button"
-                      icon={delIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleDelete({ deleteId: row?.id })}
-                    />
-                  </div>
-                </td>
+                <div className={styles.iconRow}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    handleClick={() => handleEditEmployee({ employeeId: row?.id })}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    handleClick={() => handleDelete({ deleteId: row?.id })}
+                  />
+                </div>
+                // </td>
               );
             }}
           />
