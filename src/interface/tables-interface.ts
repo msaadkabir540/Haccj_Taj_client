@@ -31,7 +31,14 @@ interface WidgetTableRows {
 interface RowsInterface {
   id: number;
   employeecode?: number;
+  check_in?: number;
+  check_out?: number;
+  total_hours?: number;
+  check_in_location?: number;
+  check_out_location?: number;
   name?: string;
+  time?: string;
+  location?: string;
   cleaning_area?: string;
   created_by_name?: string;
   assign_start?: string;

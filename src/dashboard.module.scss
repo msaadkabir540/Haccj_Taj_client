@@ -4,14 +4,17 @@
   margin: 40px 0px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
   .input {
     height: 400px;
   }
+
   .list {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+
   .btn {
     height: 44px;
     color: black;
@@ -20,6 +23,7 @@
     background-color: white;
     border: 1px solid black !important;
   }
+
   .btn1 {
     height: 49px !important;
     color: black;
@@ -28,6 +32,7 @@
     background-color: white;
     border: 1px solid black !important;
   }
+
   .btn {
     height: 44px;
     color: black;
@@ -36,6 +41,7 @@
     background-color: white;
     border: 1px solid black !important;
   }
+
   .btnLoaderClass {
     border-color: #000000 #000000 #000000 #fff;
   }

@@ -209,24 +209,22 @@ const Treacbility: React.FC = () => {
           isLoading={isLoading}
           actions={({ row }) => {
             return (
-              <td key={row?.id}>
-                <div className={styles.iconRow}>
-                  <Button
-                    type="button"
-                    icon={editIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                    handleClick={() => handleEditTemperature({ tracId: row?.id })}
-                  />
-                  <Button
-                    type="button"
-                    icon={delIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                    handleClick={() => handleDelete({ deleteId: row?.id })}
-                  />
-                </div>
-              </td>
+              <div className={styles.iconRow}>
+                <Button
+                  type="button"
+                  icon={editIcon}
+                  className={styles.iconsBtn}
+                  loaderClass={styles.loading}
+                  handleClick={() => handleEditTemperature({ tracId: row?.id })}
+                />
+                <Button
+                  type="button"
+                  icon={delIcon}
+                  className={styles.iconsBtn}
+                  loaderClass={styles.loading}
+                  handleClick={() => handleDelete({ deleteId: row?.id })}
+                />
+              </div>
             );
           }}
         />

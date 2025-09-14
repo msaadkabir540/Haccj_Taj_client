@@ -191,25 +191,23 @@ const Temperature: React.FC = () => {
             isLoading={isLoading}
             actions={({ row }) => {
               return (
-                <td key={row?.id}>
-                  <div className={styles.iconRow}>
-                    <Button
-                      type="button"
-                      icon={editIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleEditTemperature({ tempId: row?.id })}
-                    />
-                    <Button
-                      type="button"
-                      icon={delIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleDelete({ deleteId: row?.id })}
-                      isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
-                    />
-                  </div>
-                </td>
+                <div className={styles.iconRow}>
+                  <Button
+                    type="button"
+                    icon={editIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    handleClick={() => handleEditTemperature({ tempId: row?.id })}
+                  />
+                  <Button
+                    type="button"
+                    icon={delIcon}
+                    className={styles.iconsBtn}
+                    loaderClass={styles.loading}
+                    handleClick={() => handleDelete({ deleteId: row?.id })}
+                    isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
+                  />
+                </div>
               );
             }}
           />

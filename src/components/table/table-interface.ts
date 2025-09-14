@@ -21,7 +21,7 @@ interface TableInterface {
   columns: Array<TableColumns>;
   tableCustomClass?: string;
   editing?: any;
-  actions: (actionValues: { row: RowsInterface; index: number }) => JSX.Element | JSX.Element[];
+  actions?: (actionValues: { row: RowsInterface; index: number }) => JSX.Element | JSX.Element[];
   isLoading: boolean;
   sortColumn?: {
     sortBy: string;

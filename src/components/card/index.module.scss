@@ -31,15 +31,19 @@ $flag: "#{$host}flag.png";
 @mixin pos($pos, $left: null, $top: null, $right: null, $bottom: null) {
   position: $pos;
   left: $left;
+
   @if $top {
     top: $top;
   }
+
   @if $left {
     left: $left;
   }
+
   @if $right {
     right: $right;
   }
+
   @if $bottom {
     bottom: $bottom;
   }
@@ -81,12 +85,15 @@ article.card {
   box-shadow: $box-shadow;
   overflow: hidden;
   transition: 0.35s $transition;
+
   @media (max-width: 500px) {
     @include size($card-width-sm, $card-height-sm);
   }
+
   @media (max-height: 800px) {
     height: 300px;
   }
+
   .thumb {
     display: flex;
     justify-content: center;
@@ -95,19 +102,23 @@ article.card {
     background: linear-gradient(to right, #3781fa, #becefc, #a2c6fe);
     background-size: cover;
     border-radius: $border-radius;
+
     @media (max-height: 800px) {
       height: 220px;
     }
+
     img {
       width: 100px;
     }
   }
+
   .infos {
     @include size(auto, $card-height);
     position: relative;
     padding: 14px 24px;
     background: $white;
     transition: $timing-1 $transition;
+
     .title {
       position: relative;
       margin: 10px 0;
@@ -117,10 +128,12 @@ article.card {
       font-size: 1rem;
       text-transform: uppercase;
       text-shadow: 0 0 0px lighten($big-stone, 20);
+
       @media (max-height: 800px) {
         font-size: 14px;
       }
     }
+
     .flag {
       @include pos(absolute, $top: 50%, $right: 0);
       transform: translateY(-50%);
@@ -129,6 +142,7 @@ article.card {
       background-size: 100% auto;
       display: inline-block;
     }
+
     .date,
     .seats {
       margin-bottom: 10px;
@@ -137,6 +151,7 @@ article.card {
       color: $lite-big-stone;
       font-family: $grotesque-regular;
     }
+
     .seats {
       display: inline-block;
       margin-bottom: 24px;
@@ -145,6 +160,7 @@ article.card {
       opacity: 0;
       transition: $timing-2 $transition;
     }
+
     .txt {
       font-family: $merriweather;
       line-height: 2;
@@ -153,6 +169,7 @@ article.card {
       opacity: 0;
       transition: $timing-2 $transition;
     }
+
     .details {
       @include pos(absolute, $left: 0, $bottom: 0);
       margin: 10px 0;
@@ -167,11 +184,14 @@ article.card {
       transition: $timing-2 $transition;
     }
   }
+
   &:hover {
     transform: translateY(-12px);
   }
+
   &:hover .infos {
     transform: translateY(-60px);
+
     .seats,
     .txt,
     .details {
@@ -186,6 +206,7 @@ article.card {
   min-width: 130px;
   background: transparent !important;
   border: 1px solid #438afe;
+
   p {
     color: #438afe !important;
     font-size: 15px !important;

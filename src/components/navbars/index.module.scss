@@ -1,454 +1,472 @@
-// Navbar.module.scss
+// --- CSS Variables for Easy Theming ---
+:root {
+  --primary-color: #438afe;
+  --text-color: #2a2e34;
+  --text-light: #5f6368;
+  --bg-color: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --header-height: 4.5rem; // Using rem for scalable height
+}
+
+// --- Main Navbar Container ---
 .navbar {
-  position: relative;
+  height: var(--header-height);
+  background-color: #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
-  background-color: #fafcff;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 7px 5px 15px -4px rgba(63, 106, 235, 0.75);
-  -webkit-box-shadow: 7px 5px 15px -4px rgba(63, 106, 235, 0.75);
-  -moz-box-shadow: 7px 5px 15px -4px rgba(63, 106, 235, 0.75);
-  @media (max-width: 770px) {
-    justify-content: space-around;
-  }
-  img {
-    width: 50px;
-    padding: 5px 20px;
-  }
-  .navItems {
-    div {
-      display: flex;
-      flex-wrap: wrap;
-      a {
-        text-shadow: none;
-        font-weight: bolder;
-        position: relative;
-        display: inline;
-        list-style: none;
-        font-size: 14px;
-        padding: 10px 20px;
-        cursor: pointer;
-        color: #438afe;
-        text-decoration: none;
-        background: linear-gradient(to right, transparent 50%, #438afe 50%);
-        background-size: 200% 100%;
-        transition: background-position 0.5s ease;
-
-        &:hover {
-          background-position: -100% 0; /* Move background from left to right */
-          color: #ffffff;
-        }
-      }
-      .activeTab {
-        text-shadow: none;
-        font-weight: bolder;
-        position: relative;
-        display: inline;
-        list-style: none;
-        // margin: 10px;
-        padding: 10px 20px;
-        cursor: pointer;
-        color: #438afe;
-        text-decoration: none;
-        background: linear-gradient(to right, transparent 50%, #438afe 50%);
-        background-size: 200% 100%;
-        background-position: -100% 0;
-        color: #ffffff;
-        transition: background-position 0.5s ease;
-      }
-    }
-    @media (max-width: 770px) {
-      display: none;
-    }
-  }
-
-  .navLogo a,
-  .navButton a {
-    color: #438afe;
-    list-style: none;
-    text-decoration: none;
-    display: flex;
-  }
-
-  .navLogo {
-    font-size: 32px;
-  }
-
-  .navButton {
-    box-shadow: 7px 5px 15px -4px rgba(63, 106, 235, 0.75);
-    background-color: #438afe;
-    border-radius: 50px;
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
-    cursor: pointer;
-
-    .animLayer {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 0;
-      height: 100%;
-      background-color: #438afe;
-      transition:
-        width 0.8s ease,
-        left 0.8s ease;
-    }
-
-    &:hover .animLayer {
-      width: 100%;
-      left: 0;
-      background-color: white;
-    }
-
-    a {
-      display: block;
-      padding: 5px 0px;
-      color: white;
-      text-decoration: none;
-      // position: relative;
-      z-index: 1;
-      &:hover {
-        color: white;
-      }
-    }
-  }
+  padding: 0 15px;
+  border-radius: 0px 0px 20px 20px;
 }
 
-.leftDiv {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.menuListData {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropDownClass {
-  display: flex;
-  cursor: pointer;
-  padding: 10px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 10px;
-  border: 1px solid #438afe;
-  font-size: 14px;
-  background: #fff;
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
-  .marginLeft {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    @media (max-width: 480px) {
-      gap: 1px;
-    }
-  }
-  .menu {
-    position: absolute;
-    top: 57px;
-    z-index: 999;
-    padding: 15px;
-    border-radius: 12.722px;
-    background: #fff;
-    border: 1px solid #438afe;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
-    a {
-      text-decoration: none;
-    }
-    .menuList {
-      padding: 10px;
-      list-style: none;
-      color: #438afe;
-
-      &:hover {
-        background-color: #438afe;
-        color: #fff;
-        border-radius: 7px;
-      }
-    }
-  }
-}
-
-.mobileMenu {
-  display: flex;
-  flex-direction: row-reverse;
-  background-color: #e1e1e1 !important;
+.navContent {
   width: 100%;
-  position: fixed;
-  top: 55px;
-  left: 0;
-  justify-content: center;
-  transition:
-    transform 1s ease,
-    opacity 0.3s ease; /* Add transition properties */
-  transform: translateY(-100%); /* Start offscreen */
-  opacity: 0; /* Hide initially */
-  z-index: 99;
+  // max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
 
-  &.animation {
-    transform: translateY(0); /* Slide down from top */
-    opacity: 1; /* Show */
-  }
+.navLogo {
+  flex-shrink: 0;
 
-  .mobileNavItems {
-    .ListMenu {
-      ul {
-        list-style: none;
-        color: black;
-        padding: 10px;
-        margin: 10px;
-        li {
-          padding: 10px;
-          margin: 10px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: end;
-          a {
-            color: black;
-            text-decoration: none;
-          }
-          svg {
-            cursor: pointer;
-            height: 25px !important;
-            margin-left: 10px;
-          }
-        }
-      }
-    }
+  img {
+    height: 2.5rem; // Use rem for scalable logo
+    width: auto;
   }
 }
 
-.mobileNavItems > ul {
-  padding: 0px;
+// --- Desktop Navigation (Hidden on Mobile) ---
+.desktopNav {
+  display: none; // Mobile first: hidden by default
+  flex-grow: 1;
+  align-items: center;
+  gap: 2rem;
+}
 
-  > li {
-    text-align: center;
-    // position: relative;
-    list-style: none;
-    margin: 10px;
-    padding: 5px 0px;
-    cursor: pointer;
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
 
-    > a {
-      color: white;
-      text-decoration: none;
-    }
+  a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s ease-in-out;
 
     &::after {
       content: "";
       position: absolute;
-      width: 100%;
-      height: 0.17rem;
-      background-color: white;
-      left: 0;
       bottom: 0;
-      transform-origin: 0% 100%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-color);
       transform: scaleX(0);
-      transition: transform 1s ease;
+      transform-origin: left;
+      transition: transform 0.3s ease;
     }
 
-    &:hover::after {
-      transform: scaleX(1);
+    &:hover,
+    &.active {
+      color: var(--primary-color);
+
+      &::after {
+        transform: scaleX(1);
+      }
     }
   }
 }
 
-.mobileNavButton {
-  background-color: #141214;
-  border-radius: 50px;
+// --- Category Dropdown ---
+.dropdownContainer {
   position: relative;
-  display: inline-block;
-  overflow: hidden;
-  cursor: pointer;
-
-  .animLayer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 0;
-    height: 100%;
-    background-color: white;
-    transition:
-      width 0.3s ease,
-      left 0.3s ease;
-  }
-
-  &:hover .animLayer {
-    width: 100%;
-    left: 0;
-  }
-
-  &:hover a {
-    color: #141214;
-  }
-
-  > a {
-    display: block;
-    padding: 10px 20px;
-    color: white;
-    text-decoration: none;
-    // position: relative;
-    z-index: 1;
-  }
 }
 
-.hamburgerCross {
-  display: block;
-  cursor: pointer !important;
-  color: rgb(21, 21, 21);
-  font-size: 25px;
-  position: absolute;
-  top: 12px;
-  left: 20px;
-}
-
-.hamburgerMenu {
-  display: none;
-  @media (max-width: 770px) {
-    display: block;
-    color: rgb(41, 41, 41);
-    cursor: pointer;
-    font-size: 24px;
-  }
-}
-
-.listNavbar {
-  @media (max-width: 770px) {
-    display: none;
-  }
-}
-
-.pages {
+.dropdownToggle {
   display: flex;
   align-items: center;
-  padding: 0px 35px 0px 0px;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  transition: background-color 0.2s, border-color 0.2s;
 
-  .settingsActive {
-    border-bottom: 1px solid black;
+  .selectedValue {
+    color: var(--primary-color);
+    font-weight: 500;
   }
 
-  .rdControlCover {
-    background-color: transparent;
-    border: none;
+  &:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
   }
-  @media (max-width: 770px) {
-    display: none;
-  }
-}
 
-.logoutDiv {
-  position: relative;
-  margin: 10px;
-
-  .logout {
-    width: 30px;
-    height: 30px;
-    margin: 0px 6px;
-    cursor: pointer;
-  }
-}
-.logoutDivMenu {
-  position: relative;
-  margin: 10px;
-  margin-top: 45px;
-
-  .logout {
-    width: 30px;
-    height: 30px;
-    margin: 0px 6px;
-    cursor: pointer;
-  }
   svg {
-    left: 3rem !important;
+    transition: transform 0.2s ease;
+  }
+
+  &[aria-expanded="true"] svg {
+    transform: rotate(180deg);
   }
 }
 
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 0.5rem;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeIn 0.2s ease forwards;
+
+  a {
+    padding: 10px 5px;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover,
+    &.activeDropdownItem {
+      background-color: var(--primary-color);
+      color: white;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+// --- User Actions & Hamburger Menu ---
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  display: none; // Hidden on mobile
+  align-items: center;
+  gap: 1rem;
+}
+
+.userName {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  &:hover {
+    background-color: #f1f3f5;
+    color: var(--primary-color);
+  }
+}
+
+.hamburgerButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.hamburgerLineWrapper {
+  width: 24px;
+  height: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  div {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+  }
+}
+
+// --- Mobile Menu ---
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: -100%; // Start off-screen
+  width: 80%;
+  max-width: 320px;
+  height: 100%;
+  background-color: var(--bg-color);
+  z-index: 1002;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
+  transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+
+  &.open {
+    right: 0;
+  }
+}
+
+.mobileMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+}
+
+.closeIcon {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text-light);
+}
+
+.mobileNavLinks {
+  padding: 1rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  a {
+    padding: 10px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    font-weight: 600;
+
+    &:hover {
+      background-color: #f1f3f5;
+    }
+  }
+}
+
+.mobileDropdown {
+  border-top: 1px solid var(--border-color);
+  margin-top: 5px;
+  padding-top: 5px;
+
+  .mobileDropdownTitle {
+    font-weight: 600;
+    padding: 0 10px 5px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+
+  }
+
+  .mobileDropdownList {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  a {
+    color: var(--text-light);
+    padding: 5px;
+    font-size: 14px;
+
+  }
+}
+
+.mobileLogoutSection {
+  margin-top: auto; // Pushes to the bottom
+  padding: 1.5rem 1rem 1rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+
+  p {
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .mobileLogoutButton {
+    width: 100%;
+    background-color: #f8d7da;
+    color: #721c24;
+
+    &:hover {
+      background-color: #f5c6cb;
+    }
+  }
+}
+
+
+// --- Logout Modal Styles ---
 .modalWrapper {
   max-width: 250px !important;
+
   @media only screen and (max-width: 770px) {
     max-width: 350px !important;
   }
 }
 
-.mainModal {
-  display: flex;
-  justify-content: center;
-  // align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  .mainHeading {
-    text-align: center;
-    font-weight: 500;
-    font-size: 15px;
-  }
-  .logoutDivModal {
-    position: relative;
-    margin: 10px;
-    text-align: center;
-    // margin-top: 45px;
+.modalContent {
+  text-align: center;
+  padding: 10px;
 
-    .logout {
-      // width: 47px;
-      height: 40px;
-      margin: 0px 6px;
-      cursor: pointer;
+  .modalIcon {
+    color: var(--primary-color);
+
+    svg {
+      width: 3rem;
+      height: 3rem;
     }
-    // svg {
-    //   left: 96px !important;
-    // }
+
+    margin-bottom: 1rem;
   }
-  .btnClass {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    .btn2 {
-      border-radius: 5px;
-      background: #ff5050 !important;
-      // max-width: 160px;
-      // min-width: 160px;
-      p {
-        color: #fafafa !important;
-        font-size: 15px !important;
-      }
-      &:hover {
-        background: transparent !important;
-        border: 1px solid #ff5050;
-        p {
-          color: #ff5050 !important;
-        }
-      }
-    }
-    .btn {
-      border-radius: 5px;
-      // max-width: 130px;
-      // min-width: 130px;
-      background: transparent !important;
-      border: 1px solid #ff5050;
-      p {
-        color: #ff5050 !important;
-        font-size: 15px !important;
-      }
-      &:hover {
-        background: #ff5050 !important;
-        border: 1px solid #ff5050;
-        p {
-          color: #fafafa !important;
-        }
-      }
-    }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
   }
 }
 
-.listDiv {
+.modalActions {
   display: flex;
-  gap: 10px;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 10px;
+
+
+  .confirmBtn {
+    border-radius: 5px;
+    background: #ff5050 !important;
+
+    // max-width: 160px;
+    // min-width: 160px;
+    p {
+      color: #fafafa !important;
+      font-size: 15px !important;
+    }
+
+    &:hover {
+      background: transparent !important;
+      border: 1px solid #ff5050;
+
+      p {
+        color: #ff5050 !important;
+      }
+    }
+  }
+
+  .cancelBtn {
+    border-radius: 5px;
+    // max-width: 130px;
+    // min-width: 130px;
+    background: transparent !important;
+    border: 1px solid #ff5050;
+
+    p {
+      color: #ff5050 !important;
+      font-size: 15px !important;
+    }
+
+    &:hover {
+      background: #ff5050 !important;
+      border: 1px solid #ff5050;
+
+      p {
+        color: #fafafa !important;
+      }
+    }
+  }
+
+  // .cancelBtn {
+  //   background-color: var(--border-color);
+  //   color: var(--text-color);
+  // }
+
+  // .confirmBtn {
+  //   background-color: #dc3545; // A distinct logout color
+  //   color: white;
+  // }
+}
+
+// --- Responsive Breakpoints (Desktop View) ---
+@media (min-width: 769px) {
+
+  .desktopNav,
+  .userInfo {
+    display: flex; // Show desktop nav and user info
+  }
+
+  .hamburgerButton {
+    display: none; // Hide hamburger on desktop
+  }
 }

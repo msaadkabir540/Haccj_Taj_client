@@ -1,11 +1,13 @@
 .header {
   margin: 15px 0px;
+
   .text {
     position: relative;
     overflow: hidden;
     color: #292929;
     padding: 15px 0px;
-    padding-bottom: 10px; /* Adjust the padding as needed */
+    padding-bottom: 10px;
+    /* Adjust the padding as needed */
     margin-bottom: 10px;
   }
 
@@ -15,7 +17,8 @@
     right: 100%;
     width: 100%;
     height: 2px;
-    background-color: #639efc; /* Adjust the color as needed */
+    background-color: #639efc;
+    /* Adjust the color as needed */
     animation: loadLine 1s forwards;
   }
 
@@ -23,6 +26,7 @@
     from {
       right: 100%;
     }
+
     to {
       right: 0;
     }
@@ -41,6 +45,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
     @media (max-width: 700px) {
       flex-wrap: wrap;
     }
@@ -49,17 +54,21 @@
       border-radius: 5px;
       max-width: 150px;
       min-width: 150px;
+
       p {
         color: #fafafa !important;
         font-size: 15px !important;
       }
+
       &:hover {
         background: transparent !important;
         border: 1px solid #438afe;
+
         p {
           color: #438afe !important;
         }
       }
+
       @media (max-width: 700px) {
         margin-bottom: 10px;
       }
@@ -93,6 +102,7 @@
 .inputClass {
   width: 96% !important;
 }
+
 .checkBoxContainer {
   .labelClass {
     display: flex;
@@ -100,6 +110,7 @@
     justify-content: flex-start;
     align-items: center;
   }
+
   .checkBox {
     width: 100% !important;
   }
@@ -116,6 +127,7 @@
     border-radius: 5px;
     max-width: 100px;
     min-width: 100px;
+
     p {
       color: #fafafa !important;
       font-size: 15px !important;
@@ -128,6 +140,7 @@
     min-width: 100px;
     background: transparent !important;
     border: 1px solid #438afe;
+
     p {
       color: #438afe !important;
       font-size: 15px !important;
@@ -145,8 +158,9 @@
     border: none !important;
     padding: 0px !important;
     margin: 0px !important;
-    padding: 19px 15px 15px 20px !important;
+    // padding: 19px 15px 15px 20px !important;
     max-width: 30px !important;
+
     &:hover {
       max-width: 30px !important;
       background: #e0e0e0 !important;
@@ -159,6 +173,7 @@
 
 .mainContainer {
   margin-top: 25px;
+
   .pagination {
     margin: 10px !important;
   }

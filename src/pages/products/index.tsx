@@ -11,10 +11,8 @@ import createNotification from "@/common/create-notification";
 import { addProductType, deleteProduct, getProductTypes } from "@/api-services/product-type";
 import { Columns } from "./columns";
 
-import editIcon from "@/assets/edit.svg";
 import delIcon from "@/assets/del-icon.svg";
 import { useClients } from "@/context/context-collection";
-import useDeleteEmployee from "custom-hook/custom-delete-hook";
 
 const Products: React.FC = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -23,7 +21,7 @@ const Products: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<number>(0);
-  const [productData, setProductData] = useState();
+  const [productData, setProductData] = useState([]);
   const [updatedValues, setUpdatedValues] = useState<{
     tempId?: number;
     employeeCode?: number;
@@ -45,7 +43,7 @@ const Products: React.FC = () => {
       return acc;
     }, {}) || {};
 
-  const allProductByName = productData?.map((data) => ({
+  const allProductByName = productData?.map((data: any) => ({
     ...data,
     employeeName: getUserUsername[data?.employeecode as string] || data?.employeecode,
   }));
@@ -94,7 +92,7 @@ const Products: React.FC = () => {
       const response = await getProductTypes();
 
       if (response.status === true) {
-        setProductData(response.data);
+        setProductData(response.data === "N/A" ? [] : response.data);
         setIsLoading(false);
       }
     } catch (error) {
@@ -148,18 +146,16 @@ const Products: React.FC = () => {
           tableCustomClass={styles.tableCustomClass}
           actions={({ row }) => {
             return (
-              <td key={row?.id}>
-                <div className={styles.iconRow}>
-                  <Button
-                    type="button"
-                    icon={delIcon}
-                    className={styles.iconsBtn}
-                    loaderClass={styles.loading}
-                    handleClick={() => handleDelete({ deleteId: row?.id })}
-                    isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
-                  />
-                </div>
-              </td>
+              <div key={row?.id} className={styles.iconRow}>
+                <Button
+                  type="button"
+                  icon={delIcon}
+                  className={styles.iconsBtn}
+                  loaderClass={styles.loading}
+                  handleClick={() => handleDelete({ deleteId: row?.id })}
+                  isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
+                />
+              </div>
             );
           }}
         />

@@ -42,6 +42,7 @@ const Login: React.FC = () => {
         setError("");
         setErrorPassword("");
         setIsLoading(true);
+
         const res = await signIn({ data });
 
         if (res.status === true) {

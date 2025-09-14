@@ -170,27 +170,25 @@ const ProductType: React.FC = () => {
           tableCustomClass={styles.tableCustomClass}
           actions={({ row }) => {
             return (
-              <td key={row?.id}>
-                <div className={styles.iconRow}>
-                  {isAdmin && (
-                    <Button
-                      type="button"
-                      icon={editIcon}
-                      className={styles.iconsBtn}
-                      loaderClass={styles.loading}
-                      handleClick={() => handleEdit({ id: row?.id })}
-                    />
-                  )}
+              <div key={row?.id} className={styles.iconRow}>
+                {isAdmin && (
                   <Button
                     type="button"
-                    icon={delIcon}
-                    isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
+                    icon={editIcon}
                     className={styles.iconsBtn}
                     loaderClass={styles.loading}
-                    handleClick={() => handleDelete({ deleteId: row?.id })}
+                    handleClick={() => handleEdit({ id: row?.id })}
                   />
-                </div>
-              </td>
+                )}
+                <Button
+                  type="button"
+                  icon={delIcon}
+                  isLoading={updatedValues?.deleteId === row?.id && updatedValues?.isDeleted}
+                  className={styles.iconsBtn}
+                  loaderClass={styles.loading}
+                  handleClick={() => handleDelete({ deleteId: row?.id })}
+                />
+              </div>
             );
           }}
         />

@@ -7,6 +7,7 @@ import Dashboard from "./app";
 import { store } from "./store";
 
 import "./index.scss";
+import "./firebase";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";

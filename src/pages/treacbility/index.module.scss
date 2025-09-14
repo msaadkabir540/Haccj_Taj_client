@@ -7,34 +7,42 @@
   height: 100%;
   max-height: 80vh;
   min-height: 80vh;
+
   .header {
     .text {
       padding: 15px 0px;
     }
   }
+
   .selectionsContainer {
     display: flex;
     flex-direction: column;
     gap: 15px;
+
     .dateClass {
       width: 95% !important;
     }
+
     .modalHeading {
       font-size: 20px;
       font-weight: 600;
     }
+
     .selectionContainer {
       display: flex;
       align-items: flex-end;
+
       .selections {
         width: 100%;
         position: relative;
       }
     }
+
     .datePickerClass {
       display: flex;
       gap: 10px;
     }
+
     @media (max-width: 500px) {
       flex-wrap: wrap;
     }
@@ -45,13 +53,16 @@
   margin: 10px 0px;
   display: flex;
   justify-content: space-between;
+
   @media (max-width: 635px) {
     flex-wrap: wrap;
   }
+
   .filterButton {
     border-radius: 5px;
     max-width: 130px;
     min-width: 130px;
+
     p {
       color: #fafafa !important;
       font-size: 15px !important;
@@ -70,10 +81,12 @@
     border-radius: 5px;
     max-width: 130px;
     min-width: 130px;
+
     p {
       color: #fafafa !important;
       font-size: 15px !important;
     }
+
     // &:hover {
     //   background: transparent !important;
     //   border: 1px solid #438afe;
@@ -89,6 +102,7 @@
     min-width: 130px;
     background: transparent !important;
     border: 1px solid #438afe;
+
     p {
       color: #438afe !important;
       font-size: 15px !important;
@@ -98,6 +112,7 @@
 
 .ModalClassName {
   max-width: 31vw !important;
+
   @media (max-width: 600px) {
     max-width: 90vw !important;
   }
@@ -118,15 +133,18 @@
   padding-left: 10px;
   border-radius: 10px;
   text-align: left !important;
+
   @media (max-width: 600px) {
     max-width: 360px;
     min-width: 360px;
   }
+
   .iconDiv {
     .imagesDiv {
       display: flex;
       align-items: center;
       gap: 20px;
+
       // flex items-center gap-5
       img {
         height: 50px;
@@ -146,6 +164,7 @@
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     animation: slide-down 0.5s ease-in-out forwards;
+
     img {
       height: 200px;
     }
@@ -180,13 +199,15 @@
 
 .iconRow {
   display: flex;
+
   .iconsBtn {
     background: transparent !important;
     border: none !important;
     padding: 0px !important;
     margin: 0px !important;
-    padding: 19px 15px 15px 20px !important;
+    // padding: 19px 15px 15px 20px !important;
     max-width: 30px !important;
+
     &:hover {
       max-width: 30px !important;
       background: #e0e0e0 !important;
